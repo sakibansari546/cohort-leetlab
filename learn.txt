@@ -1,0 +1,7 @@
+zod
+cookie-parser
+secureCookie
+prisma - client and prisma
+statusCode
+res Headers
+what is wsl
