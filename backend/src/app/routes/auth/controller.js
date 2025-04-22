@@ -228,8 +228,8 @@ class AuthColtroller {
         },
         data: {
           isEmailVerified: true,
-          emailVerificationToken: undefined,
-          emailVerificationExpiry: undefined,
+          emailVerificationToken: null,
+          emailVerificationExpiry: null,
         },
       });
 

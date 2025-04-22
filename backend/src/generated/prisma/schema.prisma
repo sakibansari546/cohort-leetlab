@@ -27,8 +27,8 @@ model User {
   avatar                  String?
   role                    UserRole  @default(USER)
   isEmailVerified         Boolean   @default(false)
-  emailVerificationToken  String
-  emailVerificationExpiry DateTime
+  emailVerificationToken  String?
+  emailVerificationExpiry DateTime?
   forgotPasswordToken     String?
   forgotPasswordExpiry    DateTime?
   refreshToken            String?
