@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres
+    container_name: leetlab-postgres
+    environment:
+      POSTGRES_DB: leetlab
+      POSTGRES_PASSWORD: sakib
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
