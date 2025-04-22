@@ -1,10 +1,10 @@
-import { db } from "../../../libs/db.js";
+import { prisma } from "../../../libs/db.js";
 import { logger } from "../../../logger.js";
 
 class HealthController {
   async healthCheckHandler(req, res) {
     try {
-      const data = await db.user.findMany();
+      const data = await prisma.user.findMany();
 
       res.status(200).json({
         message: "Server is Healthy",

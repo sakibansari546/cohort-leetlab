@@ -17,6 +17,8 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mailgen": "^2.0.29",
+    "nodemailer": "^6.10.1",
     "prisma": "^6.6.0",
     "winston": "^3.17.0",
     "zod": "^3.24.3"
