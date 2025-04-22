@@ -1,7 +1,7 @@
 zod
 cookie-parser
 secureCookie
-prisma - client and prisma
+prisma - client and prisma - done
 statusCode
-res Headers
+req Headers
 what is wsl

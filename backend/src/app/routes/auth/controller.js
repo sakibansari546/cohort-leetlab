@@ -14,7 +14,7 @@ import { env } from "../../../env.js";
 class AuthColtroller {
   validateParseData(body, schema, res) {
     const parsedData = schema.safeParse(body);
-    console.log(parsedData.error);
+    logger.error(parsedData.error);
 
     if (!parsedData.success) {
       const errors = parsedData.error.errors.map((err) => err.message);
@@ -26,12 +26,12 @@ class AuthColtroller {
 
   generateJWTTokens = {
     generateAccessToken(user) {
-      return jwt.sign({ userId: user.id }, env.ACCESS_TOKEN_SECRET, {
+      return jwt.sign({ id: user.id }, env.ACCESS_TOKEN_SECRET, {
         expiresIn: env.ACCESS_TOKEN_EXPIRY,
       });
     },
     generateRefreshToken(user) {
-      return jwt.sign({ userId: user.id }, env.REFRESH_TOKEN_SECRET, {
+      return jwt.sign({ id: user.id }, env.REFRESH_TOKEN_SECRET, {
         expiresIn: env.REFRESH_TOKEN_EXPIRY,
       });
     },
@@ -40,7 +40,7 @@ class AuthColtroller {
       const accessToken = this.generateAccessToken(user);
       const refreshToken = this.generateRefreshToken(user);
 
-      console.log(accessToken, refreshToken);
+      // Yaha me or optimize kr sakta hu direct refresh token ko db me store kr dakta hu
 
       const cookieOptions = {
         maxAge: 7 * 24 * 60 * 60 * 1000, // for 7 days
@@ -250,8 +250,6 @@ class AuthColtroller {
           res
         );
 
-      console.log(accessToken, refreshToken);
-
       const addingRefreshTokenInDb = await prisma.user.update({
         omit: {
           password: true,
@@ -284,18 +282,204 @@ class AuthColtroller {
   }
 
   async loginHandler(req, res) {
-    res.status(200).json({
-      message: "Login route",
-    });
+    // get data and validate - done
+    // check user exist or not - done
+    // check email verified or not - done
+    // compare password - done
+    // generate tokens and set cookie - done
+    // send rees
+
+    try {
+      const { email, password } = this.validateParseData(
+        req.body,
+        loginSchema,
+        res
+      );
+
+      const user = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!user)
+        return res
+          .status(404)
+          .json(new ApiResponse(404, false, "User doesn't exist!"));
+
+      if (user && !user.isEmailVerified)
+        return res
+          .status(400)
+          .json(new ApiResponse(401, false, "Email is not verified!"));
+
+      const isPassowrdCorrect =
+        await this.passwordhashAndCompare.comparePassword(
+          password,
+          user.password
+        );
+
+      if (!isPassowrdCorrect)
+        return res
+          .status(400)
+          .json(new ApiResponse(400, false, "Invalid email or password!"));
+
+      const { accessToken, refreshToken } =
+        this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
+          user,
+          res
+        );
+
+      const addingRefreshTokenInDb = await prisma.user.update({
+        omit: {
+          password: true,
+          emailVerificationToken: true,
+          emailVerificationExpiry: true,
+          forgotPasswordToken: true,
+          forgotPasswordExpiry: true,
+        },
+        where: {
+          id: user.id,
+        },
+        data: {
+          refreshToken: refreshToken,
+        },
+      });
+
+      res.status(200).json(
+        new ApiResponse(200, false, "Login successfully!", {
+          user: addingRefreshTokenInDb,
+          accessToken,
+          refreshToken,
+        })
+      );
+    } catch (error) {
+      logger.error(`Internal Sever while Login ${error}`);
+      res
+        .status(500)
+        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    }
   }
 
-  logoutHandler(req, res) {
-    res.status(200).json({
-      message: "Logout route",
-    });
+  async logoutHandler(req, res) {
+    // find auth user using req.userId - done
+    // remove token
+    // clear cookies
+    // send res
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: req.userId,
+        },
+      });
+
+      if (!user)
+        return res
+          .status(404)
+          .json(new ApiResponse(404, false, "User not found!"));
+
+      const removeRefreshToken = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          refreshToken: undefined,
+        },
+      });
+
+      // const cookieOptions = {};
+
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
+
+      res.status(200).json(new ApiResponse(200, true, "Logout successfully"));
+    } catch (error) {
+      logger.error(`Internal Sever while Logout ${error}`);
+      res
+        .status(500)
+        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    }
   }
 
-  async refreshTokenHandler(req, res) {}
+  async refreshTokenHandler(req, res) {
+    // get refreshToken and validate - done
+    // verify refresh token - done
+    // find user based on req.userId - done
+    // check userToken matched with user.refreshTOken or not -done
+    // generate new tokens and update refresh token - done
+    //  sned res
+    try {
+      const userRefreshToken =
+        req.cookies.refreshToken ||
+        req.header("Authorization")?.replace("Bearer ", "");
+
+      if (!userRefreshToken)
+        return res
+          .status(404)
+          .json(new ApiResponse(404, false, "No Refresh token - Unauthorized"));
+
+      const decodedToken = jwt.verify(
+        userRefreshToken,
+        env.REFRESH_TOKEN_SECRET
+      );
+      if (!decodedToken)
+        return res
+          .status(401)
+          .json(
+            new ApiResponse(401, false, "Invalid Refresh token - Unauthorized")
+          );
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: decodedToken.id,
+        },
+      });
+      if (!user)
+        return res
+          .status(404)
+          .json(new ApiResponse(404, false, "Invalid refresh token"));
+
+      if (userRefreshToken !== user.refreshToken)
+        return res
+          .status(401)
+          .json(
+            new ApiResponse(401, false, "Refresh token mismatch - Unauthorized")
+          );
+
+      const { accessToken, refreshToken } =
+        this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
+          user,
+          res
+        );
+
+      const setRefreshToken = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          refreshToken: refreshToken,
+        },
+      });
+
+      if (!setRefreshToken)
+        return res
+          .status(404)
+          .json(
+            new ApiResponse(404, false, "Error - setting refresh token in db")
+          );
+
+      res.status(200).json(
+        new ApiResponse(200, true, "Token Refrehed successfully", {
+          accessToken,
+          refreshToken,
+        })
+      );
+    } catch (error) {
+      logger.error(`Internal Sever while refresh token ${error}`);
+      res
+        .status(500)
+        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    }
+  }
 
   async forgotPasswordHandler(req, res) {}
   async resetPasswordHandler(req, res) {}

@@ -1,5 +1,7 @@
 import express from "express";
+
 import AuthColtroller from "./controller.js";
+import { isAuth } from "../../middleware/auth.js";
 
 export function register() {
   const router = express.Router();
@@ -12,7 +14,7 @@ export function register() {
   );
 
   router.post("/login", controller.loginHandler.bind(controller));
-  router.post("/logout", controller.logoutHandler.bind(controller));
+  router.post("/logout", isAuth, controller.logoutHandler.bind(controller));
 
   router.post(
     "/forgot-password",
