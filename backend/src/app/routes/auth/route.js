@@ -4,11 +4,12 @@ import AuthColtroller from "./controller.js";
 export function register() {
   const router = express.Router();
   const controller = new AuthColtroller();
-
+  // Done
   router.post("/signup", controller.signupHandler.bind(controller));
-  router.get("/verify-email/:token", controller.signupHandler.bind(controller));
-
-  router.post("/refresh", controller.refreshTokenHandler.bind(controller));
+  router.get(
+    "/verify-email/:token",
+    controller.verifyEmailHandler.bind(controller)
+  );
 
   router.post("/login", controller.loginHandler.bind(controller));
   router.post("/logout", controller.logoutHandler.bind(controller));
@@ -21,6 +22,8 @@ export function register() {
     "/reset-password/:token",
     controller.resetPasswordHandler.bind(controller)
   );
+
+  router.post("/refresh", controller.refreshTokenHandler.bind(controller));
 
   return router;
 }

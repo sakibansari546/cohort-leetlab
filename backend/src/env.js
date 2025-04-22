@@ -7,9 +7,12 @@ const envSchema = z.object({
   PORT: z.string().optional(),
   NODE_ENV: z.string().optional(),
   FRONTEND_BASE_URL: z.string(),
+  BACKEND_BASE_URL: z.string(),
 
-  JWT_SECRET: z.string(),
-  JWT_TOKEN_EXPIRY: z.string(),
+  ACCESS_TOKEN_SECRET: z.string(),
+  ACCESS_TOKEN_EXPIRY: z.string(),
+  REFRESH_TOKEN_SECRET: z.string(),
+  REFRESH_TOKEN_EXPIRY: z.string(),
 
   MAILTRAP_SMTP_HOST: z.string(),
   MAILTRAP_SMTP_PORT: z.string(),
