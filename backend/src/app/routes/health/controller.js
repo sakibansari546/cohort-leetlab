@@ -1,5 +1,5 @@
 import { prisma } from "../../../libs/db.js";
-import { logger } from "../../../logger.js";
+import { logger } from "../../../libs/logger.js";
 
 class HealthController {
   async healthCheckHandler(req, res) {

@@ -1,5 +1,5 @@
 import { PrismaClient } from "../generated/prisma/index.js";
-import { env } from "../env.js";
+import { env } from "./env.js";
 
 const globalForPrisma = globalThis;
 // console.log(globalThis);

@@ -8,7 +8,11 @@ export function register() {
   const controller = new UserController();
 
   router.get("/me", isAuth, controller.getUserHandler.bind(controller));
-  router.get("/update", isAuth, controller.getUserHandler.bind(controller));
+  router.patch(
+    "/update",
+    isAuth,
+    controller.updateUserHandler.bind(controller)
+  );
 
   return router;
 }

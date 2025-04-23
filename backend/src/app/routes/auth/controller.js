@@ -3,8 +3,8 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import { prisma } from "../../../libs/db.js";
-import { logger } from "../../../logger.js";
-import { env } from "../../../env.js";
+import { logger } from "../../../libs/logger.js";
+import { env } from "../../../libs/env.js";
 
 import {
   signupSchema,

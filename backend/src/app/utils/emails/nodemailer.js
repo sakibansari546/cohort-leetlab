@@ -1,7 +1,7 @@
-import { env } from "../../../env.js";
+import { env } from "../../../libs/env.js";
 import nodemailer from "nodemailer";
 import Mailgen from "mailgen";
-import { logger } from "../../../logger.js";
+import { logger } from "../../../libs/logger.js";
 
 const transport = nodemailer.createTransport({
   host: env.MAILTRAP_SMTP_HOST,

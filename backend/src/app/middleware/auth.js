@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
-import { env } from "../../env.js";
-import { logger } from "../../logger.js";
+import { env } from "../../libs/env.js";
+import { logger } from "../../libs/logger.js";
 
 import ApiResponse from "../utils/api-response.js";
 

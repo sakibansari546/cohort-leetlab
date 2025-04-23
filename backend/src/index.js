@@ -1,7 +1,7 @@
 import http from "http";
 
-import { env } from "./env.js";
-import { logger } from "./logger.js";
+import { env } from "./libs/env.js";
+import { logger } from "./libs/logger.js";
 import { createExpressApp } from "./app/index.js";
 
 async function main() {
@@ -13,7 +13,7 @@ async function main() {
     });
   } catch (error) {
     logger.error(`Error starting server ${error}`);
-  } 
+  }
 }
 
 main();
