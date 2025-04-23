@@ -1,8 +1,12 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+
 import { register as registerHealthRoutes } from "./routes/health/route.js";
 import { register as registerAuthRoutes } from "./routes/auth/route.js";
+import { register as registerUserRoutes } from "./routes/user/route.js";
+
 import { prisma } from "../libs/db.js";
+
 export function createExpressApp() {
   const app = express();
 
@@ -19,5 +23,7 @@ export function createExpressApp() {
   // Routes
   app.use("/api/v1/health", registerHealthRoutes());
   app.use("/api/v1/auth", registerAuthRoutes());
+  app.use("/api/v1/user", registerUserRoutes());
+
   return app;
 }
