@@ -4,13 +4,22 @@ import jwt from "jsonwebtoken";
 
 import { prisma } from "../../../libs/db.js";
 import { logger } from "../../../logger.js";
+import { env } from "../../../env.js";
 
-import { signupSchema, loginSchema } from "../../validation/auth/index.js";
+import {
+  signupSchema,
+  loginSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from "../../validation/auth/index.js";
 import ApiResponse from "../../utils/api-response.js";
 
 import { sendMail } from "../../utils/emails/nodemailer.js";
-import { verificationEmailTemplate } from "../../utils/emails/templates.js";
-import { env } from "../../../env.js";
+import {
+  forgotPasswordEmailTemplate,
+  verificationEmailTemplate,
+} from "../../utils/emails/templates.js";
+
 class AuthColtroller {
   validateParseData(body, schema, res) {
     const parsedData = schema.safeParse(body);
@@ -155,7 +164,7 @@ class AuthColtroller {
         subject: "Verify your email!",
         mailgenContent: verificationEmailTemplate(
           fullname,
-          `${env.BACKEND_BASE_URL}/auth/verify-email/${unHashedToken}`
+          `${env.BACKEND_BASE_URL}/api/v1/auth/verify-email/${unHashedToken}`
         ),
       });
 
@@ -481,7 +490,167 @@ class AuthColtroller {
     }
   }
 
-  async forgotPasswordHandler(req, res) {}
-  async resetPasswordHandler(req, res) {}
+  async forgotPasswordHandler(req, res) {
+    // get email and validate - done
+    // chekc user exist or not - done
+    // chekc user verified or not - done
+    // check if token exist or not expire - done
+    // generate token - done
+    // set token in db - done
+    // sned email - done
+    // send res - done
+    try {
+      const { email } = this.validateParseData(
+        req.body,
+        forgotPasswordSchema,
+        res
+      );
+      const user = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!user)
+        return res
+          .status(404)
+          .json(new ApiResponse(404, false, "User doesn't exist!"));
+
+      if (user && !user.isEmailVerified)
+        return res
+          .status(400)
+          .json(new ApiResponse(400, false, "Email is not verified!"));
+
+      if (
+        user &&
+        user.forgotPasswordToken &&
+        user.forgotPasswordExpiry > new Date(Date.now)
+      ) {
+        return res
+          .status(400)
+          .json(
+            new ApiResponse(
+              400,
+              false,
+              "Token already generated. Check your email!"
+            )
+          );
+      }
+
+      const { hashedToken, unHashedToken, tokenExpiry } =
+        this.generateTemporaryToken();
+
+      const updatedUser = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          forgotPasswordToken: hashedToken,
+          forgotPasswordExpiry: tokenExpiry,
+        },
+      });
+
+      if (!updatedUser)
+        return res
+          .status(400)
+          .json(
+            new ApiResponse(400, false, "Error while updating user with token")
+          );
+
+      await sendMail({
+        email,
+        subject: "Reset your password!",
+        mailgenContent: forgotPasswordEmailTemplate(
+          updatedUser.fullname,
+          `${env.FRONTEND_BASE_URL}/reset-password/${unHashedToken}`
+        ),
+      });
+
+      res
+        .status(200)
+        .json(new ApiResponse(200, true, "Email sent successfullt!"));
+    } catch (error) {
+      logger.error(`Internal Sever while forgoting password ${error}`);
+      res
+        .status(500)
+        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    }
+  }
+  async resetPasswordHandler(req, res) {
+    // get passwords and validate - done
+    // get token and velidate - done
+    // find user based on token - done
+    // chekc user exist or not - done
+    // check token expire or not - done
+    // ganerate hashedPassword - done
+    // change password - db - done
+    // sned res
+    try {
+      const { password, confirmPassword } = this.validateParseData(
+        req.body,
+        resetPasswordSchema,
+        res
+      );
+
+      const { token } = req.params;
+      if (!token)
+        return res
+          .status(400)
+          .json(new ApiResponse(400, false, "Token is required!"));
+
+      const user = await prisma.user.findFirst({
+        where: {
+          forgotPasswordToken: token,
+        },
+      });
+
+      if (!user)
+        return res
+          .status(404)
+          .json(new ApiResponse(404, false, "User doesn't exist!"));
+
+      if (user && user.forgotPasswordExpiry < new Date(Date.now())) {
+        return res
+          .status(400)
+          .json(
+            new ApiResponse(
+              400,
+              false,
+              "Token is expired. Please request a new password reset token."
+            )
+          );
+      }
+
+      const hashedPassword =
+        await this.passwordhashAndCompare.generateHashedPassword(password);
+
+      const setPassword = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          password: hashedPassword,
+          forgotPasswordToken: null,
+          forgotPasswordExpiry: null,
+        },
+      });
+
+      if (!setPassword)
+        return res
+          .status(401)
+          .json(
+            new ApiResponse(401, false, "Error - While setting new password")
+          );
+
+      res
+        .status(200)
+        .json(new ApiResponse(200, true, "Password updated successfully"));
+    } catch (error) {
+      logger.error(`Internal Sever while Resting password ${error}`);
+      res
+        .status(500)
+        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    }
+  }
 }
 export default AuthColtroller;

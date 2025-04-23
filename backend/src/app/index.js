@@ -17,7 +17,7 @@ export function createExpressApp() {
   });
 
   // Routes
-  app.use("/health", registerHealthRoutes());
-  app.use("/auth", registerAuthRoutes());
+  app.use("/api/v1/health", registerHealthRoutes());
+  app.use("/api/v1/auth", registerAuthRoutes());
   return app;
 }

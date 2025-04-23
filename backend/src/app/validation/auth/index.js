@@ -52,4 +52,33 @@ const loginSchema = z.object({
     .nonempty({ message: "Password is required. Please provide a password." }),
 });
 
-export { signupSchema, loginSchema };
+const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .email({ message: "Invalid email address. Please enter a valid email." })
+    .nonempty({
+      message: "Email is required. Please provide your email address.",
+    }),
+});
+
+const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long." })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter (A-Z).",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter (a-z).",
+      }),
+    confirmPassword: z
+      .string()
+      .nonempty({ message: "Confirm password is required." }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
+
+export { signupSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema };

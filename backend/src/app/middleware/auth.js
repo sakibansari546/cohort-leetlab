@@ -8,7 +8,7 @@ import ApiResponse from "../utils/api-response.js";
 export async function isAuth(req, res, next) {
   const accessToken =
     req.cookies.accessToken ||
-    req.header("Authorization")?.replace("Bearer ", "");
+    req.header("authorization")?.replace("Bearer ", "");
 
   if (!accessToken)
     return res
