@@ -1,4 +1,4 @@
-zod
+zod - done
 cookies - done
 secureCookie - done
 prisma - client and prisma 

@@ -598,9 +598,14 @@ class AuthColtroller {
           .status(400)
           .json(new ApiResponse(400, false, "Token is required!"));
 
+      const hashedToken = crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
+
       const user = await prisma.user.findFirst({
         where: {
-          forgotPasswordToken: token,
+          forgotPasswordToken: hashedToken,
         },
       });
 
