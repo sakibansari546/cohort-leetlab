@@ -99,11 +99,9 @@ class AuthColtroller {
     // 7. send email - done
     // 8. sned res - done
     try {
-      const { email, fullname, password } = this.validateParseData(
-        req.body,
-        signupSchema,
-        res
-      );
+      const parsedData = this.validateParseData(req.body, signupSchema, res);
+      if (!parsedData) return;
+      const { fullname, email, password } = parsedData;
 
       const existUser = await prisma.user.findUnique({
         where: {
@@ -299,11 +297,9 @@ class AuthColtroller {
     // send rees
 
     try {
-      const { email, password } = this.validateParseData(
-        req.body,
-        loginSchema,
-        res
-      );
+      const parsedData = this.validateParseData(req.body, loginSchema, res);
+      if (!parsedData) return;
+      const { email, password } = parsedData;
 
       const user = await prisma.user.findUnique({
         where: {
@@ -500,11 +496,14 @@ class AuthColtroller {
     // sned email - done
     // send res - done
     try {
-      const { email } = this.validateParseData(
+      const parsedData = this.validateParseData(
         req.body,
         forgotPasswordSchema,
         res
       );
+      if (!parsedData) return;
+      const { email } = parsedData;
+
       const user = await prisma.user.findUnique({
         where: {
           email,
@@ -586,11 +585,13 @@ class AuthColtroller {
     // change password - db - done
     // sned res
     try {
-      const { password, confirmPassword } = this.validateParseData(
+      const parsedData = this.validateParseData(
         req.body,
         resetPasswordSchema,
         res
       );
+      if (!parsedData) return;
+      const { password, confirmPassword } = parsedData;
 
       const { token } = req.params;
       if (!token)
