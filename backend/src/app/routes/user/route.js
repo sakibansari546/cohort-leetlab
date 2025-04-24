@@ -1,7 +1,9 @@
 import express from "express";
 
 import UserController from "./controller.js";
+
 import { isAuth } from "../../middleware/auth.js";
+import { handleProfileImageWithMulter } from "../../middleware/multer.js";
 
 export function register() {
   const router = express.Router();
@@ -11,6 +13,7 @@ export function register() {
   router.patch(
     "/update",
     isAuth,
+    handleProfileImageWithMulter("profileImage"),
     controller.updateUserHandler.bind(controller)
   );
 

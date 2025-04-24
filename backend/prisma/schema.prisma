@@ -24,7 +24,7 @@ model User {
   fullname                String?
   email                   String    @unique
   password                String
-  avatar                  String?
+  avatar                  String    @default("https://img.freepik.com/premium-vector/men-icon-trendy-avatar-character-cheerful-happy-people-flat-vector-illustration-round-frame-male-portraits-group-team-adorable-guys-isolated-white-background_275421-282.jpg?w=826")
   role                    UserRole  @default(USER)
   isEmailVerified         Boolean   @default(false)
   emailVerificationToken  String?

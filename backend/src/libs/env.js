@@ -18,6 +18,10 @@ const envSchema = z.object({
   MAILTRAP_SMTP_PORT: z.string(),
   MAILTRAP_SMTP_USER: z.string(),
   MAILTRAP_SMTP_PASS: z.string(),
+
+  CLOUDINARY_CLOUD_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 });
 
 function createENV(env) {
