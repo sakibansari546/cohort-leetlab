@@ -1,6 +1,8 @@
 import multer from "multer";
 
 import ApiResponse from "../utils/api-response.js";
+import ApiError from "../utils/api-error.js";
+
 import { logger } from "../../libs/logger.js";
 
 export function handleProfileImageWithMulter(filename) {
@@ -24,27 +26,16 @@ export function handleProfileImageWithMulter(filename) {
     upload(req, res, function (err) {
       if (err instanceof multer.MulterError) {
         if (err.code === "LIMIT_FILE_SIZE")
-          return res
-            .status(400)
-            .json(
-              new ApiResponse(400, false, "File size exceeds the limit of 5MB.")
-            );
+          throw new ApiError(400, "File size exceeds the limit of 5MB.");
         logger.error(err);
-        return res
-          .status(400)
-          .json(new ApiResponse(400, false, "An error occurd file upload"));
+        throw new ApiError(400, "An error occurred during file upload.");
         // A Multer error occurred when uploading.
       } else if (err) {
         // An unknown error occurred when uploading.
-        return res
-          .status(500)
-          .json(
-            new ApiResponse(
-              500,
-              false,
-              "An unknown error occurred during file upload."
-            )
-          );
+        throw new ApiError(
+          500,
+          "An unknown error occurred during file upload."
+        );
       }
       next();
       // Everything went fine.

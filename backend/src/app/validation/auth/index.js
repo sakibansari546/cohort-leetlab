@@ -2,19 +2,22 @@ import { z } from "zod";
 
 const signupSchema = z.object({
   fullname: z
-    .string()
-    .max(20, { message: "Fullname must be less than 20 characters long." })
+    .string({ message: "Fullname must be string type" })
     .nonempty({
       message: "Fullname is required. Please provide your full name.",
-    }),
+    })
+    .min(3, { message: "Fullname must be at least 3 characters long." })
+    .max(20, { message: "Fullname must be less than 20 characters long." }),
   email: z
-    .string()
-    .email({ message: "Invalid email address. Please enter a valid email." })
+    .string({ message: "Email must be string type" })
     .nonempty({
       message: "Email is required. Please provide your email address.",
-    }),
+    })
+    .email({ message: "Invalid email address. Please enter a valid email." }),
+
   password: z
-    .string()
+    .string({ message: "Password must be string type" })
+    .nonempty({ message: "Password is required. Please provide a password." })
     .min(8, { message: "Password must be at least 8 characters long." })
     .regex(/[A-Z]/, {
       message: "Password must contain at least one uppercase letter (A-Z).",
@@ -25,19 +28,20 @@ const signupSchema = z.object({
     .regex(/[\W_]/, {
       message:
         "Password must contain at least one special character (e.g., @, #, $, etc.).",
-    })
-    .nonempty({ message: "Password is required. Please provide a password." }),
+    }),
 });
 
 const loginSchema = z.object({
   email: z
-    .string()
-    .email({ message: "Invalid email address. Please enter a valid email." })
+    .string({ message: "Eamil must be string type" })
     .nonempty({
       message: "Email is required. Please provide your email address.",
-    }),
+    })
+    .email({ message: "Invalid email address. Please enter a valid email." }),
+
   password: z
-    .string()
+    .string({ message: "Password must be string type" })
+    .nonempty({ message: "Password is required. Please provide a password." })
     .min(8, { message: "Password must be at least 8 characters long." })
     .regex(/[A-Z]/, {
       message: "Password must contain at least one uppercase letter (A-Z).",
@@ -48,23 +52,22 @@ const loginSchema = z.object({
     .regex(/[\W_]/, {
       message:
         "Password must contain at least one special character (e.g., @, #, $, etc.).",
-    })
-    .nonempty({ message: "Password is required. Please provide a password." }),
+    }),
 });
 
 const forgotPasswordSchema = z.object({
   email: z
-    .string()
-    .email({ message: "Invalid email address. Please enter a valid email." })
+    .string({ message: "Email must be type string" })
     .nonempty({
       message: "Email is required. Please provide your email address.",
-    }),
+    })
+    .email({ message: "Invalid email address. Please enter a valid email." }),
 });
 
 const resetPasswordSchema = z
   .object({
     password: z
-      .string()
+      .string({ message: "Password must be type string" })
       .min(8, { message: "Password must be at least 8 characters long." })
       .regex(/[A-Z]/, {
         message: "Password must contain at least one uppercase letter (A-Z).",
@@ -73,7 +76,7 @@ const resetPasswordSchema = z
         message: "Password must contain at least one lowercase letter (a-z).",
       }),
     confirmPassword: z
-      .string()
+      .string({ message: "Confirm password must be type string" })
       .nonempty({ message: "Confirm password is required." }),
   })
   .refine((data) => data.password === data.confirmPassword, {

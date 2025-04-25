@@ -1,5 +1,6 @@
 import { prisma } from "../../../libs/db.js";
 import { logger } from "../../../libs/logger.js";
+import ApiError from "../../utils/api-error.js";
 
 class HealthController {
   async healthCheckHandler(req, res) {
@@ -12,6 +13,7 @@ class HealthController {
       });
     } catch (error) {
       logger.error(`Error Health Check ${error}`);
+      throw new ApiError(500, "Internal server error", error);
     }
   }
 }

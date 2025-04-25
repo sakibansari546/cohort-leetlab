@@ -6,13 +6,16 @@ import { prisma } from "../../../libs/db.js";
 import { logger } from "../../../libs/logger.js";
 import { env } from "../../../libs/env.js";
 
+import ApiResponse from "../../utils/api-response.js";
+import ApiError from "../../utils/api-error.js";
+import AsyncHandler from "../../utils/async-handler.js";
+
 import {
   signupSchema,
   loginSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
 } from "../../validation/auth/index.js";
-import ApiResponse from "../../utils/api-response.js";
 
 import { sendMail } from "../../utils/emails/nodemailer.js";
 import {
@@ -23,11 +26,11 @@ import {
 class AuthColtroller {
   validateParseData(body, schema, res) {
     const parsedData = schema.safeParse(body);
-    logger.error(parsedData.error);
 
     if (!parsedData.success) {
+      logger.error(parsedData.error);
       const errors = parsedData.error.errors.map((err) => err.message);
-      res.status(400).json({ message: errors[0], errors }); // Send one error at a time
+      res.status(400).json(new ApiError(400, errors[0], errors)); // Send one error at a time
       return;
     }
     return parsedData.data;
@@ -89,7 +92,7 @@ class AuthColtroller {
     },
   };
 
-  async signupHandler(req, res) {
+  signupHandler = AsyncHandler(async (req, res) => {
     // 1. get data and validate - done
     // 2. check user exist or verified - done
     // 3. check user exist but notVerified and token not exipire - done
@@ -98,92 +101,72 @@ class AuthColtroller {
     // 6. create new user - done
     // 7. send email - done
     // 8. sned res - done
-    try {
-      const parsedData = this.validateParseData(req.body, signupSchema, res);
-      if (!parsedData) return;
-      const { fullname, email, password } = parsedData;
+    const parsedData = this.validateParseData(req.body, signupSchema, res);
+    if (!parsedData) return;
+    const { fullname, email, password } = parsedData;
 
-      const existUser = await prisma.user.findUnique({
-        where: {
-          email,
-        },
-      });
-
-      if (existUser && existUser.isEmailVerified) {
-        return res
-          .status(400)
-          .json(
-            new ApiResponse(
-              400,
-              false,
-              "User with this email or username already exists"
-            )
-          );
-      }
-
-      if (existUser && !existUser.isEmailVerified) {
-        if (existUser.emailVerificationExpiry > Date.now()) {
-          return res
-            .status(400)
-            .json(
-              new ApiResponse(
-                400,
-                false,
-                "Email not verified. Please verify your email."
-              )
-            );
-        }
-      }
-
-      const { hashedToken, unHashedToken, tokenExpiry } =
-        this.generateTemporaryToken();
-
-      const hashedPassowrd =
-        await this.passwordhashAndCompare.generateHashedPassword(password);
-
-      const newUser = await prisma.user.create({
-        data: {
-          fullname,
-          email,
-          password: hashedPassowrd,
-          emailVerificationToken: hashedToken,
-          emailVerificationExpiry: tokenExpiry,
-        },
-      });
-
-      if (!newUser) {
-        return res
-          .status(401)
-          .json(new ApiResponse(401, false, "Error - while create new user"));
-      }
-
-      await sendMail({
+    const existUser = await prisma.user.findUnique({
+      where: {
         email,
-        subject: "Verify your email!",
-        mailgenContent: verificationEmailTemplate(
-          fullname,
-          `${env.BACKEND_BASE_URL}/api/v1/auth/verify-email/${unHashedToken}`
-        ),
-      });
+      },
+    });
 
-      res
-        .status(201)
-        .json(
-          new ApiResponse(
-            201,
-            true,
-            "User created successfully. Please verify your email."
-          )
-        );
-    } catch (error) {
-      logger.error(`Internal Sever while signup ${error}`);
-      res
-        .status(500)
-        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    if (existUser && existUser.isEmailVerified) {
+      throw new ApiError(
+        400,
+        "User with this email or username already exists"
+      );
     }
-  }
 
-  async verifyEmailHandler(req, res) {
+    if (existUser && !existUser.isEmailVerified) {
+      if (existUser.emailVerificationExpiry > Date.now()) {
+        throw new ApiError(
+          400,
+          "Email not verified. Please verify your email."
+        );
+      }
+    }
+
+    const { hashedToken, unHashedToken, tokenExpiry } =
+      this.generateTemporaryToken();
+
+    const hashedPassowrd =
+      await this.passwordhashAndCompare.generateHashedPassword(password);
+
+    const newUser = await prisma.user.create({
+      data: {
+        fullname,
+        email,
+        password: hashedPassowrd,
+        emailVerificationToken: hashedToken,
+        emailVerificationExpiry: tokenExpiry,
+      },
+    });
+
+    if (!newUser) {
+      throw new ApiError(401, "Error - while creating new user");
+    }
+
+    await sendMail({
+      email,
+      subject: "Verify your email!",
+      mailgenContent: verificationEmailTemplate(
+        fullname,
+        `${env.BACKEND_BASE_URL}/api/v1/auth/verify-email/${unHashedToken}`
+      ),
+    });
+
+    res
+      .status(201)
+      .json(
+        new ApiResponse(
+          201,
+          "User created successfully. Please verify your email."
+        )
+      );
+  });
+
+  verifyEmailHandler = AsyncHandler(async (req, res) => {
     // get token and validate - done
     // convert unHashedToken into hashedToken - done
     // find user based on hashedToken - done
@@ -192,301 +175,238 @@ class AuthColtroller {
     // update isVerify - done
     // generate access And refresh token
     // send res - done
-    try {
-      const { token } = req.params;
-      if (!token)
-        return res
-          .status(404)
-          .json(new ApiResponse(404, false, "Token is required!"));
 
-      const hashedToken = crypto
-        .createHash("sha256")
-        .update(token)
-        .digest("hex");
-
-      const user = await prisma.user.findFirst({
-        where: {
-          AND: [
-            {
-              emailVerificationToken: hashedToken,
-            },
-            {
-              emailVerificationExpiry: {
-                gt: new Date(Date.now()),
-              },
-            },
-          ],
-        },
-      });
-
-      if (!user)
-        return res
-          .status(404)
-          .json(new ApiResponse(404, false, "Token is invalid or expire!"));
-
-      if (user && user.isEmailVerified)
-        return res
-          .status(400)
-          .json(new ApiResponse(400, false, "Email is already verified"));
-
-      const updatedUser = await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          isEmailVerified: true,
-          emailVerificationToken: null,
-          emailVerificationExpiry: null,
-        },
-      });
-
-      if (!updatedUser)
-        return res
-          .status(401)
-          .json(
-            new ApiResponse(
-              401,
-              false,
-              "Somethong went wrong while updating user"
-            )
-          );
-
-      const { accessToken, refreshToken } =
-        this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
-          updatedUser,
-          res
-        );
-
-      const addingRefreshTokenInDb = await prisma.user.update({
-        omit: {
-          password: true,
-          emailVerificationToken: true,
-          emailVerificationExpiry: true,
-          forgotPasswordToken: true,
-          forgotPasswordExpiry: true,
-        },
-        where: {
-          id: updatedUser.id,
-        },
-        data: {
-          refreshToken: refreshToken,
-        },
-      });
-
-      res.status(200).json(
-        new ApiResponse(200, true, "Email Verified Successfully!", {
-          user: addingRefreshTokenInDb,
-          accessToken,
-          refreshToken,
-        })
-      );
-    } catch (error) {
-      logger.error(`Internal Sever while Verify Email ${error}`);
-      res
-        .status(500)
-        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    const { token } = req.params;
+    if (!token) {
+      throw new ApiError(404, "Token is required!");
     }
-  }
 
-  async loginHandler(req, res) {
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await prisma.user.findFirst({
+      where: {
+        AND: [
+          {
+            emailVerificationToken: hashedToken,
+          },
+          {
+            emailVerificationExpiry: {
+              gt: new Date(Date.now()),
+            },
+          },
+        ],
+      },
+    });
+
+    if (!user) {
+      throw new ApiError(404, "Token is invalid or expired!");
+    }
+
+    if (user && user.isEmailVerified) {
+      throw new ApiError(400, "Email is already verified");
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        isEmailVerified: true,
+        emailVerificationToken: null,
+        emailVerificationExpiry: null,
+      },
+    });
+
+    if (!updatedUser) {
+      throw new ApiError(401, "Something went wrong while updating user");
+    }
+
+    const { accessToken, refreshToken } =
+      this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
+        updatedUser,
+        res
+      );
+
+    const addingRefreshTokenInDb = await prisma.user.update({
+      omit: {
+        password: true,
+        emailVerificationToken: true,
+        emailVerificationExpiry: true,
+        forgotPasswordToken: true,
+        forgotPasswordExpiry: true,
+      },
+      where: {
+        id: updatedUser.id,
+      },
+      data: {
+        refreshToken: refreshToken,
+      },
+    });
+
+    res.status(200).json(
+      new ApiResponse(200, "Email Verified Successfully!", {
+        user: addingRefreshTokenInDb,
+        accessToken,
+        refreshToken,
+      })
+    );
+  });
+
+  loginHandler = AsyncHandler(async (req, res) => {
     // get data and validate - done
     // check user exist or not - done
     // check email verified or not - done
     // compare password - done
     // generate tokens and set cookie - done
     // send rees
+    const parsedData = this.validateParseData(req.body, loginSchema, res);
+    if (!parsedData) return;
+    const { email, password } = parsedData;
 
-    try {
-      const parsedData = this.validateParseData(req.body, loginSchema, res);
-      if (!parsedData) return;
-      const { email, password } = parsedData;
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
 
-      const user = await prisma.user.findUnique({
-        where: {
-          email,
-        },
-      });
-
-      if (!user)
-        return res
-          .status(404)
-          .json(new ApiResponse(404, false, "User doesn't exist!"));
-
-      if (user && !user.isEmailVerified)
-        return res
-          .status(400)
-          .json(new ApiResponse(401, false, "Email is not verified!"));
-
-      const isPassowrdCorrect =
-        await this.passwordhashAndCompare.comparePassword(
-          password,
-          user.password
-        );
-
-      if (!isPassowrdCorrect)
-        return res
-          .status(400)
-          .json(new ApiResponse(400, false, "Invalid email or password!"));
-
-      const { accessToken, refreshToken } =
-        this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
-          user,
-          res
-        );
-
-      const addingRefreshTokenInDb = await prisma.user.update({
-        omit: {
-          password: true,
-          emailVerificationToken: true,
-          emailVerificationExpiry: true,
-          forgotPasswordToken: true,
-          forgotPasswordExpiry: true,
-        },
-        where: {
-          id: user.id,
-        },
-        data: {
-          refreshToken: refreshToken,
-        },
-      });
-
-      res.status(200).json(
-        new ApiResponse(200, false, "Login successfully!", {
-          user: addingRefreshTokenInDb,
-          accessToken,
-          refreshToken,
-        })
-      );
-    } catch (error) {
-      logger.error(`Internal Sever while Login ${error}`);
-      res
-        .status(500)
-        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    if (!user) {
+      throw new ApiError(404, "User doesn't exist!");
     }
-  }
 
-  async logoutHandler(req, res) {
+    if (user && !user.isEmailVerified) {
+      throw new ApiError(401, "Email is not verified!");
+    }
+
+    const isPasswordCorrect = await this.passwordhashAndCompare.comparePassword(
+      password,
+      user.password
+    );
+
+    if (!isPasswordCorrect) {
+      throw new ApiError(400, "Invalid email or password!");
+    }
+
+    const { accessToken, refreshToken } =
+      this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
+        user,
+        res
+      );
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        refreshToken: refreshToken,
+      },
+      select: {
+        id: true,
+        fullname: true,
+        email: true,
+        isEmailVerified: true,
+      },
+    });
+
+    res.status(200).json(
+      new ApiResponse(200, "Login successfully!", {
+        user: updatedUser,
+        accessToken,
+        refreshToken,
+      })
+    );
+  });
+
+  logoutHandler = AsyncHandler(async (req, res) => {
     // find auth user using req.userId - done
     // remove token
     // clear cookies
     // send res
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          id: req.userId,
-        },
-      });
 
-      if (!user)
-        return res
-          .status(404)
-          .json(new ApiResponse(404, false, "User not found!"));
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.userId,
+      },
+    });
 
-      const removeRefreshToken = await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          refreshToken: undefined,
-        },
-      });
-
-      // const cookieOptions = {};
-
-      res.clearCookie("accessToken");
-      res.clearCookie("refreshToken");
-
-      res.status(200).json(new ApiResponse(200, true, "Logout successfully"));
-    } catch (error) {
-      logger.error(`Internal Sever while Logout ${error}`);
-      res
-        .status(500)
-        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    if (!user) {
+      throw new ApiError(404, "User not found!");
     }
-  }
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        refreshToken: null,
+      },
+    });
 
-  async refreshTokenHandler(req, res) {
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+
+    res.status(200).json(new ApiResponse(200, "Logout successfully"));
+  });
+
+  refreshTokenHandler = async (req, res) => {
     // get refreshToken and validate - done
     // verify refresh token - done
     // find user based on req.userId - done
     // check userToken matched with user.refreshTOken or not -done
     // generate new tokens and update refresh token - done
     //  sned res
-    try {
-      const userRefreshToken =
-        req.cookies.refreshToken ||
-        req.header("Authorization")?.replace("Bearer ", "");
+    const userRefreshToken =
+      req.cookies.refreshToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
 
-      if (!userRefreshToken)
-        return res
-          .status(404)
-          .json(new ApiResponse(404, false, "No Refresh token - Unauthorized"));
-
-      const decodedToken = jwt.verify(
-        userRefreshToken,
-        env.REFRESH_TOKEN_SECRET
-      );
-      if (!decodedToken)
-        return res
-          .status(401)
-          .json(
-            new ApiResponse(401, false, "Invalid Refresh token - Unauthorized")
-          );
-
-      const user = await prisma.user.findUnique({
-        where: {
-          id: decodedToken.id,
-        },
-      });
-      if (!user)
-        return res
-          .status(404)
-          .json(new ApiResponse(404, false, "Invalid refresh token"));
-
-      if (userRefreshToken !== user.refreshToken)
-        return res
-          .status(401)
-          .json(
-            new ApiResponse(401, false, "Refresh token mismatch - Unauthorized")
-          );
-
-      const { accessToken, refreshToken } =
-        this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
-          user,
-          res
-        );
-
-      const setRefreshToken = await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          refreshToken: refreshToken,
-        },
-      });
-
-      if (!setRefreshToken)
-        return res
-          .status(404)
-          .json(
-            new ApiResponse(404, false, "Error - setting refresh token in db")
-          );
-
-      res.status(200).json(
-        new ApiResponse(200, true, "Token Refrehed successfully", {
-          accessToken,
-          refreshToken,
-        })
-      );
-    } catch (error) {
-      logger.error(`Internal Sever while refresh token ${error}`);
-      res
-        .status(500)
-        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    if (!userRefreshToken) {
+      throw new ApiError(404, "No Refresh token - Unauthorized");
     }
-  }
 
-  async forgotPasswordHandler(req, res) {
+    const decodedToken = jwt.verify(userRefreshToken, env.REFRESH_TOKEN_SECRET);
+    if (!decodedToken) {
+      throw new ApiError(401, "Invalid Refresh token - Unauthorized");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: decodedToken.id,
+      },
+    });
+    if (!user) {
+      throw new ApiError(404, "Invalid refresh token");
+    }
+
+    if (userRefreshToken !== user.refreshToken) {
+      throw new ApiError(401, "Refresh token mismatch - Unauthorized");
+    }
+
+    const { accessToken, refreshToken } =
+      this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
+        user,
+        res
+      );
+
+    const setRefreshToken = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        refreshToken: refreshToken,
+      },
+    });
+
+    if (!setRefreshToken) {
+      throw new ApiError(404, "Error - setting refreshed token in db");
+    }
+
+    res.status(200).json(
+      new ApiResponse(200, "Token Refreshed successfully", {
+        accessToken,
+        refreshToken,
+      })
+    );
+  };
+
+  forgotPasswordHandler = AsyncHandler(async (req, res) => {
     // get email and validate - done
     // chekc user exist or not - done
     // chekc user verified or not - done
@@ -495,87 +415,65 @@ class AuthColtroller {
     // set token in db - done
     // sned email - done
     // send res - done
-    try {
-      const parsedData = this.validateParseData(
-        req.body,
-        forgotPasswordSchema,
-        res
-      );
-      if (!parsedData) return;
-      const { email } = parsedData;
+    const parsedData = this.validateParseData(
+      req.body,
+      forgotPasswordSchema,
+      res
+    );
+    if (!parsedData) return;
+    const { email } = parsedData;
 
-      const user = await prisma.user.findUnique({
-        where: {
-          email,
-        },
-      });
-
-      if (!user)
-        return res
-          .status(404)
-          .json(new ApiResponse(404, false, "User doesn't exist!"));
-
-      if (user && !user.isEmailVerified)
-        return res
-          .status(400)
-          .json(new ApiResponse(400, false, "Email is not verified!"));
-
-      if (
-        user &&
-        user.forgotPasswordToken &&
-        user.forgotPasswordExpiry > new Date(Date.now)
-      ) {
-        return res
-          .status(400)
-          .json(
-            new ApiResponse(
-              400,
-              false,
-              "Token already generated. Check your email!"
-            )
-          );
-      }
-
-      const { hashedToken, unHashedToken, tokenExpiry } =
-        this.generateTemporaryToken();
-
-      const updatedUser = await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          forgotPasswordToken: hashedToken,
-          forgotPasswordExpiry: tokenExpiry,
-        },
-      });
-
-      if (!updatedUser)
-        return res
-          .status(400)
-          .json(
-            new ApiResponse(400, false, "Error while updating user with token")
-          );
-
-      await sendMail({
+    const user = await prisma.user.findUnique({
+      where: {
         email,
-        subject: "Reset your password!",
-        mailgenContent: forgotPasswordEmailTemplate(
-          updatedUser.fullname,
-          `${env.FRONTEND_BASE_URL}/reset-password/${unHashedToken}`
-        ),
-      });
+      },
+    });
 
-      res
-        .status(200)
-        .json(new ApiResponse(200, true, "Email sent successfullt!"));
-    } catch (error) {
-      logger.error(`Internal Sever while forgoting password ${error}`);
-      res
-        .status(500)
-        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    if (!user) {
+      throw new ApiError(404, "User doesn't exist!");
     }
-  }
-  async resetPasswordHandler(req, res) {
+
+    if (user && !user.isEmailVerified) {
+      throw new ApiError(400, "Email is not verified!");
+    }
+
+    if (
+      user &&
+      user.forgotPasswordToken &&
+      user.forgotPasswordExpiry > new Date(Date.now())
+    ) {
+      throw new ApiError(400, "Token already generated. Check your email!");
+    }
+
+    const { hashedToken, unHashedToken, tokenExpiry } =
+      this.generateTemporaryToken();
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        forgotPasswordToken: hashedToken,
+        forgotPasswordExpiry: tokenExpiry,
+      },
+    });
+
+    if (!updatedUser) {
+      throw new ApiError(400, "Error while updating user with token");
+    }
+
+    await sendMail({
+      email,
+      subject: "Reset your password!",
+      mailgenContent: forgotPasswordEmailTemplate(
+        updatedUser.fullname,
+        `${env.FRONTEND_BASE_URL}/reset-password/${unHashedToken}`
+      ),
+    });
+
+    res.status(200).json(new ApiResponse(200, "Email sent successfully!"));
+  });
+  resetPasswordHandler = AsyncHandler(async (req, res) => {
     // get passwords and validate - done
     // get token and velidate - done
     // find user based on token - done
@@ -584,79 +482,57 @@ class AuthColtroller {
     // ganerate hashedPassword - done
     // change password - db - done
     // sned res
-    try {
-      const parsedData = this.validateParseData(
-        req.body,
-        resetPasswordSchema,
-        res
-      );
-      if (!parsedData) return;
-      const { password, confirmPassword } = parsedData;
-
-      const { token } = req.params;
-      if (!token)
-        return res
-          .status(400)
-          .json(new ApiResponse(400, false, "Token is required!"));
-
-      const hashedToken = crypto
-        .createHash("sha256")
-        .update(token)
-        .digest("hex");
-
-      const user = await prisma.user.findFirst({
-        where: {
-          forgotPasswordToken: hashedToken,
-        },
-      });
-
-      if (!user)
-        return res
-          .status(404)
-          .json(new ApiResponse(404, false, "User doesn't exist!"));
-
-      if (user && user.forgotPasswordExpiry < new Date(Date.now())) {
-        return res
-          .status(400)
-          .json(
-            new ApiResponse(
-              400,
-              false,
-              "Token is expired. Please request a new password reset token."
-            )
-          );
-      }
-
-      const hashedPassword =
-        await this.passwordhashAndCompare.generateHashedPassword(password);
-
-      const setPassword = await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          password: hashedPassword,
-          forgotPasswordToken: null,
-          forgotPasswordExpiry: null,
-        },
-      });
-
-      if (!setPassword)
-        return res
-          .status(401)
-          .json(
-            new ApiResponse(401, false, "Error - While setting new password")
-          );
-
+    const parsedData = this.validateParseData(
+      req.body,
+      resetPasswordSchema,
       res
-        .status(200)
-        .json(new ApiResponse(200, true, "Password updated successfully"));
-    } catch (error) {
-      logger.error(`Internal Sever while Resting password ${error}`);
-      res
-        .status(500)
-        .json(new ApiResponse(500, false, "Internal Server error!", {}));
+    );
+    if (!parsedData) return;
+    const { password, confirmPassword } = parsedData;
+
+    const { token } = req.params;
+    if (!token) {
+      throw new ApiError(400, "Token is required!");
     }
-  }
+
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await prisma.user.findFirst({
+      where: {
+        forgotPasswordToken: hashedToken,
+      },
+    });
+
+    if (!user) {
+      throw new ApiError(404, "User doesn't exist!");
+    }
+
+    if (user && user.forgotPasswordExpiry < new Date(Date.now())) {
+      throw new ApiError(
+        400,
+        "Token is expired. Please request a new password reset token."
+      );
+    }
+
+    const hashedPassword =
+      await this.passwordhashAndCompare.generateHashedPassword(password);
+
+    const setPassword = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: hashedPassword,
+        forgotPasswordToken: null,
+        forgotPasswordExpiry: null,
+      },
+    });
+
+    if (!setPassword) {
+      throw new ApiError(401, "Error - While setting new password");
+    }
+
+    res.status(200).json(new ApiResponse(200, "Password updated successfully"));
+  });
 }
 export default AuthColtroller;
