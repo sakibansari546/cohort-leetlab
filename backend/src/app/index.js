@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import { register as registerHealthRoutes } from "./routes/health/route.js";
 import { register as registerAuthRoutes } from "./routes/auth/route.js";
 import { register as registerUserRoutes } from "./routes/user/route.js";
+import { register as registerProblemRoutes } from "./routes/project/route.js";
 
 import { prisma } from "../libs/db.js";
 
@@ -24,6 +25,7 @@ export function createExpressApp() {
   app.use("/api/v1/health", registerHealthRoutes());
   app.use("/api/v1/auth", registerAuthRoutes());
   app.use("/api/v1/user", registerUserRoutes());
+  app.use("/api/v1/problem", registerProblemRoutes());
 
   return app;
 }

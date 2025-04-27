@@ -57,7 +57,7 @@ model Problem {
 
   testcases          Json // [{input : "1", output : "1"}, {input : "2", output : "2"}]
   codeSnippets       Json
-  referenceSolutions Json
+  referenceSolutions Json // [{"JavaScript": 'Solution Code "}, {"Java": 'Solution Code"}]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
