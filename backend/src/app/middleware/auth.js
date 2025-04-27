@@ -32,23 +32,23 @@ export async function isAuth(req, res, next) {
   }
 }
 
-export function checkAdmin(req, _, next) {
-  try {
-    const user = prisma.user.findUnique({
-      where: {
-        id: req.userId,
-      },
-      select: {
-        role: true,
-      },
-    });
+export async function checkAdmin(req, _, next) {
+  // try {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.userId,
+    },
+    select: {
+      role: true,
+    },
+  });
 
-    if (!user || !user.role === "ADMIN")
-      throw new ApiError(400, "Access denied only access admin!");
+  if (!user || user.role !== "ADMIN")
+    throw new ApiError(400, "Access denied. Admin access only!");
 
-    next();
-  } catch (error) {
-    logger.error(`Error - checking admin in checkAdmin middleware ${error}`);
-    throw new ApiError(500, "Internal server error", error);
-  }
+  next();
+  // } catch (error) {
+  //   logger.error(`Error - checking admin in checkAdmin middleware ${error}`);
+  //   throw new ApiError(500, "Internal server error", error);
+  // }
 }
