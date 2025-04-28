@@ -38,9 +38,13 @@ model User {
   forgotPasswordToken     String?
   forgotPasswordExpiry    DateTime?
   refreshToken            String?
-  createdAt               DateTime  @default(now())
-  updatedAt               DateTime  @updatedAt
-  problem                 Problem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  problem        Problem[]
+  Submission     Submission[]
+  solvedProblems SolvedProblem[]
 }
 
 model Problem {
@@ -62,5 +66,67 @@ model Problem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submissions Submission[]
+
+  solvedBy SolvedProblem[]
 }
+
+model Submission {
+  id            String  @id @default(uuid())
+  source_code   Json
+  language      String
+  stdin         String?
+  stdout        String?
+  stderr        String?
+  compileOutput String?
+  status        String // Accepted, Worng
+  memory        String?
+  time          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problemId String?
+  problem   Problem? @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  testCases Testcase[]
+}
+
+model Testcase {
+  id            String  @id @default(uuid())
+  testCase      Int
+  passed        Boolean
+  stdout        String?
+  etderr        String
+  expected      String
+  compileOutput String?
+  status        String // Accepted, Worng
+  memory        String?
+  time          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  submissionId String?
+
+  @@index([submissionId])
+}
+
+model SolvedProblem {
+  id        String  @id @default(uuid())
+  userId    String?
+  problemId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User?    @relation(fields: [userId], references: [id])
+  uroblem Problem? @relation(fields: [problemId], references: [id])
+}
+
+// backend 
+// high level system design // kafka redis websockets webrtc

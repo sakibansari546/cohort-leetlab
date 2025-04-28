@@ -25,7 +25,6 @@ export async function submitBatch(submissions) {
       submissions,
     }
   );
-  console.log("Submissions Result = ", data);
   return data; // getting tokens
 }
 
@@ -42,7 +41,6 @@ export async function pollBatchResults(tokens) {
     );
 
     const result = data.submissions;
-    console.log("Getting Submissions after create", result);
 
     const isAllDone = result.every(
       (res) => res.status.id !== 2 && res.status.id !== 1

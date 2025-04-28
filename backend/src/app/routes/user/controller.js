@@ -80,7 +80,7 @@ class UserController {
       logger.error(`Error updating user: ${updateError}`);
       res
         .status(500)
-        .json(new ApiError(500, false, "Error updating user!", error));
+        .json(new ApiError(500, false, "Error updating user!", updateError));
     }
   });
 }

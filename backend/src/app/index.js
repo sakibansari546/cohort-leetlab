@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import { register as registerHealthRoutes } from "./routes/health/route.js";
 import { register as registerAuthRoutes } from "./routes/auth/route.js";
 import { register as registerUserRoutes } from "./routes/user/route.js";
-import { register as registerProblemRoutes } from "./routes/project/route.js";
+import { register as registerProblemRoutes } from "./routes/problem/route.js";
 
 import { prisma } from "../libs/db.js";
 
