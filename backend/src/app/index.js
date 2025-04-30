@@ -9,6 +9,8 @@ import { register as registerExecuteCodeRoutes } from "./routes/executeCode/rout
 
 import { prisma } from "../libs/db.js";
 
+import ApiResponse from "./utils/api-response.js";
+
 export function createExpressApp() {
   const app = express();
 
@@ -28,6 +30,12 @@ export function createExpressApp() {
   app.use("/api/v1/user", registerUserRoutes());
   app.use("/api/v1/problem", registerProblemRoutes());
   app.use("/api/v1/execute/code", registerExecuteCodeRoutes());
+
+  app.use((err, req, res, next) => {
+    res
+      .status(err.statusCode)
+      .json(new ApiResponse(err.statusCode, err.message, { error: err }));
+  });
 
   return app;
 }
