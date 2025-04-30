@@ -8101,6 +8101,7 @@ export namespace Prisma {
 
   export type SolvedProblemWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    userId_problemId?: SolvedProblemUserIdProblemIdCompoundUniqueInput
     AND?: SolvedProblemWhereInput | SolvedProblemWhereInput[]
     OR?: SolvedProblemWhereInput[]
     NOT?: SolvedProblemWhereInput | SolvedProblemWhereInput[]
@@ -8110,7 +8111,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"SolvedProblem"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     uroblem?: XOR<ProblemNullableScalarRelationFilter, ProblemWhereInput> | null
-  }, "id">
+  }, "id" | "userId_problemId">
 
   export type SolvedProblemOrderByWithAggregationInput = {
     id?: SortOrder
@@ -9194,6 +9195,11 @@ export namespace Prisma {
   export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
+  }
+
+  export type SolvedProblemUserIdProblemIdCompoundUniqueInput = {
+    userId: string
+    problemId: string
   }
 
   export type SolvedProblemCountOrderByAggregateInput = {

@@ -126,6 +126,8 @@ model SolvedProblem {
 
   user    User?    @relation(fields: [userId], references: [id])
   uroblem Problem? @relation(fields: [problemId], references: [id])
+
+  @@unique([userId, problemId])
 }
 
 // backend 
