@@ -4,7 +4,6 @@ import ApiError from "../../utils/api-error.js";
 import ApiResponse from "../../utils/api-response.js";
 import AsyncHandler from "../../utils/async-handler.js";
 
-// import { validateZodSchema } from "../../utils/handle-zod-error.js";
 import { createProblemSchema } from "../../validation/problem/index.js";
 
 import {
@@ -12,8 +11,12 @@ import {
   pollBatchResults,
   submitBatch,
 } from "../../utils/judge0.js";
+import { handleZodError } from "../../utils/handle-zod-error.js";
 
 class ProblemController {
+  validateParseData(schema, body) {
+    return schema.safeParse(body);
+  }
   createProblemHandler = AsyncHandler(async (req, res) => {
     // Get all data
     // Check user admin or not
@@ -31,7 +34,7 @@ class ProblemController {
       testcases,
       codeSnippets,
       referenceSolutions,
-    } = req.body;
+    } = handleZodError(this.validateParseData(createProblemSchema, req.body));
 
     const user = await prisma.user.findUnique({
       where: {

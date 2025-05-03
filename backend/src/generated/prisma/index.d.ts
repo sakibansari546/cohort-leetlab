@@ -6459,7 +6459,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | SolvedProblem$userArgs<ExtArgs>
-    uroblem?: boolean | SolvedProblem$uroblemArgs<ExtArgs>
+    problem?: boolean | SolvedProblem$problemArgs<ExtArgs>
   }, ExtArgs["result"]["solvedProblem"]>
 
   export type SolvedProblemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6469,7 +6469,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | SolvedProblem$userArgs<ExtArgs>
-    uroblem?: boolean | SolvedProblem$uroblemArgs<ExtArgs>
+    problem?: boolean | SolvedProblem$problemArgs<ExtArgs>
   }, ExtArgs["result"]["solvedProblem"]>
 
   export type SolvedProblemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6479,7 +6479,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | SolvedProblem$userArgs<ExtArgs>
-    uroblem?: boolean | SolvedProblem$uroblemArgs<ExtArgs>
+    problem?: boolean | SolvedProblem$problemArgs<ExtArgs>
   }, ExtArgs["result"]["solvedProblem"]>
 
   export type SolvedProblemSelectScalar = {
@@ -6493,22 +6493,22 @@ export namespace Prisma {
   export type SolvedProblemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "problemId" | "createdAt" | "updatedAt", ExtArgs["result"]["solvedProblem"]>
   export type SolvedProblemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | SolvedProblem$userArgs<ExtArgs>
-    uroblem?: boolean | SolvedProblem$uroblemArgs<ExtArgs>
+    problem?: boolean | SolvedProblem$problemArgs<ExtArgs>
   }
   export type SolvedProblemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | SolvedProblem$userArgs<ExtArgs>
-    uroblem?: boolean | SolvedProblem$uroblemArgs<ExtArgs>
+    problem?: boolean | SolvedProblem$problemArgs<ExtArgs>
   }
   export type SolvedProblemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | SolvedProblem$userArgs<ExtArgs>
-    uroblem?: boolean | SolvedProblem$uroblemArgs<ExtArgs>
+    problem?: boolean | SolvedProblem$problemArgs<ExtArgs>
   }
 
   export type $SolvedProblemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SolvedProblem"
     objects: {
       user: Prisma.$UserPayload<ExtArgs> | null
-      uroblem: Prisma.$ProblemPayload<ExtArgs> | null
+      problem: Prisma.$ProblemPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6911,7 +6911,7 @@ export namespace Prisma {
   export interface Prisma__SolvedProblemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends SolvedProblem$userArgs<ExtArgs> = {}>(args?: Subset<T, SolvedProblem$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    uroblem<T extends SolvedProblem$uroblemArgs<ExtArgs> = {}>(args?: Subset<T, SolvedProblem$uroblemArgs<ExtArgs>>): Prisma__ProblemClient<$Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    problem<T extends SolvedProblem$problemArgs<ExtArgs> = {}>(args?: Subset<T, SolvedProblem$problemArgs<ExtArgs>>): Prisma__ProblemClient<$Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7361,9 +7361,9 @@ export namespace Prisma {
   }
 
   /**
-   * SolvedProblem.uroblem
+   * SolvedProblem.problem
    */
-  export type SolvedProblem$uroblemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SolvedProblem$problemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Problem
      */
@@ -8086,7 +8086,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"SolvedProblem"> | Date | string
     updatedAt?: DateTimeFilter<"SolvedProblem"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    uroblem?: XOR<ProblemNullableScalarRelationFilter, ProblemWhereInput> | null
+    problem?: XOR<ProblemNullableScalarRelationFilter, ProblemWhereInput> | null
   }
 
   export type SolvedProblemOrderByWithRelationInput = {
@@ -8096,7 +8096,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
-    uroblem?: ProblemOrderByWithRelationInput
+    problem?: ProblemOrderByWithRelationInput
   }
 
   export type SolvedProblemWhereUniqueInput = Prisma.AtLeast<{
@@ -8110,7 +8110,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"SolvedProblem"> | Date | string
     updatedAt?: DateTimeFilter<"SolvedProblem"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    uroblem?: XOR<ProblemNullableScalarRelationFilter, ProblemWhereInput> | null
+    problem?: XOR<ProblemNullableScalarRelationFilter, ProblemWhereInput> | null
   }, "id" | "userId_problemId">
 
   export type SolvedProblemOrderByWithAggregationInput = {
@@ -8283,7 +8283,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutProblemInput
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
-    solvedBy?: SolvedProblemCreateNestedManyWithoutUroblemInput
+    solvedBy?: SolvedProblemCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUncheckedCreateInput = {
@@ -8303,7 +8303,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
-    solvedBy?: SolvedProblemUncheckedCreateNestedManyWithoutUroblemInput
+    solvedBy?: SolvedProblemUncheckedCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUpdateInput = {
@@ -8323,7 +8323,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutProblemNestedInput
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
-    solvedBy?: SolvedProblemUpdateManyWithoutUroblemNestedInput
+    solvedBy?: SolvedProblemUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateInput = {
@@ -8343,7 +8343,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
-    solvedBy?: SolvedProblemUncheckedUpdateManyWithoutUroblemNestedInput
+    solvedBy?: SolvedProblemUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemCreateManyInput = {
@@ -8636,7 +8636,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutSolvedProblemsInput
-    uroblem?: ProblemCreateNestedOneWithoutSolvedByInput
+    problem?: ProblemCreateNestedOneWithoutSolvedByInput
   }
 
   export type SolvedProblemUncheckedCreateInput = {
@@ -8652,7 +8652,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutSolvedProblemsNestedInput
-    uroblem?: ProblemUpdateOneWithoutSolvedByNestedInput
+    problem?: ProblemUpdateOneWithoutSolvedByNestedInput
   }
 
   export type SolvedProblemUncheckedUpdateInput = {
@@ -9393,10 +9393,10 @@ export namespace Prisma {
     connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
   }
 
-  export type SolvedProblemCreateNestedManyWithoutUroblemInput = {
-    create?: XOR<SolvedProblemCreateWithoutUroblemInput, SolvedProblemUncheckedCreateWithoutUroblemInput> | SolvedProblemCreateWithoutUroblemInput[] | SolvedProblemUncheckedCreateWithoutUroblemInput[]
-    connectOrCreate?: SolvedProblemCreateOrConnectWithoutUroblemInput | SolvedProblemCreateOrConnectWithoutUroblemInput[]
-    createMany?: SolvedProblemCreateManyUroblemInputEnvelope
+  export type SolvedProblemCreateNestedManyWithoutProblemInput = {
+    create?: XOR<SolvedProblemCreateWithoutProblemInput, SolvedProblemUncheckedCreateWithoutProblemInput> | SolvedProblemCreateWithoutProblemInput[] | SolvedProblemUncheckedCreateWithoutProblemInput[]
+    connectOrCreate?: SolvedProblemCreateOrConnectWithoutProblemInput | SolvedProblemCreateOrConnectWithoutProblemInput[]
+    createMany?: SolvedProblemCreateManyProblemInputEnvelope
     connect?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
   }
 
@@ -9407,10 +9407,10 @@ export namespace Prisma {
     connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
   }
 
-  export type SolvedProblemUncheckedCreateNestedManyWithoutUroblemInput = {
-    create?: XOR<SolvedProblemCreateWithoutUroblemInput, SolvedProblemUncheckedCreateWithoutUroblemInput> | SolvedProblemCreateWithoutUroblemInput[] | SolvedProblemUncheckedCreateWithoutUroblemInput[]
-    connectOrCreate?: SolvedProblemCreateOrConnectWithoutUroblemInput | SolvedProblemCreateOrConnectWithoutUroblemInput[]
-    createMany?: SolvedProblemCreateManyUroblemInputEnvelope
+  export type SolvedProblemUncheckedCreateNestedManyWithoutProblemInput = {
+    create?: XOR<SolvedProblemCreateWithoutProblemInput, SolvedProblemUncheckedCreateWithoutProblemInput> | SolvedProblemCreateWithoutProblemInput[] | SolvedProblemUncheckedCreateWithoutProblemInput[]
+    connectOrCreate?: SolvedProblemCreateOrConnectWithoutProblemInput | SolvedProblemCreateOrConnectWithoutProblemInput[]
+    createMany?: SolvedProblemCreateManyProblemInputEnvelope
     connect?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
   }
 
@@ -9445,17 +9445,17 @@ export namespace Prisma {
     deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
   }
 
-  export type SolvedProblemUpdateManyWithoutUroblemNestedInput = {
-    create?: XOR<SolvedProblemCreateWithoutUroblemInput, SolvedProblemUncheckedCreateWithoutUroblemInput> | SolvedProblemCreateWithoutUroblemInput[] | SolvedProblemUncheckedCreateWithoutUroblemInput[]
-    connectOrCreate?: SolvedProblemCreateOrConnectWithoutUroblemInput | SolvedProblemCreateOrConnectWithoutUroblemInput[]
-    upsert?: SolvedProblemUpsertWithWhereUniqueWithoutUroblemInput | SolvedProblemUpsertWithWhereUniqueWithoutUroblemInput[]
-    createMany?: SolvedProblemCreateManyUroblemInputEnvelope
+  export type SolvedProblemUpdateManyWithoutProblemNestedInput = {
+    create?: XOR<SolvedProblemCreateWithoutProblemInput, SolvedProblemUncheckedCreateWithoutProblemInput> | SolvedProblemCreateWithoutProblemInput[] | SolvedProblemUncheckedCreateWithoutProblemInput[]
+    connectOrCreate?: SolvedProblemCreateOrConnectWithoutProblemInput | SolvedProblemCreateOrConnectWithoutProblemInput[]
+    upsert?: SolvedProblemUpsertWithWhereUniqueWithoutProblemInput | SolvedProblemUpsertWithWhereUniqueWithoutProblemInput[]
+    createMany?: SolvedProblemCreateManyProblemInputEnvelope
     set?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
     disconnect?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
     delete?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
     connect?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
-    update?: SolvedProblemUpdateWithWhereUniqueWithoutUroblemInput | SolvedProblemUpdateWithWhereUniqueWithoutUroblemInput[]
-    updateMany?: SolvedProblemUpdateManyWithWhereWithoutUroblemInput | SolvedProblemUpdateManyWithWhereWithoutUroblemInput[]
+    update?: SolvedProblemUpdateWithWhereUniqueWithoutProblemInput | SolvedProblemUpdateWithWhereUniqueWithoutProblemInput[]
+    updateMany?: SolvedProblemUpdateManyWithWhereWithoutProblemInput | SolvedProblemUpdateManyWithWhereWithoutProblemInput[]
     deleteMany?: SolvedProblemScalarWhereInput | SolvedProblemScalarWhereInput[]
   }
 
@@ -9473,17 +9473,17 @@ export namespace Prisma {
     deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
   }
 
-  export type SolvedProblemUncheckedUpdateManyWithoutUroblemNestedInput = {
-    create?: XOR<SolvedProblemCreateWithoutUroblemInput, SolvedProblemUncheckedCreateWithoutUroblemInput> | SolvedProblemCreateWithoutUroblemInput[] | SolvedProblemUncheckedCreateWithoutUroblemInput[]
-    connectOrCreate?: SolvedProblemCreateOrConnectWithoutUroblemInput | SolvedProblemCreateOrConnectWithoutUroblemInput[]
-    upsert?: SolvedProblemUpsertWithWhereUniqueWithoutUroblemInput | SolvedProblemUpsertWithWhereUniqueWithoutUroblemInput[]
-    createMany?: SolvedProblemCreateManyUroblemInputEnvelope
+  export type SolvedProblemUncheckedUpdateManyWithoutProblemNestedInput = {
+    create?: XOR<SolvedProblemCreateWithoutProblemInput, SolvedProblemUncheckedCreateWithoutProblemInput> | SolvedProblemCreateWithoutProblemInput[] | SolvedProblemUncheckedCreateWithoutProblemInput[]
+    connectOrCreate?: SolvedProblemCreateOrConnectWithoutProblemInput | SolvedProblemCreateOrConnectWithoutProblemInput[]
+    upsert?: SolvedProblemUpsertWithWhereUniqueWithoutProblemInput | SolvedProblemUpsertWithWhereUniqueWithoutProblemInput[]
+    createMany?: SolvedProblemCreateManyProblemInputEnvelope
     set?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
     disconnect?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
     delete?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
     connect?: SolvedProblemWhereUniqueInput | SolvedProblemWhereUniqueInput[]
-    update?: SolvedProblemUpdateWithWhereUniqueWithoutUroblemInput | SolvedProblemUpdateWithWhereUniqueWithoutUroblemInput[]
-    updateMany?: SolvedProblemUpdateManyWithWhereWithoutUroblemInput | SolvedProblemUpdateManyWithWhereWithoutUroblemInput[]
+    update?: SolvedProblemUpdateWithWhereUniqueWithoutProblemInput | SolvedProblemUpdateWithWhereUniqueWithoutProblemInput[]
+    updateMany?: SolvedProblemUpdateManyWithWhereWithoutProblemInput | SolvedProblemUpdateManyWithWhereWithoutProblemInput[]
     deleteMany?: SolvedProblemScalarWhereInput | SolvedProblemScalarWhereInput[]
   }
 
@@ -9862,7 +9862,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     submissions?: SubmissionCreateNestedManyWithoutProblemInput
-    solvedBy?: SolvedProblemCreateNestedManyWithoutUroblemInput
+    solvedBy?: SolvedProblemCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUncheckedCreateWithoutUserInput = {
@@ -9881,7 +9881,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     submissions?: SubmissionUncheckedCreateNestedManyWithoutProblemInput
-    solvedBy?: SolvedProblemUncheckedCreateNestedManyWithoutUroblemInput
+    solvedBy?: SolvedProblemUncheckedCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemCreateOrConnectWithoutUserInput = {
@@ -9942,7 +9942,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    uroblem?: ProblemCreateNestedOneWithoutSolvedByInput
+    problem?: ProblemCreateNestedOneWithoutSolvedByInput
   }
 
   export type SolvedProblemUncheckedCreateWithoutUserInput = {
@@ -10149,27 +10149,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SolvedProblemCreateWithoutUroblemInput = {
+  export type SolvedProblemCreateWithoutProblemInput = {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutSolvedProblemsInput
   }
 
-  export type SolvedProblemUncheckedCreateWithoutUroblemInput = {
+  export type SolvedProblemUncheckedCreateWithoutProblemInput = {
     id?: string
     userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type SolvedProblemCreateOrConnectWithoutUroblemInput = {
+  export type SolvedProblemCreateOrConnectWithoutProblemInput = {
     where: SolvedProblemWhereUniqueInput
-    create: XOR<SolvedProblemCreateWithoutUroblemInput, SolvedProblemUncheckedCreateWithoutUroblemInput>
+    create: XOR<SolvedProblemCreateWithoutProblemInput, SolvedProblemUncheckedCreateWithoutProblemInput>
   }
 
-  export type SolvedProblemCreateManyUroblemInputEnvelope = {
-    data: SolvedProblemCreateManyUroblemInput | SolvedProblemCreateManyUroblemInput[]
+  export type SolvedProblemCreateManyProblemInputEnvelope = {
+    data: SolvedProblemCreateManyProblemInput | SolvedProblemCreateManyProblemInput[]
     skipDuplicates?: boolean
   }
 
@@ -10238,20 +10238,20 @@ export namespace Prisma {
     data: XOR<SubmissionUpdateManyMutationInput, SubmissionUncheckedUpdateManyWithoutProblemInput>
   }
 
-  export type SolvedProblemUpsertWithWhereUniqueWithoutUroblemInput = {
+  export type SolvedProblemUpsertWithWhereUniqueWithoutProblemInput = {
     where: SolvedProblemWhereUniqueInput
-    update: XOR<SolvedProblemUpdateWithoutUroblemInput, SolvedProblemUncheckedUpdateWithoutUroblemInput>
-    create: XOR<SolvedProblemCreateWithoutUroblemInput, SolvedProblemUncheckedCreateWithoutUroblemInput>
+    update: XOR<SolvedProblemUpdateWithoutProblemInput, SolvedProblemUncheckedUpdateWithoutProblemInput>
+    create: XOR<SolvedProblemCreateWithoutProblemInput, SolvedProblemUncheckedCreateWithoutProblemInput>
   }
 
-  export type SolvedProblemUpdateWithWhereUniqueWithoutUroblemInput = {
+  export type SolvedProblemUpdateWithWhereUniqueWithoutProblemInput = {
     where: SolvedProblemWhereUniqueInput
-    data: XOR<SolvedProblemUpdateWithoutUroblemInput, SolvedProblemUncheckedUpdateWithoutUroblemInput>
+    data: XOR<SolvedProblemUpdateWithoutProblemInput, SolvedProblemUncheckedUpdateWithoutProblemInput>
   }
 
-  export type SolvedProblemUpdateManyWithWhereWithoutUroblemInput = {
+  export type SolvedProblemUpdateManyWithWhereWithoutProblemInput = {
     where: SolvedProblemScalarWhereInput
-    data: XOR<SolvedProblemUpdateManyMutationInput, SolvedProblemUncheckedUpdateManyWithoutUroblemInput>
+    data: XOR<SolvedProblemUpdateManyMutationInput, SolvedProblemUncheckedUpdateManyWithoutProblemInput>
   }
 
   export type UserCreateWithoutSubmissionInput = {
@@ -10313,7 +10313,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutProblemInput
-    solvedBy?: SolvedProblemCreateNestedManyWithoutUroblemInput
+    solvedBy?: SolvedProblemCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemUncheckedCreateWithoutSubmissionsInput = {
@@ -10332,7 +10332,7 @@ export namespace Prisma {
     referenceSolutions: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    solvedBy?: SolvedProblemUncheckedCreateNestedManyWithoutUroblemInput
+    solvedBy?: SolvedProblemUncheckedCreateNestedManyWithoutProblemInput
   }
 
   export type ProblemCreateOrConnectWithoutSubmissionsInput = {
@@ -10456,7 +10456,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutProblemNestedInput
-    solvedBy?: SolvedProblemUpdateManyWithoutUroblemNestedInput
+    solvedBy?: SolvedProblemUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateWithoutSubmissionsInput = {
@@ -10475,7 +10475,7 @@ export namespace Prisma {
     referenceSolutions?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    solvedBy?: SolvedProblemUncheckedUpdateManyWithoutUroblemNestedInput
+    solvedBy?: SolvedProblemUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type TestcaseUpsertWithWhereUniqueWithoutSubmissionInput = {
@@ -10837,7 +10837,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submissions?: SubmissionUpdateManyWithoutProblemNestedInput
-    solvedBy?: SolvedProblemUpdateManyWithoutUroblemNestedInput
+    solvedBy?: SolvedProblemUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateWithoutUserInput = {
@@ -10856,7 +10856,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submissions?: SubmissionUncheckedUpdateManyWithoutProblemNestedInput
-    solvedBy?: SolvedProblemUncheckedUpdateManyWithoutUroblemNestedInput
+    solvedBy?: SolvedProblemUncheckedUpdateManyWithoutProblemNestedInput
   }
 
   export type ProblemUncheckedUpdateManyWithoutUserInput = {
@@ -10930,7 +10930,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    uroblem?: ProblemUpdateOneWithoutSolvedByNestedInput
+    problem?: ProblemUpdateOneWithoutSolvedByNestedInput
   }
 
   export type SolvedProblemUncheckedUpdateWithoutUserInput = {
@@ -10963,7 +10963,7 @@ export namespace Prisma {
     userId: string
   }
 
-  export type SolvedProblemCreateManyUroblemInput = {
+  export type SolvedProblemCreateManyProblemInput = {
     id?: string
     userId?: string | null
     createdAt?: Date | string
@@ -11020,21 +11020,21 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type SolvedProblemUpdateWithoutUroblemInput = {
+  export type SolvedProblemUpdateWithoutProblemInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutSolvedProblemsNestedInput
   }
 
-  export type SolvedProblemUncheckedUpdateWithoutUroblemInput = {
+  export type SolvedProblemUncheckedUpdateWithoutProblemInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SolvedProblemUncheckedUpdateManyWithoutUroblemInput = {
+  export type SolvedProblemUncheckedUpdateManyWithoutProblemInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

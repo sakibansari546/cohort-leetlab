@@ -2,97 +2,77 @@ import { z } from "zod";
 
 const createProblemSchema = z.object({
   title: z
-    .string({ message: "Title must be a string" })
+    .string({ message: "Title must be string" })
     .nonempty({ message: "Title is required" })
-    .min(5, { message: "Title must be at least 5 characters long" })
-    .max(50, { message: "Title must not exceed 50 characters" }),
+    .min(6, { message: "Title must be at least 6 characters long" })
+    .max(40, { message: "Title must not exceed 40 characters" }),
 
   description: z
-    .string({ message: "Desc must be a string" })
+    .string({ message: "Description must be string" })
     .nonempty({ message: "Description is required" })
-    .min(20, { message: "Description must be at least 20 characters long" }),
+    .min(10, { message: "Description must be at least 10 characters long" })
+    .max(300, { message: "Description must not exceed 300 characters" }),
 
   difficulty: z.enum(["EASY", "MEDIUM", "HARD"], {
-    message: "Difficulty must be one of EASY, MEDIUM, or HARD",
+    message: "Difficulty must be one of EASY, MEDIUM, HARD",
   }),
 
   tags: z
-    .array(z.string({ message: "Tags must be an array of strings" }))
-    .nonempty({ message: "At least one tag is required" }),
+    .array(z.string({ message: "Each tag must be a string" }))
+    .min(1, { message: "At least one tag is required" }),
 
-  examples: z
-    .string({ message: "Examples must be a valid JSON string" })
-    .refine(
-      (value) => {
-        try {
-          JSON.parse(value);
-          return true;
-        } catch {
-          return false;
-        }
-      },
-      { message: "Examples must be a valid JSON string" }
-    ),
+  examples: z.record(
+    z.object({
+      input: z.string({ message: "Input must be a string" }),
+      output: z.string({ message: "Output must be a string" }),
+      explanation: z.string({ message: "Explanation must be a string" }),
+    })
+  ),
 
   constraints: z
-    .string({ message: "Constraints must be a valid JSON string" })
-    .refine(
-      (value) => {
-        try {
-          JSON.parse(value);
-          return true;
-        } catch {
-          return false;
-        }
-      },
-      { message: "Constraints must be a valid JSON string" }
-    ),
+    .string({ message: "Constraints must be string" })
+    .nonempty({ message: "Constraints is required" })
+    .min(5, { message: "Constraints must be at least 5 characters long" })
+    .max(100, { message: "Constraints must not exceed 100 characters" }),
+
+  hints: z.optional(
+    z
+      .string({ message: "Hints must be string" })
+      .min(5, { message: "Hints must be at least 5 characters long" })
+      .max(100, { message: "Hints must not exceed 100 characters" })
+  ),
+
+  editorial: z.optional(
+    z
+      .string({ message: "editorial must be string" })
+      .min(5, { message: "editorial must be at least 5 characters long" })
+      .max(100, { message: "editorial must not exceed 100 characters" })
+  ),
 
   testcases: z
-    .string({ message: "Testcases must be a valid JSON string" })
-    .refine(
-      (value) => {
-        try {
-          JSON.parse(value);
-          return true;
-        } catch {
-          return false;
-        }
-      },
-      { message: "Testcases must be a valid JSON string" }
-    ),
+    .array(
+      z.object({
+        input: z
+          .string({ message: "testcases input must be string" })
+          .nonempty({ message: "testcase input is required" }),
+        output: z
+          .string({ message: "testcases output must be string" })
+          .nonempty({ message: "testcase output is required" }),
+      })
+    )
+    .min(1, { message: "At least one testcase is required" }),
 
-  hints: z.optional(z.string({ message: "Hints must be a string" })),
-  editorial: z.optional(z.string({ message: "Editorial must be a string" })),
+  codeSnippets: z.object({
+    JAVASCRIPT: z.string({ message: "Code must be string" }),
+    PYTHON: z.string({ message: "Code must be string" }),
+    JAVA: z.string({ message: "Code must be string" }),
+  }),
 
-  referenceSolutions: z
-    .string({ message: "ReferenceSolutions must be a valid JSON string" })
-    .refine(
-      (value) => {
-        try {
-          JSON.parse(value);
-          return true;
-        } catch {
-          return false;
-        }
-      },
-      { message: "ReferenceSolutions must be a valid JSON string" }
-    ),
+  referenceSolutions: z.object({
+    JAVASCRIPT: z.string({ message: "Code must be string" }),
+    PYTHON: z.string({ message: "Code must be string" }),
+    JAVA: z.string({ message: "Code must be string" }),
+  }),
 });
-//   .refine((data) => {
-//     try {
-//       JSON.parse(data.examples);
-//       JSON.parse(data.testcases);
-//       JSON.parse(data.referenceSolutions);
-//       return true;
-//     } catch (error) {
-//       return false;
-//     }
-//   })
-//   .transform((data) => {
-//     JSON.parse(data.examples);
-//     JSON.parse(data.testcases);
-//     JSON.parse(data.referenceSolutions);
-//   });
 
 export { createProblemSchema };

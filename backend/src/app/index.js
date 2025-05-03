@@ -33,13 +33,13 @@ export function createExpressApp() {
   app.use("/api/v1/execute/code", registerExecuteCodeRoutes());
   app.use("/api/v1/submission", registerSubmissionRoutes());
 
-  // app.use((err, req, res, next) => {
-  //   res
-  //     .status(err.statusCode)
-  //     .json(
-  //       new ApiResponse(err.statusCode ?? 500, err.message, { error: err })
-  //     );
-  // });
+  app.use((err, req, res, next) => {
+    res
+      .status(err.statusCode)
+      .json(
+        new ApiResponse(err.statusCode ?? 500, err.message, { error: err })
+      );
+  });
 
   return app;
 }

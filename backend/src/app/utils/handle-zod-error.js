@@ -14,7 +14,7 @@ export function handleZodError(result) {
     if (missingFeilds) {
       throw new ApiError(
         400,
-        `Zod Missing required fields ${result.error.errors[0].path[0]}`
+        `Zod Missing required fields ${result.error.errors[0].path}`
       );
     }
 
