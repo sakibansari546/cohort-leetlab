@@ -100,7 +100,7 @@ model Testcase {
   testCase      Int
   passed        Boolean
   stdout        String?
-  etderr        String
+  stderr        String?
   expected      String
   compileOutput String?
   status        String // Accepted, Worng

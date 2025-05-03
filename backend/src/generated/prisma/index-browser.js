@@ -174,7 +174,7 @@ exports.Prisma.TestcaseScalarFieldEnum = {
   testCase: 'testCase',
   passed: 'passed',
   stdout: 'stdout',
-  etderr: 'etderr',
+  stderr: 'stderr',
   expected: 'expected',
   compileOutput: 'compileOutput',
   status: 'status',
