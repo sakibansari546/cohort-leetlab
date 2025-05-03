@@ -9,7 +9,14 @@ import cloudinary from "../../utils/cloudinary.js";
 import path from "path";
 import fs from "fs/promises";
 
+import { handleZodError } from "../../utils/handle-zod-error.js";
+import { updateUserSchema } from "../../validation/user/index.js";
+
 class UserController {
+  validateParseData(schema, body) {
+    return schema.safeParse(body);
+  }
+
   getUserHandler = AsyncHandler(async (req, res) => {
     const user = await prisma.user.findUnique({
       where: {
@@ -35,24 +42,46 @@ class UserController {
   });
 
   updateUserHandler = AsyncHandler(async (req, res) => {
-    const { fullname } = req.body;
+    const { fullname } = handleZodError(
+      this.validateParseData(updateUserSchema, req.body)
+    );
     const profileImage = req.file;
 
-    if (!fullname) {
-      throw new ApiError(400, "Fullname is required!");
+    if (!fullname && !profileImage) {
+      throw new ApiError(400, "Fullname or Profile image is required");
     }
 
-    let avatarUrl = null;
     if (profileImage) {
+      let uploadPath;
       try {
-        const uploadPath = path.resolve(profileImage.path);
+        uploadPath = path.resolve(profileImage.path);
         const uploadResult = await cloudinary.uploader.upload(uploadPath, {
           folder: "leetlab/user/profileImages",
         });
-        avatarUrl = uploadResult.secure_url;
+        let avatarUrl = uploadResult.secure_url;
         await fs.unlink(uploadPath);
+
+        const updatedUser = await prisma.user.update({
+          where: { id: req.userId },
+          data: {
+            fullname,
+            avatar: avatarUrl,
+          },
+          select: {
+            id: true,
+            fullname: true,
+            avatar: true,
+          },
+        });
+
+        res.status(200).json(
+          new ApiResponse(200, "User updated successfully!", {
+            updatedUser,
+          })
+        );
       } catch (uploadError) {
         logger.error(`Error uploading profile image: ${uploadError}`);
+        await fs.unlink(uploadPath);
         throw new ApiError(500, "Error uploading profile image!");
       }
     }
@@ -62,12 +91,10 @@ class UserController {
         where: { id: req.userId },
         data: {
           fullname,
-          avatar: avatarUrl,
         },
         select: {
           id: true,
           fullname: true,
-          avatar: true,
         },
       });
 
