@@ -22,18 +22,11 @@ import {
   forgotPasswordEmailTemplate,
   verificationEmailTemplate,
 } from "../../utils/emails/templates.js";
+import { handleZodError } from "../../utils/handle-zod-error.js";
 
 class AuthColtroller {
-  validateParseData(body, schema, res) {
-    const parsedData = schema.safeParse(body);
-
-    if (!parsedData.success) {
-      logger.error(parsedData.error);
-      const errors = parsedData.error.errors.map((err) => err.message);
-      res.status(400).json(new ApiError(400, errors[0], errors)); // Send one error at a time
-      return;
-    }
-    return parsedData.data;
+  validateParseData(schema, body) {
+    return schema.safeParse(body);
   }
 
   generateJWTTokens = {
@@ -101,8 +94,9 @@ class AuthColtroller {
     // 6. create new user - done
     // 7. send email - done
     // 8. sned res - done
-    const parsedData = this.validateParseData(req.body, signupSchema, res);
-    if (!parsedData) return;
+    const parsedData = handleZodError(
+      this.validateParseData(signupSchema, req.body)
+    );
     const { fullname, email, password } = parsedData;
 
     const existUser = await prisma.user.findUnique({
@@ -259,8 +253,10 @@ class AuthColtroller {
     // compare password - done
     // generate tokens and set cookie - done
     // send rees
-    const parsedData = this.validateParseData(req.body, loginSchema, res);
-    if (!parsedData) return;
+    const parsedData = handleZodError(
+      this.validateParseData(loginSchema, req.body)
+    );
+
     const { email, password } = parsedData;
 
     const user = await prisma.user.findUnique({
@@ -415,12 +411,9 @@ class AuthColtroller {
     // set token in db - done
     // sned email - done
     // send res - done
-    const parsedData = this.validateParseData(
-      req.body,
-      forgotPasswordSchema,
-      res
+    const parsedData = handleZodError(
+      this.validateParseData(forgotPasswordSchema, req.body)
     );
-    if (!parsedData) return;
     const { email } = parsedData;
 
     const user = await prisma.user.findUnique({
@@ -482,12 +475,9 @@ class AuthColtroller {
     // ganerate hashedPassword - done
     // change password - db - done
     // sned res
-    const parsedData = this.validateParseData(
-      req.body,
-      resetPasswordSchema,
-      res
+    const parsedData = handleZodError(
+      this.validateParseData(resetPasswordSchema, req.body)
     );
-    if (!parsedData) return;
     const { password, confirmPassword } = parsedData;
 
     const { token } = req.params;

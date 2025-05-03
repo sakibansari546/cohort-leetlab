@@ -1,16 +1,25 @@
 import { logger } from "../../libs/logger.js";
 import ApiError from "./api-error.js";
 
-export function validateZodSchema(body, schema) {
-  const parsedData = schema.safeParse(body);
+export function handleZodError(result) {
+  if (!result.success) {
+    console.log(result.error);
+    // const errors = result.error.errors.map((err) => err.message);
+    // throw new ApiError(400, errors[0], errors);
+    const missingFeilds = result.error.errors.find(
+      (error) => error.code == "invalid_type" && error.received === "undefined"
+    );
+    console.log("Missing ", missingFeilds);
 
-  if (!parsedData.success) {
-    const errorDetails = parsedData.error.errors.map((err) => ({
-      path: err.path.join("."),
-      message: err.message,
-    }));
-    logger.error(`Validation failed: ${JSON.stringify(errorDetails)}`);
-    throw new ApiError(400, "Validation error", errorDetails);
+    if (missingFeilds) {
+      throw new ApiError(
+        400,
+        `Zod Missing required fields ${result.error.errors[0].path[0]}`
+      );
+    }
+
+    throw new ApiError(400, result.error.errors[0].message);
   }
-  return parsedData.data;
+  logger.info(result);
+  return result.data;
 }
