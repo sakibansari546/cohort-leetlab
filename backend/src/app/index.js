@@ -6,6 +6,7 @@ import { register as registerAuthRoutes } from "./routes/auth/route.js";
 import { register as registerUserRoutes } from "./routes/user/route.js";
 import { register as registerProblemRoutes } from "./routes/problem/route.js";
 import { register as registerExecuteCodeRoutes } from "./routes/executeCode/route.js";
+import { register as registerSubmissionRoutes } from "./routes/submission/route.js";
 
 import { prisma } from "../libs/db.js";
 
@@ -30,6 +31,7 @@ export function createExpressApp() {
   app.use("/api/v1/user", registerUserRoutes());
   app.use("/api/v1/problem", registerProblemRoutes());
   app.use("/api/v1/execute/code", registerExecuteCodeRoutes());
+  app.use("/api/v1/submission", registerSubmissionRoutes());
 
   // app.use((err, req, res, next) => {
   //   res
