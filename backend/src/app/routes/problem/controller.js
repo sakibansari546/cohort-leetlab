@@ -4,7 +4,10 @@ import ApiError from "../../utils/api-error.js";
 import ApiResponse from "../../utils/api-response.js";
 import AsyncHandler from "../../utils/async-handler.js";
 
-import { createProblemSchema } from "../../validation/problem/index.js";
+import {
+  createProblemSchema,
+  updateProblemSchema,
+} from "../../validation/problem/index.js";
 
 import {
   getJudge0LangaugeId,
@@ -128,7 +131,7 @@ class ProblemController {
       testcases,
       codeSnippets,
       referenceSolutions,
-    } = req.body;
+    } = handleZodError(this.validateParseData(updateProblemSchema, req.body));
 
     const { id: problemId } = req.params;
 
@@ -139,105 +142,74 @@ class ProblemController {
     });
     if (!problem) throw new ApiError(404, "Problem Not found");
 
-    if (
-      JSON.stringify(problem.testcases) !== JSON.stringify(testcases) ||
-      JSON.stringify(problem.referenceSolutions) !==
-        JSON.stringify(referenceSolutions)
-    ) {
-      console.log("Testcases or ref Solution changed");
+    console.log("Testcases or ref Solution changed");
 
-      for (const [language, solutionCode] of Object.entries(
-        referenceSolutions
-      )) {
-        const languageId = getJudge0LangaugeId(language);
+    for (const [language, solutionCode] of Object.entries(
+      referenceSolutions || {}
+    )) {
+      const languageId = getJudge0LangaugeId(language);
 
-        if (!languageId) {
-          throw new ApiError(400, `Language ${language} is not supported`);
-        }
-
-        console.log(`Language ${language} is Id ${languageId}`);
-
-        const submissions = testcases.map(({ input, output }) => {
-          return {
-            source_code: solutionCode,
-            language_id: languageId,
-            stdin: input,
-            expected_output: output,
-          };
-        });
-
-        const submissionsResult = await submitBatch(submissions);
-
-        const tokens = submissionsResult.map((res) => res.token);
-        const results = await pollBatchResults(tokens);
-
-        for (let i = 0; i < results.length; i++) {
-          const result = results[i];
-          if (result.status.id !== 3) {
-            throw new ApiError(
-              400,
-              `Testcase ${i + 1} failed for language ${language}`
-            );
-          }
-        }
+      if (!languageId) {
+        throw new ApiError(400, `Language ${language} is not supported`);
       }
 
-      const updatedProblem = await prisma.problem.update({
-        where: {
-          id: problemId,
-        },
-        data: {
-          title,
-          description,
-          difficulty,
-          tags,
-          examples,
-          constraints,
-          hints,
-          editorial,
-          testcases,
-          codeSnippets,
-          referenceSolutions,
-        },
+      console.log(`Language ${language} is Id ${languageId}`);
+
+      const submissions = testcases.map(({ input, output }) => {
+        return {
+          source_code: solutionCode,
+          language_id: languageId,
+          stdin: input,
+          expected_output: output,
+        };
       });
 
-      if (!updatedProblem)
-        throw new ApiError(
-          400,
-          "Problem update failed: Unable to save updated problem to the database"
-        );
+      const submissionsResult = await submitBatch(submissions);
 
-      return res.status(200).json(
-        new ApiResponse(200, "Problem updated successfully", {
-          updatedProblem,
-        })
-      );
-    } else {
-      console.log("Testcases or ref Solution has Not changed");
+      const tokens = submissionsResult.map((res) => res.token);
+      const results = await pollBatchResults(tokens);
 
-      const updatedProblem = await prisma.problem.update({
-        where: {
-          id: problemId,
-        },
-        data: {
-          title,
-          description,
-          difficulty,
-          tags,
-          examples,
-          constraints,
-          hints,
-          editorial,
-          codeSnippets,
-        },
-      });
-
-      return res.status(200).json(
-        new ApiResponse(200, "Problem updated successfully", {
-          updatedProblem,
-        })
-      );
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        if (result.status.id !== 3) {
+          throw new ApiError(
+            400,
+            `Testcase ${i + 1} failed for language ${language}`
+          );
+        }
+      }
     }
+
+    const updatedProblem = await prisma.problem.update({
+      where: {
+        id: problemId,
+      },
+      data: {
+        title,
+        description,
+        difficulty,
+        tags,
+        examples,
+        constraints,
+        hints,
+        editorial,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+      },
+    });
+
+    if (!updatedProblem)
+      throw new ApiError(
+        400,
+        "Problem update failed: Unable to save updated problem to the database"
+      );
+
+    return res.status(200).json(
+      new ApiResponse(200, "Problem updated successfully", {
+        updatedProblem,
+      })
+    );
   });
 
   deleteProblemHandler = AsyncHandler(async (req, res) => {

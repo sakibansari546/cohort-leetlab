@@ -35,9 +35,9 @@ export function createExpressApp() {
 
   app.use((err, req, res, next) => {
     res
-      .status(err.statusCode)
+      .status(err.statusCode || 500)
       .json(
-        new ApiResponse(err.statusCode ?? 500, err.message, { error: err })
+        new ApiResponse(err.statusCode || 500, err.message, { error: err })
       );
   });
 
