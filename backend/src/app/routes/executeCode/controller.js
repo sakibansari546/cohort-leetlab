@@ -1,5 +1,8 @@
 import { prisma } from "../../../libs/db.js";
 
+import { handleZodError } from "../../utils/handle-zod-error.js";
+import { executeCodeSchma } from "../../validation/execute/index.js";
+
 import ApiError from "../../utils/api-error.js";
 import ApiResponse from "../../utils/api-response.js";
 import AsyncHandler from "../../utils/async-handler.js";
@@ -11,11 +14,15 @@ import {
 } from "../../utils/judge0.js";
 
 class ExecuteCodeController {
+  validateParseData(schema, body) {
+    return schema.safeParse(body);
+  }
   executeCode = AsyncHandler(async (req, res) => {
-    const { source_code, language_id, stdins, expected_outputs } = req.body;
+    const { source_code, language_id, stdins, expected_outputs } =
+      handleZodError(this.validateParseData(executeCodeSchma, req.body));
+
     const { problemId } = req.params;
     const userId = req.userId;
-    console.log(userId);
 
     if (
       !Array.isArray(stdins) ||
@@ -24,6 +31,16 @@ class ExecuteCodeController {
       expected_outputs.length !== stdins.length
     ) {
       throw new ApiError(400, "Invalid or missing testeases");
+    }
+
+    const problem = await prisma.problem.findUnique({
+      where: {
+        id: problemId,
+      },
+    });
+
+    if (!problem) {
+      throw new ApiError(404, "Problem not found");
     }
 
     const submissions = stdins.map((input) => {
