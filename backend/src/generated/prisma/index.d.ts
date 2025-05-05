@@ -8950,8 +8950,8 @@ export namespace Prisma {
     problemId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    Playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["problemInPlaylist"]>
 
   export type ProblemInPlaylistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8960,8 +8960,8 @@ export namespace Prisma {
     problemId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    Playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["problemInPlaylist"]>
 
   export type ProblemInPlaylistSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8970,8 +8970,8 @@ export namespace Prisma {
     problemId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    Playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["problemInPlaylist"]>
 
   export type ProblemInPlaylistSelectScalar = {
@@ -8984,23 +8984,23 @@ export namespace Prisma {
 
   export type ProblemInPlaylistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "playlistId" | "problemId" | "createdAt" | "updatedAt", ExtArgs["result"]["problemInPlaylist"]>
   export type ProblemInPlaylistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }
   export type ProblemInPlaylistIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }
   export type ProblemInPlaylistIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    playlist?: boolean | PlaylistDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }
 
   export type $ProblemInPlaylistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ProblemInPlaylist"
     objects: {
-      Playlist: Prisma.$PlaylistPayload<ExtArgs>
-      Problem: Prisma.$ProblemPayload<ExtArgs>
+      playlist: Prisma.$PlaylistPayload<ExtArgs>
+      problem: Prisma.$ProblemPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9402,8 +9402,8 @@ export namespace Prisma {
    */
   export interface Prisma__ProblemInPlaylistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Playlist<T extends PlaylistDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlaylistDefaultArgs<ExtArgs>>): Prisma__PlaylistClient<$Result.GetResult<Prisma.$PlaylistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Problem<T extends ProblemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProblemDefaultArgs<ExtArgs>>): Prisma__ProblemClient<$Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    playlist<T extends PlaylistDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlaylistDefaultArgs<ExtArgs>>): Prisma__PlaylistClient<$Result.GetResult<Prisma.$PlaylistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    problem<T extends ProblemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProblemDefaultArgs<ExtArgs>>): Prisma__ProblemClient<$Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10691,8 +10691,8 @@ export namespace Prisma {
     problemId?: StringFilter<"ProblemInPlaylist"> | string
     createdAt?: DateTimeFilter<"ProblemInPlaylist"> | Date | string
     updatedAt?: DateTimeFilter<"ProblemInPlaylist"> | Date | string
-    Playlist?: XOR<PlaylistScalarRelationFilter, PlaylistWhereInput>
-    Problem?: XOR<ProblemScalarRelationFilter, ProblemWhereInput>
+    playlist?: XOR<PlaylistScalarRelationFilter, PlaylistWhereInput>
+    problem?: XOR<ProblemScalarRelationFilter, ProblemWhereInput>
   }
 
   export type ProblemInPlaylistOrderByWithRelationInput = {
@@ -10701,8 +10701,8 @@ export namespace Prisma {
     problemId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    Playlist?: PlaylistOrderByWithRelationInput
-    Problem?: ProblemOrderByWithRelationInput
+    playlist?: PlaylistOrderByWithRelationInput
+    problem?: ProblemOrderByWithRelationInput
   }
 
   export type ProblemInPlaylistWhereUniqueInput = Prisma.AtLeast<{
@@ -10715,8 +10715,8 @@ export namespace Prisma {
     problemId?: StringFilter<"ProblemInPlaylist"> | string
     createdAt?: DateTimeFilter<"ProblemInPlaylist"> | Date | string
     updatedAt?: DateTimeFilter<"ProblemInPlaylist"> | Date | string
-    Playlist?: XOR<PlaylistScalarRelationFilter, PlaylistWhereInput>
-    Problem?: XOR<ProblemScalarRelationFilter, ProblemWhereInput>
+    playlist?: XOR<PlaylistScalarRelationFilter, PlaylistWhereInput>
+    problem?: XOR<ProblemScalarRelationFilter, ProblemWhereInput>
   }, "id" | "playlistId_problemId">
 
   export type ProblemInPlaylistOrderByWithAggregationInput = {
@@ -11369,8 +11369,8 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Playlist: PlaylistCreateNestedOneWithoutProblemsInput
-    Problem: ProblemCreateNestedOneWithoutProblemInPlaylistInput
+    playlist: PlaylistCreateNestedOneWithoutProblemsInput
+    problem: ProblemCreateNestedOneWithoutProblemInPlaylistInput
   }
 
   export type ProblemInPlaylistUncheckedCreateInput = {
@@ -11385,8 +11385,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Playlist?: PlaylistUpdateOneRequiredWithoutProblemsNestedInput
-    Problem?: ProblemUpdateOneRequiredWithoutProblemInPlaylistNestedInput
+    playlist?: PlaylistUpdateOneRequiredWithoutProblemsNestedInput
+    problem?: ProblemUpdateOneRequiredWithoutProblemInPlaylistNestedInput
   }
 
   export type ProblemInPlaylistUncheckedUpdateInput = {
@@ -13230,7 +13230,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Playlist: PlaylistCreateNestedOneWithoutProblemsInput
+    playlist: PlaylistCreateNestedOneWithoutProblemsInput
   }
 
   export type ProblemInPlaylistUncheckedCreateWithoutProblemInput = {
@@ -13907,7 +13907,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Problem: ProblemCreateNestedOneWithoutProblemInPlaylistInput
+    problem: ProblemCreateNestedOneWithoutProblemInPlaylistInput
   }
 
   export type ProblemInPlaylistUncheckedCreateWithoutPlaylistInput = {
@@ -14494,7 +14494,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Playlist?: PlaylistUpdateOneRequiredWithoutProblemsNestedInput
+    playlist?: PlaylistUpdateOneRequiredWithoutProblemsNestedInput
   }
 
   export type ProblemInPlaylistUncheckedUpdateWithoutProblemInput = {
@@ -14582,7 +14582,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Problem?: ProblemUpdateOneRequiredWithoutProblemInPlaylistNestedInput
+    problem?: ProblemUpdateOneRequiredWithoutProblemInPlaylistNestedInput
   }
 
   export type ProblemInPlaylistUncheckedUpdateWithoutPlaylistInput = {
