@@ -234,6 +234,7 @@ class ProblemController {
 
   getAllProblemsHandler = AsyncHandler(async (req, res) => {
     const problems = await prisma.problem.findMany({});
+
     if (!problems || problems.length === 0)
       throw new ApiError(404, "No problem found!");
 
@@ -260,7 +261,31 @@ class ProblemController {
   });
 
   getSolvedProblemsHandler = AsyncHandler(async (req, res) => {
-    res.json(new ApiResponse(200, "Get solved problems"));
+    const solvedProblems = await prisma.problem.findMany({
+      where: {
+        solvedBy: {
+          some: {
+            userId: req.userId,
+          },
+        },
+      },
+      include: {
+        solvedBy: {
+          where: {
+            userId: req.userId,
+          },
+        },
+      },
+    });
+
+    if (!solvedProblems || solvedProblems.length === 0) {
+      throw new ApiError(404, "No solved problem found");
+    }
+    res.status(200).json(
+      new ApiResponse(200, "Solved Problem fetched successfully", {
+        solvedProblems,
+      })
+    );
   });
 }
 export default ProblemController;

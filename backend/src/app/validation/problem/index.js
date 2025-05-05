@@ -54,12 +54,8 @@ const createProblemSchema = z.object({
   testcases: z
     .array(
       z.object({
-        input: z
-          .string({ message: "testcases input must be string" })
-          .nonempty({ message: "testcase input is required" }),
-        output: z
-          .string({ message: "testcases output must be string" })
-          .nonempty({ message: "testcase output is required" }),
+        input: z.string({ message: "testcases input must be string" }),
+        output: z.string({ message: "testcases output must be string" }),
       })
     )
     .min(1, { message: "At least one testcase is required" }),
