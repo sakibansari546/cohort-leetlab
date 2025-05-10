@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+
 import { THEMES } from "../constants";
+import { setTheme } from "../store/slices/theme";
 
 const Theme = () => {
-  const [theme, setTheme] = useState("dark");
-  console.log(theme);
+  const dispatch = useDispatch();
+
+  const { theme } = useSelector((state) => state.theme);
 
   return (
     <div>
-      <div className="h-screen container mx-auto px-4 pt-20 max-w-5xl">
+      <div className="h-screen container mx-auto px-4 pt-10 max-w-5xl">
         <div className="space-y-6">
           <div className="flex flex-col gap-1">
             <h2 className="text-lg font-semibold">Theme</h2>
             <p className="text-sm text-base-content/70">
-              Choose a theme for your chat interface
+              Choose a theme for your application interface.
             </p>
           </div>
 
@@ -24,7 +29,7 @@ const Theme = () => {
                   group flex flex-col items-center gap-1.5 p-2 rounded-lg transition-colors cursor-pointer
                    ${theme === t ? "bg-base-200" : "hover:bg-base-200/50"}
                 `}
-                onClick={() => setTheme(t)}
+                onClick={() => dispatch(setTheme(t))}
               >
                 <div
                   className="relative h-8 w-full rounded-md overflow-hidden"
@@ -47,7 +52,7 @@ const Theme = () => {
           {/* Preview Section */}
           <h3 className="text-lg font-semibold mb-3">Preview</h3>
           <div
-            data-theme={theme}
+            // data-theme={theme}
             className="rounded-xl border border-base-300 overflow-hidden bg-base-100 shadow-lg"
           >
             <div className="p-4 bg-base-200">
