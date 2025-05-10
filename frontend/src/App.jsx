@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import Theme from "./pages/Theme";
 import Navbar from "./components/Navbar";
 import NotFoundPage from "./pages/NotFound";
+import Home from "./pages/Home";
 
 function App() {
   const { theme } = useSelector((state) => state.theme);
@@ -14,6 +15,7 @@ function App() {
     <div data-theme={theme}>
       <Routes>
         <Route path="/" element={<Navbar />}>
+          <Route index element={<Home />} />
           <Route path="theme" element={<Theme />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />

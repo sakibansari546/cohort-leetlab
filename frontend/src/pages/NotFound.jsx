@@ -8,7 +8,7 @@ const NotFoundPage = () => {
     <section className="bg-base-100">
       <div className="container flex items-center min-h-screen px-6 py-12 mx-auto">
         <div className="flex flex-col items-center max-w-sm mx-auto text-center">
-          <p className="p-3 text-sm font-medium text-primary rounded-full bg-primary-content">
+          <p className="p-3 text-sm font-medium text-primary rounded-full bg-primary-content border-2 border-base-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -34,7 +34,7 @@ const NotFoundPage = () => {
 
           <div className="flex gap-5 py-6">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate(-1)}
               className="btn btn-md md:btn-md flex items-center justify-center"
             >
               <svg
@@ -55,7 +55,10 @@ const NotFoundPage = () => {
               <span>Go back</span>
             </button>
 
-            <button className="btn btn-primary btn-md md:btn-md flex items-center justify-center">
+            <button
+              onClick={() => navigate("/")}
+              className="btn btn-primary btn-md md:btn-md flex items-center justify-center"
+            >
               Take me home
             </button>
           </div>
