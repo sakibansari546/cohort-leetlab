@@ -32,3 +32,15 @@ export const THEMES = [
   "nord",
   "sunset",
 ];
+
+export const MENU_ITEMS = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Contact", path: "/contact" },
+];
+export const PROFILE_MENU = [
+  { name: "View Profile", path: "/profile" },
+  { name: "Edit Profile", path: "/profile/edit" },
+  { name: "Settings", path: "/profile/settings" },
+  { name: "Logout", path: "/logout" },
+];
