@@ -7,6 +7,7 @@ import Theme from "./pages/Theme";
 import Navbar from "./components/Navbar";
 import NotFoundPage from "./pages/NotFound";
 import Home from "./pages/Home";
+import LoginAndSignup from "./pages/LoginAndSignup";
 
 function App() {
   const { theme } = useSelector((state) => state.theme);
@@ -14,6 +15,9 @@ function App() {
   return (
     <div data-theme={theme}>
       <Routes>
+        <Route path="/login" element={<LoginAndSignup type="login" />} />
+        <Route path="/signup" element={<LoginAndSignup type="signup" />} />
+        
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
           <Route path="theme" element={<Theme />} />
