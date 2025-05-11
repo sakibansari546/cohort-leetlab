@@ -1,12 +1,29 @@
 import React from "react";
-import Input from "../components/Input";
-import { Key, Mail, User } from "lucide-react";
 import { Link } from "react-router-dom";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Key, Mail, User } from "lucide-react";
+
+import Input from "../components/Input";
+
+import { signupSchema, loginSchema } from "../utils/zod-schema";
 
 const LoginAndSignup = ({ type }) => {
   const isSignupPage = type === "signup";
-  const handleChange = (e) => {
-    console.log(e.target.value);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(isSignupPage ? signupSchema : loginSchema),
+  });
+
+  console.log(errors);
+  const onSubmit = (data) => {
+    console.log(data);
   };
   return (
     <>
@@ -21,11 +38,11 @@ const LoginAndSignup = ({ type }) => {
                       {isSignupPage ? "Signup" : "Login"}
                     </h1>
                   </div>
-                  <form className="space-y-4">
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     {isSignupPage && (
                       <div>
                         <Input
-                          onChange={handleChange}
+                          {...register("fullname")}
                           icon={<User />}
                           label="Fullname"
                           type="text"
@@ -35,7 +52,7 @@ const LoginAndSignup = ({ type }) => {
                     )}
                     <div>
                       <Input
-                        onChange={handleChange}
+                        {...register("email")}
                         icon={<Mail />}
                         label="Email"
                         type="email"
@@ -44,13 +61,24 @@ const LoginAndSignup = ({ type }) => {
                     </div>
                     <div>
                       <Input
-                        onChange={handleChange}
+                        {...register("password")}
                         icon={<Key />}
                         label="Password"
                         type="password"
                         placeholder="Password"
                       />
                     </div>
+                    {errors && (
+                      <div>
+                        <p className="text-red-500 w-[80%]">
+                          {errors.fullname
+                            ? errors.fullname?.message
+                            : errors.email
+                            ? errors.email?.message
+                            : errors.password?.message}
+                        </p>
+                      </div>
+                    )}
                     <div className="float-right mr-5 underline font-light">
                       <Link to="/forgot-password">Forgot Password</Link>
                     </div>
@@ -61,12 +89,12 @@ const LoginAndSignup = ({ type }) => {
                       </button>
                     </div>
                   </form>
-                  <div className="divider font-light opacity-50">
+                  <div className="divider font- text-base-content/70">
                     Or Continue with
                   </div>
                   <div className="my-3 flex items-center justify-center gap-7">
                     <div>
-                      <button className="border-1 p-1.5 border-white/60 rounded-full cursor-pointer">
+                      <button className="border-1 p-1.5 border-base-300 rounded-full cursor-pointer">
                         {" "}
                         <svg
                           aria-label="Google logo"
@@ -99,7 +127,7 @@ const LoginAndSignup = ({ type }) => {
                       </button>
                     </div>
                     <div>
-                      <button className="border-1 p-1.5 border-white/60 rounded-full cursor-pointer">
+                      <button className="border-1 p-1.5 border-base-300 rounded-full cursor-pointer">
                         {" "}
                         <svg
                           aria-label="GitHub logo"
@@ -116,7 +144,7 @@ const LoginAndSignup = ({ type }) => {
                       </button>
                     </div>
                     <div>
-                      <button className="border-1 p-1.5 border-white/60 rounded-full cursor-pointer">
+                      <button className="border-1 p-1.5 border-base-300 rounded-full cursor-pointer">
                         {" "}
                         <svg
                           aria-label="Google logo"
@@ -171,6 +199,7 @@ const LoginAndSignup = ({ type }) => {
               </div>
             </div>
           </div>
+
           <div className="bg-base-300 w-[50%] min-h-screen flex items-center justify-center">
             <p className="text-xl font-light">Welcome to our platform!</p>
           </div>

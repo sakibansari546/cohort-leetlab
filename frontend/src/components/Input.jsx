@@ -7,7 +7,7 @@ const Input = ({ label, icon, type, ...props }) => {
         <div className="flex flex-col w-full">
           <label className="input ">
             {icon}
-            <input className="w-70" type={type} {...props} required />
+            <input className="w-70" type={type} {...props} />
           </label>
         </div>
       </div>

@@ -11,11 +11,11 @@ const Navbar = () => {
       <div>
         <div className="navbar bg-base-100 shadow-sm md:px-20 md:py-4">
           <div className="navbar-start">
-            <Link
-              to="/"
-              className="btn btn-ghost btn-sm md:btn-md text-lg md:text-xl"
-            >
-              AlgoArena
+            <Link to="/" className="text-lg md:text-xl -leading-10 text-center">
+              <p className="text-lg md:text-2xl font-bold leading-5 font-sans -mb-1.5">
+                HYPE
+              </p>
+              <p className="text-md md:text-lg font-mono">CODE</p>
             </Link>
           </div>
 
