@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import { register as registerHealthRoutes } from "./routes/health/route.js";
 import { register as registerAuthRoutes } from "./routes/auth/route.js";
@@ -10,13 +11,22 @@ import { register as registerSubmissionRoutes } from "./routes/submission/route.
 import { register as registerPlaylistRoutes } from "./routes/playlist/route.js";
 
 import { prisma } from "../libs/db.js";
+import { env } from "../libs/env.js";
 
 import ApiResponse from "./utils/api-response.js";
+import ApiError from "./utils/api-error.js";
 
 export function createExpressApp() {
   const app = express();
 
   // Middlewares
+  app.use(
+    cors({
+      origin: [env.FRONTEND_BASE_URL],
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      credentials: true,
+    })
+  );
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
@@ -36,11 +46,13 @@ export function createExpressApp() {
   app.use("/api/v1/playlist", registerPlaylistRoutes());
 
   app.use((err, req, res, next) => {
-    res
-      .status(err.statusCode || 500)
-      .json(
-        new ApiResponse(err.statusCode || 500, err.message, { error: err })
-      );
+    if (err) {
+      res
+        .status(err.statusCode || 500)
+        .json(
+          new ApiResponse(err.statusCode || 500, err.message, { error: err })
+        );
+    }
   });
 
   return app;

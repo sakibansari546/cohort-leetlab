@@ -1,38 +1,63 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { Key, Mail, User } from "lucide-react";
-
-import Input from "../components/Input";
-
 import { signupSchema, loginSchema } from "../utils/zod-schema";
 
-const LoginAndSignup = ({ type }) => {
+import { Key, Mail, User } from "lucide-react";
+import Input from "../components/Input";
+
+import {
+  useSignupMutation,
+  useLoginMutation,
+} from "../store/slices/apiSlice/authApiClice";
+
+const LoginAndSignup = ({ type = "signup" }) => {
   const isSignupPage = type === "signup";
+  const navigate = useNavigate();
+  const [signup, { isLoading, isSuccess, isError, error, reset: signupReset }] =
+    useSignupMutation();
+
+  const [
+    login,
+    {
+      isSuccess: loginSuccess,
+      isLoading: isLoging,
+      isError: isLoginError,
+      error: loginError,
+      reset: loginReset,
+    },
+  ] = useLoginMutation();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(isSignupPage ? signupSchema : loginSchema),
   });
 
-  console.log(errors);
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    isSignupPage ? await signup(data) : await login(data);
+    isSuccess && loginSuccess && navigate("/");
   };
+
+  useEffect(() => {
+    reset();
+    signupReset();
+    loginReset();
+  }, [reset, type]);
+
   return (
     <>
       <div>
         <div className="flex items-center w-full min-h-screen">
           <div className="bg-base-100 w-[50%] min-h-screen">
-            <div className="">
-              <div className="flex items-center flex-col gap-5 justify-center h-screen">
-                <div className="">
+            <div>
+              <div className="flex items-center  flex-col gap-5 justify-center h-screen">
+                <div className="w-[50%]">
                   <div>
                     <h1 className="font-bold text-3xl text-center mb-5">
                       {isSignupPage ? "Signup" : "Login"}
@@ -68,24 +93,29 @@ const LoginAndSignup = ({ type }) => {
                         placeholder="Password"
                       />
                     </div>
-                    {errors && (
-                      <div>
-                        <p className="text-red-500 w-[80%]">
-                          {errors.fullname
-                            ? errors.fullname?.message
-                            : errors.email
-                            ? errors.email?.message
-                            : errors.password?.message}
-                        </p>
-                      </div>
-                    )}
-                    <div className="float-right mr-5 underline font-light">
+
+                    <div>
+                      <p className="text-red-500  ">
+                        {errors && errors.fullname
+                          ? errors.fullname?.message
+                          : errors.email
+                          ? errors.email?.message
+                          : errors.password?.message}
+
+                        {isError && error.data?.message}
+                        {isLoginError && loginError.data?.message}
+                      </p>
+                    </div>
+                    <div className="float-right underline font-light">
                       <Link to="/forgot-password">Forgot Password</Link>
                     </div>
 
-                    <div className="mr-5">
-                      <button className="btn btn-secondary w-full">
-                        Submit
+                    <div className="">
+                      <button
+                        disabled={isLoading || isLoging}
+                        className="btn btn-secondary w-full"
+                      >
+                        {isLoading ? "Loading..." : "Submit"}
                       </button>
                     </div>
                   </form>
