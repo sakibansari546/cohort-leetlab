@@ -1,17 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Key, Mail, User } from "lucide-react";
+import { Key, Mail, User, UserRoundSearchIcon } from "lucide-react";
 
 import Input from "../components/Input";
 
 import { signupSchema, loginSchema } from "../utils/zod-schema";
+import { handleSignupAndLogin } from "../store/actions/auth";
 
 const LoginAndSignup = ({ type }) => {
   const isSignupPage = type === "signup";
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -22,17 +25,17 @@ const LoginAndSignup = ({ type }) => {
   });
 
   console.log(errors);
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    dispatch(handleSignupAndLogin(data, type));
   };
   return (
     <>
       <div>
         <div className="flex items-center w-full min-h-screen">
-          <div className="bg-base-100 w-[50%] min-h-screen">
+          <div className="bg-base-100 w-full lg:w-[50%] min-h-screen">
             <div className="">
-              <div className="flex items-center flex-col gap-5 justify-center h-screen">
-                <div className="">
+              <div className="flex items-center flex-col gap-5 w-full justify-center h-screen">
+                <div className="w-[50%]">
                   <div>
                     <h1 className="font-bold text-3xl text-center mb-5">
                       {isSignupPage ? "Signup" : "Login"}
@@ -79,11 +82,11 @@ const LoginAndSignup = ({ type }) => {
                         </p>
                       </div>
                     )}
-                    <div className="float-right mr-5 underline font-light">
+                    <div className="float-right underline font-light">
                       <Link to="/forgot-password">Forgot Password</Link>
                     </div>
 
-                    <div className="mr-5">
+                    <div className="">
                       <button className="btn btn-secondary w-full">
                         Submit
                       </button>
@@ -200,7 +203,7 @@ const LoginAndSignup = ({ type }) => {
             </div>
           </div>
 
-          <div className="bg-base-300 w-[50%] min-h-screen flex items-center justify-center">
+          <div className="bg-base-300 w-[50%] min-h-screen hidden lg:flex items-center justify-center">
             <p className="text-xl font-light">Welcome to our platform!</p>
           </div>
         </div>
