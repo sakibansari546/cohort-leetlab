@@ -1,14 +1,11 @@
 import React from "react";
-
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
 import { THEMES } from "../constants";
-import { setTheme } from "../store/slices/theme";
+import { useThemeStore } from "../store/themeStore";
 
 const Theme = () => {
-  const dispatch = useDispatch();
-
-  const { theme } = useSelector((state) => state.theme);
+  const { theme, setTheme } = useThemeStore();
 
   return (
     <div>
@@ -22,14 +19,14 @@ const Theme = () => {
           </div>
 
           <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
-            {THEMES.map((t) => (
+            {THEMES?.map((t) => (
               <button
                 key={t}
                 className={`
                   group flex flex-col items-center gap-1.5 p-2 rounded-lg transition-colors cursor-pointer
                    ${theme === t ? "bg-base-200" : "hover:bg-base-200/50"}
                 `}
-                onClick={() => dispatch(setTheme(t))}
+                onClick={() => setTheme(t)}
               >
                 <div
                   className="relative h-8 w-full rounded-md overflow-hidden"
@@ -52,7 +49,7 @@ const Theme = () => {
           {/* Preview Section */}
           <h3 className="text-lg font-semibold mb-3">Preview</h3>
           <div
-            // data-theme={theme}
+            data-theme={theme}
             className="rounded-xl border border-base-300 overflow-hidden bg-base-100 shadow-lg"
           >
             <div className="p-4 bg-base-200">

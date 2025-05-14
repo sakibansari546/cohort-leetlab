@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -10,11 +8,9 @@ import { Key, Mail, User, UserRoundSearchIcon } from "lucide-react";
 import Input from "../components/Input";
 
 import { signupSchema, loginSchema } from "../utils/zod-schema";
-import { handleSignupAndLogin } from "../store/actions/auth";
 
 const LoginAndSignup = ({ type }) => {
   const isSignupPage = type === "signup";
-  const dispatch = useDispatch();
 
   const {
     register,
@@ -24,10 +20,10 @@ const LoginAndSignup = ({ type }) => {
     resolver: zodResolver(isSignupPage ? signupSchema : loginSchema),
   });
 
-  console.log(errors);
   const onSubmit = async (data) => {
-    dispatch(handleSignupAndLogin(data, type));
+    console.log(data);
   };
+
   return (
     <>
       <div>
@@ -73,13 +69,7 @@ const LoginAndSignup = ({ type }) => {
                     </div>
                     {errors && (
                       <div>
-                        <p className="text-red-500 w-[80%]">
-                          {errors.fullname
-                            ? errors.fullname?.message
-                            : errors.email
-                            ? errors.email?.message
-                            : errors.password?.message}
-                        </p>
+                        <p className="text-red-500 w-[80%]">Errors</p>
                       </div>
                     )}
                     <div className="float-right underline font-light">
