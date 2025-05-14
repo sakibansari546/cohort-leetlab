@@ -1,11 +1,34 @@
-import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
-import { AlignLeft, Palette } from "lucide-react";
+import {
+  AlignLeft,
+  Loader,
+  Loader2,
+  LogOut,
+  Palette,
+  User,
+  UserLockIcon,
+} from "lucide-react";
 
 import { MENU_ITEMS, PROFILE_MENU } from "../constants";
+import { useGetUserQuery, useLogoutMutation } from "../querys/useUserQuery";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { data } = useGetUserQuery();
+  const user = data?.user;
+  const mutation = useLogoutMutation();
+
+  const handleLogout = () => {
+    mutation.mutate({});
+  };
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      navigate("/");
+    }
+  }, [mutation.isSuccess, navigate]);
   return (
     <>
       <div>
@@ -28,33 +51,58 @@ const Navbar = () => {
                 <Palette size={18} />
                 Theme
               </Link>
-              <Link to="/login" className="btn btn-primary btn-sm md:btn-md ">
-                Login
-              </Link>
-              {/* <div className="dropdown dropdown-end">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="btn btn-ghost btn-sm md:btn-md btn-circle avatar"
-                >
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS Navbar component"
-                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                    />
+              {!user ? (
+                <Link to="/login" className="btn btn-primary btn-sm md:btn-md ">
+                  Login
+                </Link>
+              ) : (
+                <div className="dropdown dropdown-end">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-ghost btn-sm md:btn-md btn-circle avatar"
+                  >
+                    <div className="w-10 rounded-full">
+                      <img alt="Profile Pic" src={user?.avatar} />
+                    </div>
                   </div>
-                </div>
-                <ul
-                  tabIndex={0}
-                  className="menu menu-md dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-                >
-                  {PROFILE_MENU.map((item, idx) => (
-                    <li key={idx}>
-                      <Link to={item.path}>{item.name}</Link>
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-md dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                  >
+                    <li className="font-semibold">
+                      <h4>{user.fullname}</h4>
                     </li>
-                  ))}
-                </ul>
-              </div> */}
+                    <li>
+                      <Link to="/profile">
+                        <User size="18" />
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/profile">
+                        <UserLockIcon size="18" />
+                        Admin
+                      </Link>
+                    </li>
+                    <li>
+                      <button onClick={handleLogout}>
+                        {mutation.isPending ? (
+                          <>
+                            <Loader2 size="18" />
+                            Loading...
+                          </>
+                        ) : (
+                          <>
+                            <LogOut size="18" />
+                            Logout
+                          </>
+                        )}
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
             <div className="dropdown dropdown-end">
               <div

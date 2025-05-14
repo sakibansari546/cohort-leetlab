@@ -1,16 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Key, Mail, User, UserRoundSearchIcon } from "lucide-react";
+import { Key, Loader2, Mail, User, UserRoundSearchIcon } from "lucide-react";
 
 import Input from "../components/Input";
 
 import { signupSchema, loginSchema } from "../utils/zod-schema";
+import { useSignupAndLoginMutation } from "../querys/useUserQuery";
 
 const LoginAndSignup = ({ type }) => {
   const isSignupPage = type === "signup";
+  const navigate = useNavigate();
+  const mutation = useSignupAndLoginMutation();
 
   const {
     register,
@@ -21,8 +24,14 @@ const LoginAndSignup = ({ type }) => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    mutation.mutate({ ...data, type });
   };
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      navigate("/");
+    }
+  }, [mutation.isSuccess, navigate]);
 
   return (
     <>
@@ -69,7 +78,16 @@ const LoginAndSignup = ({ type }) => {
                     </div>
                     {errors && (
                       <div>
-                        <p className="text-red-500 w-[80%]">Errors</p>
+                        <p className="text-red-500 w-[80%]">
+                          {errors?.fullname
+                            ? errors.fullname?.message
+                            : errors.email
+                            ? errors.email?.message
+                            : errors.password && errors.password.message}
+
+                          {mutation.isError &&
+                            mutation.error.response.data.message}
+                        </p>
                       </div>
                     )}
                     <div className="float-right underline font-light">
@@ -77,8 +95,18 @@ const LoginAndSignup = ({ type }) => {
                     </div>
 
                     <div className="">
-                      <button className="btn btn-secondary w-full">
-                        Submit
+                      <button
+                        disabled={mutation.isPending}
+                        className="btn btn-secondary w-full"
+                      >
+                        {mutation.isPending ? (
+                          <>
+                            <Loader2 className="animate-spin" />
+                            Loading
+                          </>
+                        ) : (
+                          "Submit"
+                        )}
                       </button>
                     </div>
                   </form>
