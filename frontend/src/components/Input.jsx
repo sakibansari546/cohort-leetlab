@@ -1,28 +1,13 @@
-import { Eye, EyeOff } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 
 const Input = ({ label, icon, type, ...props }) => {
-  const [showPassword, setShowPassword] = useState(false);
   return (
     <>
       <div>
         <div className="flex flex-col w-full">
-          <label className="input w-full">
+          <label className="input ">
             {icon}
-            <input
-              className="w-full"
-              type={showPassword ? "text" : type}
-              {...props}
-            />
-            {type === "password" && (
-              <button
-                type="button"
-                className="cursor-pointer"
-                onClick={() => setShowPassword((pre) => !pre)}
-              >
-                {showPassword ? <EyeOff /> : <Eye />}
-              </button>
-            )}
+            <input className="w-70" type={type} {...props} />
           </label>
         </div>
       </div>

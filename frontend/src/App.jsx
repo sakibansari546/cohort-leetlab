@@ -17,7 +17,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginAndSignup type="login" />} />
         <Route path="/signup" element={<LoginAndSignup type="signup" />} />
-        
+
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
           <Route path="theme" element={<Theme />} />

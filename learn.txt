@@ -19,7 +19,4 @@ what is wsl
 
 - Headers
 HTTP Headers are an important part of the API request ans response as they represent the meta-data associated with the API request and response.
-Headers carray information for the Request ans Response body.
-
-upsets Rate limiter
-https://upstash.com/blog/upstash-ratelimit
+Headers carray information for the Request ans Response body. 
