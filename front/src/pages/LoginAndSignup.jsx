@@ -28,10 +28,12 @@ const LoginAndSignup = ({ type }) => {
   };
 
   useEffect(() => {
-    if (mutation.isSuccess) {
+    if (isSignupPage && mutation.isSuccess) {
+      navigate("/verify-email");
+    } else if (!isSignupPage && mutation.isSuccess) {
       navigate("/");
     }
-  }, [mutation.isSuccess, navigate]);
+  }, [mutation.isSuccess, isSignupPage, navigate]);
 
   return (
     <>

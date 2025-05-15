@@ -24,11 +24,11 @@ const Navbar = () => {
     mutation.mutate({});
   };
 
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      navigate("/");
-    }
-  }, [mutation.isSuccess, navigate]);
+  // useEffect(() => {
+  //   if (mutation.isSuccess) {
+  //     navigate("/login", { replace: true });
+  //   }
+  // }, [mutation.isSuccess, navigate]);
   return (
     <>
       <div>

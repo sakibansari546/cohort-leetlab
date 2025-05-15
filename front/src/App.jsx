@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 import LoginAndSignup from "./pages/LoginAndSignup";
 import Home from "./pages/Home";
@@ -10,17 +9,12 @@ import Navbar from "./components/Navbar";
 
 import { useThemeStore } from "./store/themeStore";
 import { useGetUserQuery } from "./querys/useUserQuery";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
   const { theme } = useThemeStore();
-  const { data, error, isError } = useGetUserQuery();
+  const { data } = useGetUserQuery();
   const user = data?.user;
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(error.response.data.message || "Internal server error");
-    }
-  }, [isError, error]);
 
   return (
     <>
@@ -38,6 +32,10 @@ function App() {
             element={
               !user ? <LoginAndSignup type="signup" /> : <Navigate to="/" />
             }
+          />
+          <Route
+            path="/verify-email"
+            element={!user ? <VerifyEmail /> : <Navigate to="/" />}
           />
 
           <Route
