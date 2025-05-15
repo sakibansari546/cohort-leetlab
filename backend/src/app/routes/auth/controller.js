@@ -237,13 +237,14 @@ class AuthColtroller {
       },
     });
 
-    res.status(200).json(
-      new ApiResponse(200, "Email Verified Successfully!", {
-        user: addingRefreshTokenInDb,
-        accessToken,
-        refreshToken,
-      })
-    );
+    // res.status(200).json(
+    //   new ApiResponse(200, "Email Verified Successfully!", {
+    //     user: addingRefreshTokenInDb,
+    //     accessToken,
+    //     refreshToken,
+    //   })
+    // );
+    res.redirect(env.FRONTEND_BASE_URL);
   });
 
   loginHandler = AsyncHandler(async (req, res) => {

@@ -45,6 +45,11 @@ export function createExpressApp() {
   app.use("/api/v1/playlist", registerPlaylistRoutes());
 
   app.use((err, req, res, next) => {
+    if (err.code == "P2002" && err.meta.target[0] === "email") {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, "Email is already exist", { error: err }));
+    }
     res
       .status(err.statusCode || 500)
       .json(
