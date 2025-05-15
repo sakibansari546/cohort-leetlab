@@ -3,6 +3,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import {
   AlignLeft,
+  BookOpen,
   Loader,
   Loader2,
   LogOut,
@@ -79,10 +80,18 @@ const Navbar = () => {
                         Profile
                       </Link>
                     </li>
+                    {user?.role === "ADMIN" && (
+                      <li>
+                        <Link to="/profile">
+                          <UserLockIcon size="18" />
+                          Admin
+                        </Link>
+                      </li>
+                    )}
                     <li>
-                      <Link to="/profile">
-                        <UserLockIcon size="18" />
-                        Admin
+                      <Link to="/problems">
+                        <BookOpen size="18" />
+                        Problems
                       </Link>
                     </li>
                     <li>

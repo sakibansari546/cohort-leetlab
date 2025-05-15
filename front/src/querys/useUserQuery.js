@@ -13,6 +13,7 @@ export const useGetUserQuery = () => {
   return useQuery({
     queryKey: ["user"],
     queryFn: getUser,
+    staleTime: 60 * 1000,
   });
 };
 
@@ -41,6 +42,7 @@ export const useLogoutMutation = () => {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       navigate("/login", { replace: true });
     },
   });

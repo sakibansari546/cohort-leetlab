@@ -13,7 +13,14 @@ import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
   const { theme } = useThemeStore();
-  const { data } = useGetUserQuery();
+  const { data } = useGetUserQuery({
+    onError: (err) => {
+      if (err.response?.status === 401) {
+        // forced logout / redirect
+        window.location.href = "/login";
+      }
+    },
+  });
   const user = data?.user;
 
   return (
