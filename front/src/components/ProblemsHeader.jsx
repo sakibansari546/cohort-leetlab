@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import React, { useState } from "react";
 
-const ProblemsHeader = () => {
+const ProblemsHeader = ({ tags: uniqueTags }) => {
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState("");
   const [difficulty, setDifficulty] = useState("");
@@ -32,10 +32,11 @@ const ProblemsHeader = () => {
                 <option defaultValue className="font-semibold">
                   Tags
                 </option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
+                {uniqueTags.map((tag, idx) => (
+                  <option className="capitalize" key={idx} value={tag}>
+                    {tag}
+                  </option>
+                ))}
               </select>
             </div>
             <div>

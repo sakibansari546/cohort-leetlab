@@ -3,15 +3,24 @@ import ProblemsPageSidebar from "../components/ProblemsPageSidebar";
 import ProblemsHeader from "../components/ProblemsHeader";
 import { useGetProblemsQuery } from "../querys/useProblemQuery";
 import { useGetUserQuery } from "../querys/useUserQuery";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const ProblemsPage = () => {
+  const [tags, setTags] = useState([]);
+
   const { data, isFetching, isError, error } = useGetProblemsQuery();
   const { data: user } = useGetUserQuery();
   const problems = data?.problems;
   const errorMessage = error?.response.data.message;
-
   // Get solved problem ids from user data
   const solvedProblems = user?.user.solvedProblems || [];
+
+  useEffect(() => {
+    if (problems) {
+      setTags([...new Set(problems.flatMap((problem) => problem.tags || []))]);
+    }
+  }, [problems]);
 
   return (
     <div className="flex min-h-screen bg-base-100 text-base-content">
@@ -25,7 +34,7 @@ const ProblemsPage = () => {
           <div className="card bg-emerald-700 text-white">
             <div className="card-body">
               <h2 className="card-title text-xl">
-                LeetCode's Interview Crash Course:
+                HYPE Code's Interview Crash Course:
               </h2>
               <p>System Design for Interviews and Beyond</p>
               <div className="card-actions justify-start mt-2">
@@ -39,7 +48,7 @@ const ProblemsPage = () => {
           <div className="card bg-indigo-600 text-white">
             <div className="card-body">
               <h2 className="card-title text-xl">
-                LeetCode's Interview Crash Course:
+                HYPE Code's Interview Crash Course:
               </h2>
               <p>Data Structures and Algorithms</p>
               <div className="card-actions justify-start mt-2">
@@ -67,7 +76,7 @@ const ProblemsPage = () => {
         </div>
 
         {/* Search sbar */}
-        <ProblemsHeader />
+        <ProblemsHeader tags={tags} />
 
         {/* Problems List */}
         <div className="overflow-x-auto">
@@ -90,31 +99,6 @@ const ProblemsPage = () => {
               </tbody>
             ) : (
               <tbody>
-                <tr className="hover:bg-base-200">
-                  <td className="w-8">
-                    <CheckSquare className="w-5 h-5 text-primary rounded-full" />
-                  </td>
-                  <td className="font-medium ">
-                    <span className="line-clamp-2 break-words max-w-xs">
-                      2900. Longest Unequal Adjacent Groups Subsequence I
-                    </span>
-                  </td>
-                  <td className="text-right">65.3%</td>
-                  <td className="text-success">Easy</td>
-                  <td>
-                    <div className="w-24 bg-base-200 rounded-full h-2">
-                      <div
-                        className="bg-success h-2 rounded-full"
-                        style={{ width: "65%" }}
-                      ></div>
-                    </div>
-                  </td>
-                  <td>
-                    <button className="btn btn-sm md:btn">
-                      <Bookmark size="18" />
-                    </button>
-                  </td>
-                </tr>
                 {isFetching ? (
                   <>
                     <tr className="flex items-center justify-center w-full">
@@ -150,15 +134,26 @@ const ProblemsPage = () => {
                           )}
                         </td>
                         <td className="font-medium ">
-                          <span className="line-clamp-2 break-words max-w-xs">
-                            {idx + 1}. {problem.title}
-                          </span>
+                          <Link
+                            to={`/problems/${problem.id}`}
+                            className="hover:underline"
+                          >
+                            <span className="line-clamp-2 break-words max-w-xs">
+                              {idx + 1}. {problem.title}
+                            </span>
+                          </Link>
                         </td>
                         <td className="text-right">55.6%</td>
-                        <td className="text-success">
-                          <span className="capitalize">
-                            {problem.difficulty}
-                          </span>
+                        <td
+                          className={`capitalize ${
+                            problem.difficulty === "EASY".toUpperCase()
+                              ? "text-success"
+                              : problem.difficulty === "MEDIUM".toUpperCase()
+                              ? "text-warning"
+                              : "text-error"
+                          }`}
+                        >
+                          <span>{problem.difficulty}</span>
                         </td>
                         <td>
                           <div className="w-24 bg-base-200 rounded-full h-2">
