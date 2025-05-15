@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckSquare, Circle, CircleCheckBig } from "lucide-react";
+import { Bookmark, CheckSquare, Circle, CircleCheckBig } from "lucide-react";
 import ProblemsPageSidebar from "../components/ProblemsPageSidebar";
 import ProblemsHeader from "../components/ProblemsHeader";
 
@@ -63,8 +63,19 @@ const ProblemsPage = () => {
         {/* Search sbar */}
         <ProblemsHeader />
 
+        {/* Problems List */}
         <div className="overflow-x-auto">
           <table className="table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Title</th>
+                <th className="text-right">Acceptance</th>
+                <th>Difficulty</th>
+                <th>Progress</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
             <tbody>
               <tr className="hover:bg-base-200">
                 <td className="w-8">
@@ -85,8 +96,12 @@ const ProblemsPage = () => {
                     ></div>
                   </div>
                 </td>
+                <td>
+                  <button className="btn btn-sm md:btn">
+                    <Bookmark size="18" />
+                  </button>
+                </td>
               </tr>
-
               <tr className="hover:bg-base-200">
                 <td className="w-8">
                   {!isSolved ? (
@@ -110,105 +125,10 @@ const ProblemsPage = () => {
                     ></div>
                   </div>
                 </td>
-              </tr>
-
-              <tr className="hover:bg-base-200 bg-base-200">
-                <td className="w-8">
-                  {!isSolved ? (
-                    <Circle size="18" />
-                  ) : (
-                    <CircleCheckBig size="18" />
-                  )}
-                </td>
-                <td className="font-medium ">
-                  <span className="line-clamp-2 break-words max-w-xs">
-                    2. Add Two Numbers
-                  </span>
-                </td>
-                <td className="text-right">46.0%</td>
-                <td className="text-warning">Med.</td>
                 <td>
-                  <div className="w-24 bg-base-300 rounded-full h-2">
-                    <div
-                      className="bg-warning h-2 rounded-full"
-                      style={{ width: "46%" }}
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-
-              <tr className="hover:bg-base-200">
-                <td className="w-8">
-                  {!isSolved ? (
-                    <Circle size="18" />
-                  ) : (
-                    <CircleCheckBig size="18" />
-                  )}
-                </td>
-                <td className="font-medium ">
-                  <span className="line-clamp-2 break-words max-w-xs">
-                    3. Longest Substring Without Repeating Characters
-                  </span>
-                </td>
-                <td className="text-right">36.7%</td>
-                <td className="text-warning">Med.</td>
-                <td>
-                  <div className="w-24 bg-base-200 rounded-full h-2">
-                    <div
-                      className="bg-warning h-2 rounded-full"
-                      style={{ width: "36%" }}
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-
-              <tr className="hover:bg-base-200">
-                <td className="w-8">
-                  {!isSolved ? (
-                    <Circle size="18" />
-                  ) : (
-                    <CircleCheckBig size="18" />
-                  )}
-                </td>
-                <td className="font-medium ">
-                  <span className="line-clamp-2 break-words max-w-xs">
-                    4. Median of Two Sorted Arrays
-                  </span>
-                </td>
-                <td className="text-right">43.5%</td>
-                <td className="text-error">Hard</td>
-                <td>
-                  <div className="w-24 bg-base-200 rounded-full h-2">
-                    <div
-                      className="bg-error h-2 rounded-full"
-                      style={{ width: "43%" }}
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-
-              <tr className="hover:bg-base-200">
-                <td className="w-8">
-                  {!isSolved ? (
-                    <Circle size="18" />
-                  ) : (
-                    <CircleCheckBig size="18" />
-                  )}
-                </td>
-                <td className="font-medium ">
-                  <span className="line-clamp-2 break-words max-w-xs">
-                    5. Longest Palindromic Substring
-                  </span>
-                </td>
-                <td className="text-right">35.7%</td>
-                <td className="text-warning">Med.</td>
-                <td>
-                  <div className="w-24 bg-base-200 rounded-full h-2">
-                    <div
-                      className="bg-warning h-2 rounded-full"
-                      style={{ width: "35%" }}
-                    ></div>
-                  </div>
+                  <button className="btn btn-sm md:btn">
+                    <Bookmark size="18" />
+                  </button>
                 </td>
               </tr>
             </tbody>

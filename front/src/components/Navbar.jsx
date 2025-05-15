@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 import {
   AlignLeft,
@@ -16,7 +15,6 @@ import { MENU_ITEMS, PROFILE_MENU } from "../constants";
 import { useGetUserQuery, useLogoutMutation } from "../querys/useUserQuery";
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const { data } = useGetUserQuery();
   const user = data?.user;
   const mutation = useLogoutMutation();

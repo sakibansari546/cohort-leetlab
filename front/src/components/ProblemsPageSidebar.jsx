@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 const ProblemsPageSidebar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -28,9 +28,9 @@ const ProblemsPageSidebar = () => {
             lg:translate-x-0 lg:min-h-screen
         `}
       >
-        <div className="lg:hidden fixed top-1/2 md:top-1/2 -right-5 z-50">
+        <div className="lg:hidden absolute top-1/2 md:top-1/2 -right-5 z-50">
           <button
-            className="bg-base-100 rounded-full cursor-pointer"
+            className="bg-base-300 z-40 rounded-full cursor-pointer"
             onClick={toggleSidebar}
           >
             {sidebarOpen ? (

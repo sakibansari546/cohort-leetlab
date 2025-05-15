@@ -42,7 +42,7 @@ const LoginAndSignup = ({ type }) => {
           <div className="bg-base-100 w-full lg:w-[50%] min-h-screen">
             <div className="">
               <div className="flex items-center flex-col gap-5 w-full justify-center h-screen">
-                <div className="w-[50%]">
+                <div className="w-[80%] md:w-[50%]">
                   <div>
                     <h1 className="font-bold text-3xl text-center mb-5">
                       {isSignupPage ? "Signup" : "Login"}
