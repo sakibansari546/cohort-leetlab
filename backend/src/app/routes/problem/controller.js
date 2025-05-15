@@ -233,7 +233,11 @@ class ProblemController {
   });
 
   getAllProblemsHandler = AsyncHandler(async (req, res) => {
-    const problems = await prisma.problem.findMany({});
+    const problems = await prisma.problem.findMany({
+      include: {
+        solvedBy: true,
+      },
+    });
 
     if (!problems || problems.length === 0)
       throw new ApiError(404, "No problem found!");

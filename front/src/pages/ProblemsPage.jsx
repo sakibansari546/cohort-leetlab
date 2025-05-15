@@ -1,12 +1,18 @@
-"use client";
-
-import { useState } from "react";
 import { Bookmark, CheckSquare, Circle, CircleCheckBig } from "lucide-react";
 import ProblemsPageSidebar from "../components/ProblemsPageSidebar";
 import ProblemsHeader from "../components/ProblemsHeader";
+import { useGetProblemsQuery } from "../querys/useProblemQuery";
+import { useGetUserQuery } from "../querys/useUserQuery";
 
 const ProblemsPage = () => {
-  const [isSolved, setIsSolved] = useState(true);
+  const { data, isFetching, isError, error } = useGetProblemsQuery();
+  const { data: user } = useGetUserQuery();
+  const problems = data?.problems;
+  const errorMessage = error?.response.data.message;
+
+  // Get solved problem ids from user data
+  const solvedProblems = user?.user.solvedProblems || [];
+
   return (
     <div className="flex min-h-screen bg-base-100 text-base-content">
       {/* Mobile sidebar toggle */}
@@ -76,62 +82,103 @@ const ProblemsPage = () => {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr className="hover:bg-base-200">
-                <td className="w-8">
-                  <CheckSquare className="w-5 h-5 text-primary rounded-full" />
-                </td>
-                <td className="font-medium ">
-                  <span className="line-clamp-2 break-words max-w-xs">
-                    2900. Longest Unequal Adjacent Groups Subsequence I
-                  </span>
-                </td>
-                <td className="text-right">65.3%</td>
-                <td className="text-success">Easy</td>
-                <td>
-                  <div className="w-24 bg-base-200 rounded-full h-2">
-                    <div
-                      className="bg-success h-2 rounded-full"
-                      style={{ width: "65%" }}
-                    ></div>
-                  </div>
-                </td>
-                <td>
-                  <button className="btn btn-sm md:btn">
-                    <Bookmark size="18" />
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover:bg-base-200">
-                <td className="w-8">
-                  {!isSolved ? (
-                    <Circle size="18" />
-                  ) : (
-                    <CircleCheckBig size="18" />
-                  )}
-                </td>
-                <td className="font-medium ">
-                  <span className="line-clamp-2 break-words max-w-xs">
-                    1. Two Sum
-                  </span>
-                </td>
-                <td className="text-right">55.6%</td>
-                <td className="text-success">Easy</td>
-                <td>
-                  <div className="w-24 bg-base-200 rounded-full h-2">
-                    <div
-                      className="bg-success h-2 rounded-full"
-                      style={{ width: "55%" }}
-                    ></div>
-                  </div>
-                </td>
-                <td>
-                  <button className="btn btn-sm md:btn">
-                    <Bookmark size="18" />
-                  </button>
-                </td>
-              </tr>
-            </tbody>
+            {isError ? (
+              <tbody className="w-full text-center font-bold text-2xl">
+                <tr>
+                  <td>{errorMessage}</td>
+                </tr>
+              </tbody>
+            ) : (
+              <tbody>
+                <tr className="hover:bg-base-200">
+                  <td className="w-8">
+                    <CheckSquare className="w-5 h-5 text-primary rounded-full" />
+                  </td>
+                  <td className="font-medium ">
+                    <span className="line-clamp-2 break-words max-w-xs">
+                      2900. Longest Unequal Adjacent Groups Subsequence I
+                    </span>
+                  </td>
+                  <td className="text-right">65.3%</td>
+                  <td className="text-success">Easy</td>
+                  <td>
+                    <div className="w-24 bg-base-200 rounded-full h-2">
+                      <div
+                        className="bg-success h-2 rounded-full"
+                        style={{ width: "65%" }}
+                      ></div>
+                    </div>
+                  </td>
+                  <td>
+                    <button className="btn btn-sm md:btn">
+                      <Bookmark size="18" />
+                    </button>
+                  </td>
+                </tr>
+                {isFetching ? (
+                  <>
+                    <tr className="flex items-center justify-center w-full">
+                      <td className="loading loading-ring loading-xl"></td>
+                    </tr>
+                  </>
+                ) : problems?.length == 0 ? (
+                  <>
+                    <tr>
+                      <td>
+                        <h1>No Problems Found!</h1>
+                      </td>
+                    </tr>
+                  </>
+                ) : (
+                  problems?.map((problem, idx) => {
+                    const isSolved = solvedProblems.includes(problem.id);
+                    return (
+                      <tr
+                        key={problem.id}
+                        className={`hover:bg-base-200 ${
+                          idx % 2 == 0 && "bg-base-200"
+                        }`}
+                      >
+                        <td className="w-8">
+                          {isSolved ? (
+                            <CircleCheckBig
+                              size="18"
+                              className="text-success"
+                            />
+                          ) : (
+                            <Circle size="18" />
+                          )}
+                        </td>
+                        <td className="font-medium ">
+                          <span className="line-clamp-2 break-words max-w-xs">
+                            {idx + 1}. {problem.title}
+                          </span>
+                        </td>
+                        <td className="text-right">55.6%</td>
+                        <td className="text-success">
+                          <span className="capitalize">
+                            {problem.difficulty}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="w-24 bg-base-200 rounded-full h-2">
+                            <div
+                              className="bg-success h-2 rounded-full"
+                              style={{ width: "55%" }}
+                            ></div>
+                          </div>
+                        </td>
+                        <td>
+                          <button className="btn btn-sm md:btn">
+                            <Bookmark size="18" />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            )}
           </table>
         </div>
       </div>

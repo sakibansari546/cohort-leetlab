@@ -30,6 +30,9 @@ class UserController {
         forgotPasswordToken: true,
         forgotPasswordExpiry: true,
       },
+      include: {
+        solvedProblems: true,
+      },
     });
 
     if (!user) {

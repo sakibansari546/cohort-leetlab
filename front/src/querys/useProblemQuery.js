@@ -1,0 +1,17 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+import { axiosClient } from "../utils/axios";
+import { queryClient } from "../main";
+
+const getProblems = async () => {
+  const res = await axiosClient.get(`/problem/problems`);
+  return res.data.data;
+};
+
+export const useGetProblemsQuery = () => {
+  return useQuery({
+    queryKey: ["problems"],
+    queryFn: getProblems,
+    staleTime: 5 * 60 * 1000,
+  });
+};

@@ -6,11 +6,6 @@ const ProblemsHeader = () => {
   const [tags, setTags] = useState("");
   const [difficulty, setDifficulty] = useState("");
 
-  console.log("search", search);
-  console.log("Tags", tags);
-  console.log("Difficulty", difficulty);
-  
-
   return (
     <div>
       <div className="flex flex-wrap gap-2 mb-6">
