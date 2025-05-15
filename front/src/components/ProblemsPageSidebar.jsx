@@ -1,0 +1,263 @@
+import React, { useState } from "react";
+import {
+  BookOpen,
+  GraduationCap,
+  Star,
+  FileText,
+  FilePlus,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+  Lock,
+  FolderLock,
+} from "lucide-react";
+
+const ProblemsPageSidebar = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+  return (
+    <div>
+      <div
+        className={`
+            fixed top-16.5 lg:sticky inset-y-0 left-0 z-40
+            w-64 bg-base-200 transition-transform duration-300 ease-in-out
+            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+            lg:translate-x-0 lg:min-h-screen
+        `}
+      >
+        <div className="lg:hidden fixed top-1/2 md:top-1/2 -right-5 z-50">
+          <button
+            className="bg-base-100 rounded-full cursor-pointer"
+            onClick={toggleSidebar}
+          >
+            {sidebarOpen ? (
+              <ChevronLeft size="30" />
+            ) : (
+              <ChevronRight size="30" />
+            )}
+          </button>
+        </div>
+        <div className="flex flex-col h-full overflow-y-auto lg:overflow-visible">
+          {/* Main navigation */}
+          <div className="p-4 space-y-2">
+            <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-300 cursor-pointer">
+              <BookOpen className="w-5 h-5" />
+              <span className="font-medium">Library</span>
+            </div>
+          </div>
+
+          <div className="divider mx-4 my-1"></div>
+
+          {/* Lists section */}
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-base-content/70">
+                My Lists
+              </span>
+              <button className="btn btn-sm btn-ghost btn-square">
+                <Plus className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-1">
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <Star className="w-5 h-5 text-warning" />
+                  <span>Favorite</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-info" />
+                  <span>First List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <FilePlus className="w-5 h-5 text-success" />
+                  <span>New List</span>
+                </div>
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs">
+                    <FolderLock size="16" />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProblemsPageSidebar;

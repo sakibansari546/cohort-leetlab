@@ -10,22 +10,31 @@ import Navbar from "./components/Navbar";
 import { useThemeStore } from "./store/themeStore";
 import { useGetUserQuery } from "./querys/useUserQuery";
 import VerifyEmail from "./pages/VerifyEmail";
+import ProblemsPage from "./pages/ProblemsPage";
+import { Loader2 } from "lucide-react";
 
 function App() {
   const { theme } = useThemeStore();
-  const { data } = useGetUserQuery({
+  const { data, isLoading } = useGetUserQuery({
     onError: (err) => {
       if (err.response?.status === 401) {
-        // forced logout / redirect
         window.location.href = "/login";
       }
     },
   });
   const user = data?.user;
 
+  if (isLoading) {
+    return (
+      <div className="w-full flex items-center flex-col justify-center h-screen">
+        <span className="loading loading-bars loading-xl"></span>
+      </div>
+    );
+  }
+
   return (
     <>
-      <div data-theme={theme}>
+      <div data-theme={theme} className="max-w-[2000px] mx-auto min-h-[1000px]">
         <ToastContainer position="bottom-right" />
         <Routes>
           <Route
@@ -50,6 +59,10 @@ function App() {
             element={user ? <Navbar /> : <Navigate to="/login" />}
           >
             <Route index element={user ? <Home /> : <Navigate to="/login" />} />
+            <Route
+              path="/problems"
+              element={user ? <ProblemsPage /> : <Navigate to="/login" />}
+            />
             <Route path="theme" element={<Theme />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
