@@ -5,13 +5,13 @@ import LoginAndSignup from "./pages/LoginAndSignup";
 import Home from "./pages/Home";
 import Theme from "./pages/Theme";
 import NotFoundPage from "./pages/NotFound";
+import VerifyEmail from "./pages/VerifyEmail";
+import ProblemsPage from "./pages/ProblemsPage";
+import ProblemPage from "./pages/ProblemPage";
 import Navbar from "./components/Navbar";
 
 import { useThemeStore } from "./store/themeStore";
 import { useGetUserQuery } from "./querys/useUserQuery";
-import VerifyEmail from "./pages/VerifyEmail";
-import ProblemsPage from "./pages/ProblemsPage";
-import { Loader2 } from "lucide-react";
 
 function App() {
   const { theme } = useThemeStore();
@@ -34,7 +34,7 @@ function App() {
 
   return (
     <>
-      <div data-theme={theme} className="max-w-[2000px] mx-auto min-h-[1000px]">
+      <div data-theme={theme} className="max-w-[2000px] mx-auto min-h-00px]">
         <ToastContainer position="bottom-right" />
         <Routes>
           <Route
@@ -65,6 +65,10 @@ function App() {
             />
             <Route path="theme" element={<Theme />} />
           </Route>
+            <Route
+              path="/problems/:problemId"
+              element={user ? <ProblemPage /> : <Navigate to="/login" />}
+            />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
