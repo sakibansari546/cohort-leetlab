@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 
 import { Cpu, Lightbulb, Tag, Timer } from "lucide-react";
-import { useMemo } from "react";
 
-const ProblemDescriptionTabContent = () => {
+const ProblemDescriptionTabContent = ({ problem }) => {
   return (
     <>
       <div className=" border-base-300 bg-base-300 py-4 px-3">
@@ -12,29 +11,25 @@ const ProblemDescriptionTabContent = () => {
           <div className="flex flex-col gap-2">
             {/* Problem Title */}
             <div>
-              <h2 className="text-2xl font-bold">1. Problem Title</h2>
+              <h2 className="text-2xl font-bold capitalize">{problem.title}</h2>
             </div>
             {/* Problem Tags Hints Btns */}
             <div className="space-x-2">
-              <p className="badge font-medium bg-success">Difficulty</p>
-              <p className="badge font-medium">
+              <p className="badge text-success font-medium ">
+                {problem.difficulty}
+              </p>
+              <a href="#tags" className="badge font-medium">
                 <Tag size="14" />
                 Tags
-              </p>
-              <p className="badge font-medium">
+              </a>
+              <a href="#hints" className="badge font-medium">
                 <Lightbulb size="14" />
                 Hints
-              </p>
+              </a>
             </div>
             {/* Problem Description */}
             <div>
-              <p className="text-base-content">
-                Given an array of integers nums and an integer target, return
-                indices of the two numbers such that they add up to target. You
-                may assume that each input would have exactly one solution, and
-                you may not use the same element twice. You can return the
-                answer in any order.
-              </p>
+              <p className="text-base-content">{problem?.description}</p>
             </div>
             {/* Problem Examples */}
             <div>
@@ -114,15 +109,11 @@ const ProblemDescriptionTabContent = () => {
             <div className="mt-10">
               <ul>
                 <h2 className="text-md font-bold mb-2">Constraints</h2>
-                <li className="list-disc ml-10">
-                  <code className="">2 {"<= nums.length <= 104"}</code>
-                </li>
-                <li className="list-disc ml-10">
-                  <code className="">2 {"<= nums.length <= 104"}</code>
-                </li>
-                <li className="list-disc ml-10">
-                  <code className="">2 {"<= nums.length <= 104"}</code>
-                </li>
+                {problem?.constraints.split(",").map((con) => (
+                  <li key={con} className="list-disc ml-10">
+                    <code className="">{con}</code>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -135,7 +126,10 @@ const ProblemDescriptionTabContent = () => {
             <div>
               <div className=" bg-base-300">
                 {/* Tags Crousel */}
-                <div className="collapse collapse-arrow join-item rounded-none border-base-content/20 border-x-0 border">
+                <div
+                  id="tags"
+                  className="collapse collapse-arrow join-item rounded-none border-base-content/20 border-x-0 border"
+                >
                   <input type="radio" name="my-accordion-4" />
                   <div className="collapse-title font-semibold">
                     <p className="flex items-center gap-2 font-semibold ">
@@ -143,13 +137,16 @@ const ProblemDescriptionTabContent = () => {
                       <Tag size="16" /> Tags
                     </p>
                   </div>
-                  <div className="collapse-content text-sm">
-                    Click the "Sign Up" button in the top right corner and
-                    follow the registration process.
+                  <div className="collapse-content text-sm space-x-1.5s">
+                    {problem.tags?.map((tag) => (
+                      <span key={tag} className="badge">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
                 {/* Hints Crousel */}
-                <div>
+                <div id="hints">
                   <div className="collapse collapse-arrow join-item rounded-none border-base-content/20 border-x-0 border">
                     <input type="radio" name="my-accordion-4" />
                     <div className="collapse-title font-semibold">
@@ -253,21 +250,22 @@ const ProblemSubmissionsTabContent = () => {
   );
 };
 
-const TabContent = ({ activeTab }) => {
+const TabContent = ({ problem, activeTab }) => {
   switch (activeTab) {
     case "description":
-      return <ProblemDescriptionTabContent />;
+      return <ProblemDescriptionTabContent problem={problem} />;
     case "editorial":
-      return <ProblemEditorialTabContent />;
+      return <ProblemEditorialTabContent editorial={problem?.editorial} />;
     case "solutions":
-      return <ProblemSolutionsTabContent />;
+      return (
+        <ProblemSolutionsTabContent editorial={problem?.referenceSolutions} />
+      );
     case "submissions":
       return <ProblemSubmissionsTabContent />;
   }
 };
 
-
-const ProblemLeftPannel = () => {
+const ProblemLeftPannel = ({ problem }) => {
   const [activeTab, setActiveTab] = useState("description");
 
   return (
@@ -315,7 +313,7 @@ const ProblemLeftPannel = () => {
               />
             </div>
 
-            <TabContent activeTab={activeTab} />
+            <TabContent problem={problem} activeTab={activeTab} />
           </div>
         </div>
       </div>

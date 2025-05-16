@@ -15,3 +15,16 @@ export const useGetProblemsQuery = () => {
     staleTime: 5 * 60 * 1000,
   });
 };
+
+const getProblemById = async (id) => {
+  const res = await axiosClient.get(`/problem/${id}`);
+  return res.data.data;
+};
+
+export const useGetProblemByIdQuery = (id) => {
+  return useQuery({
+    queryKey: ["problem", id],
+    queryFn: () => getProblemById(id),
+    staleTime: 5 * 60 * 1000,
+  });
+};
