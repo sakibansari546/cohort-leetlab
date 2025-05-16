@@ -13,8 +13,6 @@ const ProblemsPage = () => {
   const { data: user } = useGetUserQuery();
   const problems = data?.problems;
   const errorMessage = error?.response.data.message;
-  // Get solved problem ids from user data
-  const solvedProblems = user?.user.solvedProblems || [];
 
   useEffect(() => {
     if (problems) {
@@ -115,7 +113,10 @@ const ProblemsPage = () => {
                   </>
                 ) : (
                   problems?.map((problem, idx) => {
-                    const isSolved = solvedProblems.includes(problem.id);
+                    const isSolved = problem.solvedBy?.some(
+                      (userP) => userP.userId == user?.user.id
+                    );
+
                     return (
                       <tr
                         key={problem.id}
