@@ -11,6 +11,7 @@ import {
   LucidePlay,
   Maximize,
   Maximize2,
+  Palette,
 } from "lucide-react";
 
 import ProblemLeftPannel from "../components/ProblemLeftPannel";
@@ -31,7 +32,7 @@ const ProblemPage = () => {
       <div className="bg-base-100 w-[1000px] lg:w-full max-h- rounded-lg">
         <div className="flex items-center justify-center w-full">
           <div className="w-full">
-            <div className="flex items-center justify-between bg-base-100 py-5">
+            <div className="flex items-center justify-between bg-base-100 py-5 px-6">
               <div className="flex items-center gap-2">
                 <Link
                   to={-1}
@@ -53,7 +54,15 @@ const ProblemPage = () => {
                   Submit
                 </button>
               </div>
-              <div></div>
+              <div>
+                <Link
+                  to="/theme"
+                  className="btn btn-sm md:btn-md flex items-center justify-center"
+                >
+                  <Palette size={18} />
+                  Theme
+                </Link>
+              </div>
             </div>
             <div className="w-full">
               <div className="w-full h-full flex items-center px-3 gap-2 justify-center rounded-lg">

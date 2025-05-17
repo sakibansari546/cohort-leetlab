@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <>
       <div className="sticky top-0 z-50">
-        <div className="navbar bg-base-100 shadow-sm md:px-20 md:py-4">
+        <div className="navbar bg-base-200 md:px-20 md:py-4">
           <div className="navbar-start">
             <Link to="/" className="text-lg md:text-xl -leading-10 text-center">
               <p className="text-lg md:text-2xl font-bold leading-5 font-sans -mb-1.5">

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
 import { Cpu, Lightbulb, Tag, Timer } from "lucide-react";
+import { useGetSubmissionsForProblemQuery } from "../querys/useSubmissionQuery";
+import { formateDate } from "../utils/date-formate";
 
 const ProblemDescriptionTabContent = ({ problem }) => {
   return (
@@ -202,7 +204,40 @@ const ProblemEditorialTabContent = () => {
 const ProblemSolutionsTabContent = () => {
   return <div className=" border-base-300 bg-base-200 p-10">solution</div>;
 };
-const ProblemSubmissionsTabContent = () => {
+const ProblemSubmissionsTabContent = ({ problemId }) => {
+  const { data, isPending, isError, error } =
+    useGetSubmissionsForProblemQuery(problemId);
+  const submissions = data?.submissions;
+  const errorMessage = error?.response?.data.message || "Internal server error";
+
+  if (isPending) {
+    return (
+      <>
+        <div className="skeleton border-base-300 bg-base-200 h-[82vh] py-4 px-3 overflow-y-auto"></div>
+      </>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="border-base-300 bg-base-200 h-[82vh] py-4 px-3 overflow-y-auto">
+        <h3 className="text-center text-2xl font-extrabold text-error my-6">
+          {errorMessage}
+        </h3>
+      </div>
+    );
+  }
+
+  if (submissions?.length === 0) {
+    return (
+      <div className="border-base-300 bg-base-200 h-[82vh] py-4 px-3 overflow-y-auto">
+        <h3 className="text-center text-2xl font-extrabold text-error my-6">
+          No submissions to show yet.
+        </h3>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className=" border-base-300 bg-base-200  py-4 px-3 overflow-y-auto">
@@ -214,34 +249,44 @@ const ProblemSubmissionsTabContent = () => {
                 <th></th>
                 <th>Status</th>
                 <th>Language</th>
-                <th>Runtimer</th>
-                <th>Memoryr</th>
+                <th>Runtime</th>
+                <th>Memory</th>
               </tr>
             </thead>
             <tbody>
               {/* row 1 */}
-              <tr>
-                <th>1</th>
-                <td>
-                  <h2 className="font-semibold text-error">Worng Answer</h2>
-                  <p>22 May 25</p>
-                </td>
-                <td>
-                  <p className="badge">Javascript</p>
-                </td>
-                <td>
-                  <p className="flex items-center gap-1.5">
-                    <Timer size="18" />
-                    N/A
-                  </p>
-                </td>
-                <td>
-                  <p className="flex items-center gap-1.5">
-                    <Cpu size="18" />
-                    N/A
-                  </p>
-                </td>
-              </tr>
+              {submissions?.map((submission, idx) => (
+                <tr key={submission.id}>
+                  <th>{idx + 1}</th>
+                  <td>
+                    <h2
+                      className={`font-semibold ${
+                        submission.status === "Wrong_Answer"
+                          ? "text-error"
+                          : "text-success"
+                      }`}
+                    >
+                      {submission.status}
+                    </h2>
+                    <p>{formateDate(submission.createdAt)}</p>
+                  </td>
+                  <td>
+                    <p className="badge">{submission.language}</p>
+                  </td>
+                  <td>
+                    <p className="flex items-center gap-1.5">
+                      <Timer size="18" />
+                      N/A
+                    </p>
+                  </td>
+                  <td>
+                    <p className="flex items-center gap-1.5">
+                      <Cpu size="18" />
+                      N/A
+                    </p>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -261,7 +306,7 @@ const TabContent = ({ problem, activeTab }) => {
         <ProblemSolutionsTabContent editorial={problem?.referenceSolutions} />
       );
     case "submissions":
-      return <ProblemSubmissionsTabContent />;
+      return <ProblemSubmissionsTabContent problemId={problem?.id} />;
   }
 };
 
