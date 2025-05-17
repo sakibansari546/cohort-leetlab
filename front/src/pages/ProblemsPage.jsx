@@ -96,7 +96,7 @@ const ProblemsPage = () => {
                 </tr>
               </tbody>
             ) : (
-              <tbody>
+              <tbody key="problem-tbody">
                 {isFetching ? (
                   <>
                     <tr className="flex items-center justify-center w-full">
@@ -120,9 +120,7 @@ const ProblemsPage = () => {
                     return (
                       <tr
                         key={problem.id}
-                        className={`hover:bg-base-200 ${
-                          idx % 2 == 0 && "bg-base-200"
-                        }`}
+                        className={` ${idx % 2 == 0 && "bg-base-200"}`}
                       >
                         <td className="w-8">
                           {isSolved ? (

@@ -3,10 +3,13 @@ import { Link, Outlet } from "react-router-dom";
 import {
   AlignLeft,
   BookOpen,
+  Code2,
+  Home,
   Loader,
   Loader2,
   LogOut,
   Palette,
+  TypeOutline,
   User,
   UserLockIcon,
 } from "lucide-react";
@@ -28,11 +31,14 @@ const Navbar = () => {
       <div className="sticky top-0 z-50">
         <div className="navbar bg-base-200 md:px-20 md:py-4">
           <div className="navbar-start">
-            <Link to="/" className="text-lg md:text-xl -leading-10 text-center">
-              <p className="text-lg md:text-2xl font-bold leading-5 font-sans -mb-1.5">
-                HYPE
+            <Link
+              to="/"
+              className="text-lg md:text-xl -leading-10 text-center "
+            >
+              <p className="logo text-lg md:text-2xl font-bold leading-2 font-sans -mb-1.5 space-y-1 flex-col flex items-center">
+                <span className="text-primary">HYPE</span>
+                <span className="text-sm">Coding</span>
               </p>
-              <p className="text-md md:text-lg font-mono">CODE</p>
             </Link>
           </div>
 
@@ -81,12 +87,7 @@ const Navbar = () => {
                         </Link>
                       </li>
                     )}
-                    <li>
-                      <Link to="/problems">
-                        <BookOpen size="18" />
-                        Problems
-                      </Link>
-                    </li>
+
                     <li>
                       <button onClick={handleLogout}>
                         {mutation.isPending ? (
@@ -118,11 +119,25 @@ const Navbar = () => {
                 tabIndex={0}
                 className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
               >
-                {MENU_ITEMS.map((item, idx) => (
-                  <li key={idx}>
-                    <Link to={item.path}>{item.name}</Link>
-                  </li>
-                ))}
+                <li>
+                  <Link to="/">
+                    <Home size="18" />
+                    Home
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/problems">
+                    <BookOpen size="18" />
+                    Problems
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about">
+                    <TypeOutline size="18" />
+                    About
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

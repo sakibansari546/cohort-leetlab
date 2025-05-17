@@ -50,6 +50,18 @@ export function createExpressApp() {
         .status(400)
         .json(new ApiResponse(400, "Email is already exist", { error: err }));
     }
+    if (
+      err.code == "P2002" &&
+      err.meta.target[0] === "name" &&
+      err.meta.target[1] === "userId" &&
+      err.meta.modelName === "Playlist"
+    ) {
+      return res
+        .status(400)
+        .json(
+          new ApiResponse(400, "Playlist name should be unique", { error: err })
+        );
+    }
     res
       .status(err.statusCode || 500)
       .json(

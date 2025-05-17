@@ -36,7 +36,7 @@ const ProblemsPageSidebar = () => {
             fixed top-16 lg:sticky inset-y-0 left-0 z-40
             w-64 bg-base-200 transition-transform duration-300 ease-in-out
             ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-            lg:translate-x-0 lg:min-h-screen
+            lg:translate-x-0 lg:min-h-screen 
         `}
       >
         {/* Sidebar Toggle Btn */}
@@ -113,10 +113,14 @@ const ProblemsPageSidebar = () => {
               ) : (
                 playlists.map((list) => (
                   <Link key={list.id} to={`/playlists/${list.id}`} className="">
-                    <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-300 cursor-pointer">
+                    <div className="flex items-center justify-between p-2 rounded-lg hover:bg-base-100 cursor-pointer">
                       <div className="flex items-center gap-3">
-                        <FileText className="w-5 h-5 text-info" />
-                        <span>{list.name}</span>
+                        <span className="flex-shrink-0 flex items-center justify-center">
+                          <FileText className="w-5 h-5 min-w-[20px] min-h-[20px] text-info" />
+                        </span>
+                        <span className="line-clamp-1 max-w-[140px]">
+                          {list.name}
+                        </span>
                       </div>
                       <div className="w-5 h-5 flex items-center justify-center">
                         <span className="text-xs">

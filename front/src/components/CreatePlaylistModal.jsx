@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createPlaylistSchema } from "../utils/zod-schema";
 import { useCreatePlaylistMutation } from "../querys/usePlaylistQuery";
 import { Loader2 } from "lucide-react";
+import { toast } from "react-toastify";
 
 const CreatePlaylistModal = () => {
   const {
@@ -17,6 +18,10 @@ const CreatePlaylistModal = () => {
   });
 
   const mutation = useCreatePlaylistMutation();
+  const errorMessage =
+    mutation?.error?.response?.data.message ||
+    mutation?.error?.message ||
+    "Inernal server error";
 
   const onSubmit = (data) => {
     mutation.mutate(data);
@@ -74,7 +79,7 @@ const CreatePlaylistModal = () => {
                   {errors?.name
                     ? errors.name?.message
                     : errors.description && errors.description?.message}
-                  {mutation.isError && mutation.error.message}
+                  {mutation.isError && errorMessage}
                 </p>
               </div>
             )}
@@ -87,15 +92,6 @@ const CreatePlaylistModal = () => {
                 }
               >
                 Cancel
-              </button>
-              <button
-                onClick={() =>
-                  document.getElementById("create-playlist-modal").close()
-                }
-                type="button"
-                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-              >
-                ✕
               </button>
 
               <button
@@ -110,6 +106,15 @@ const CreatePlaylistModal = () => {
                 ) : (
                   "Create"
                 )}
+              </button>
+              <button
+                onClick={() =>
+                  document.getElementById("create-playlist-modal").close()
+                }
+                type="button"
+                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              >
+                ✕
               </button>
             </div>
           </form>

@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { axiosClient } from "../utils/axios";
 import { queryClient } from "../main";
+import { toast } from "react-toastify";
 
 const getPlaylists = async () => {
   const res = await axiosClient.get(`/playlist/playlists`);
@@ -26,6 +27,7 @@ export const useCreatePlaylistMutation = () => {
     mutationFn: createPlaylist,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["playlists"] });
+      toast.success("Playlist created successfully")
     },
   });
 };

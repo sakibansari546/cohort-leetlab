@@ -1,4 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+
 @import "tailwindcss";
 @plugin "daisyui" {
   themes: all;
+}
+
+.logo {
+  font-family: "Permanent Marker";
 }
