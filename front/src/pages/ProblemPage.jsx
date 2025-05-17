@@ -73,9 +73,9 @@ const ProblemPage = () => {
                 <div className="w-1/2 h-[90vh]">
                   <div className="w-full h-full flex flex-col gap-2 ">
                     {/* Top COding Part */}
-                    <div className="relative w-full bg-base-300 h-1/2 rounded-lg border border-base-content/30">
+                    <div className="relative w-full bg-base-200 h-1/2 rounded-lg border border-base-content/30">
                       <div>
-                        <div className="bg-base-200 w-full sticky left-0 top-0 z-50 rounded-lg">
+                        <div className="bg-base-300 w-full sticky left-0 top-0 z-50 rounded-lg">
                           <div className="h-10 flex items-center justify-between rounded-b-none border border-base-content/30 border-b-0 rounded-lg">
                             <button className="btn btn-ghost">
                               <Code2 size="18" />
@@ -121,22 +121,26 @@ const ProblemPage = () => {
                           </div>
                         ) : (
                           <Editor
-                            className="overflow-hidden rounded-lg"
+                            className="overflow-hidden rounded-lg rounded-t-none"
                             theme="vs-dark"
                             height="34vh"
                             defaultLanguage={language.toLowerCase()}
                             defaultValue={
                               problem?.codeSnippets[language.toUpperCase()]
                             }
+                            value={
+                              problem?.codeSnippets[language.toUpperCase()]
+                            }
+                            language={language.toLowerCase()}
                           />
                         )}
                       </div>
                     </div>
 
                     {/* Bottom Testaces Part */}
-                    <div className="w-full bg-base-300 h-1/2 z-50 rounded-lg border border-base-content/30 overflow-y-auto">
+                    <div className="w-full bg-base-200 h-1/2 z-50 rounded-lg border border-base-content/30 overflow-y-auto">
                       <div>
-                        <div className="bg-base-200 z-50 w-full sticky top-0 rounded-lg border border-base-content/30 rounded-b-none">
+                        <div className="bg-base-300 z-50 w-full sticky top-0 rounded-lg border border-base-content/30 rounded-b-none">
                           <div className="h-10 flex items-center justify-between  border border-base-content/30 border-b-0 rounded-lg rounded-b-none">
                             <button className="btn btn-ghost">
                               <CheckSquare className="text-success" size="18" />

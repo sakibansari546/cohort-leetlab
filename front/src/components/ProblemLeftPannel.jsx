@@ -5,7 +5,7 @@ import { Cpu, Lightbulb, Tag, Timer } from "lucide-react";
 const ProblemDescriptionTabContent = ({ problem }) => {
   return (
     <>
-      <div className=" border-base-300 bg-base-300 py-4 px-3">
+      <div className=" border-base-300 bg-base-200 py-4 px-3">
         <div>
           {/* Description Top Part */}
           <div className="flex flex-col gap-2">
@@ -124,7 +124,7 @@ const ProblemDescriptionTabContent = ({ problem }) => {
           {/* Bottom Part */}
           <div>
             <div>
-              <div className=" bg-base-300">
+              <div className=" bg-base-200">
                 {/* Tags Crousel */}
                 <div
                   id="tags"
@@ -197,15 +197,15 @@ const ProblemDescriptionTabContent = ({ problem }) => {
 };
 
 const ProblemEditorialTabContent = () => {
-  return <div className=" border-base-300 bg-base-300 p-10">Editorial</div>;
+  return <div className=" border-base-300 bg-base-200 p-10">Editorial</div>;
 };
 const ProblemSolutionsTabContent = () => {
-  return <div className=" border-base-300 bg-base-300 p-10">solution</div>;
+  return <div className=" border-base-300 bg-base-200 p-10">solution</div>;
 };
 const ProblemSubmissionsTabContent = () => {
   return (
     <>
-      <div className=" border-base-300 bg-base-300  py-4 px-3 overflow-y-auto">
+      <div className=" border-base-300 bg-base-200  py-4 px-3 overflow-y-auto">
         <div className="overflow-x-auto">
           <table className="table">
             {/* head */}
@@ -270,8 +270,8 @@ const ProblemLeftPannel = ({ problem }) => {
 
   return (
     <>
-      <div className="bg-base-300 w-1/2 h-[90vh] rounded-lg overflow-y-auto border border-base-content/30">
-        <div className="bg-base-200 w-full h-12 rounded-lg border border-base-content/30 ">
+      <div className="bg-base-200 w-1/2 h-[90vh] rounded-lg overflow-y-auto border border-base-content/30">
+        <div className="bg-base-300 w-full h-12 rounded-lg border border-base-content/30 ">
           <div>
             {/* name of each tab group should be unique */}
             <div className="tabs tabs-border">
