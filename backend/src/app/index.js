@@ -40,7 +40,7 @@ export function createExpressApp() {
   app.use("/api/v1/auth", registerAuthRoutes());
   app.use("/api/v1/user", registerUserRoutes());
   app.use("/api/v1/problem", registerProblemRoutes());
-  app.use("/api/v1/execute/code", registerExecuteCodeRoutes());
+  app.use("/api/v1/code/", registerExecuteCodeRoutes());
   app.use("/api/v1/submission", registerSubmissionRoutes());
   app.use("/api/v1/playlist", registerPlaylistRoutes());
 

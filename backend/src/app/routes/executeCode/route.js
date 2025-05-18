@@ -8,7 +8,13 @@ export function register() {
   const router = express.Router();
   const controller = new ExecuteCodeController();
 
-  router.post("/:problemId", isAuth, controller.executeCode.bind(controller));
+  router.post(
+    "/submit/:problemId",
+    isAuth,
+    controller.submitCode.bind(controller)
+  );
+
+  router.post("/run/:problemId", isAuth, controller.runCode.bind(controller));
 
   return router;
 }
