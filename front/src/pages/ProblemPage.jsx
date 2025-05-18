@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 
 import {
@@ -20,27 +20,33 @@ import { useGetProblemByIdQuery } from "../querys/useProblemQuery";
 import { Link, useParams } from "react-router-dom";
 import { getJudge0LangaugeId } from "../utils/language";
 import { useCreateSubmissionMutation } from "../querys/useSubmissionQuery";
+import { useRunCodeMutation } from "../querys/useRunCodeQuery";
+import ProblemTestcasesResultTab from "../components/ProblemTestcasesResultTab";
 
 const ProblemPage = () => {
   const { problemId } = useParams();
   const editorRef = useRef(null);
+  const testcaseResultTabInputRef = useRef(null);
+
+  const [activeTeastcasesOrResultTab, setActiveTestcasesOrResultTab] =
+    useState("testcases");
 
   const { data, isPending, isError, error } = useGetProblemByIdQuery(problemId);
   const problem = data?.problem;
   const errorMessage = error?.response?.data.message || "Internal server error";
 
   const [language, setLanguage] = useState("javascript");
-
-  const [source_code, setSource_code] = useState({});
+  const [source_code, setSource_code] = useState("");
 
   const mutation = useCreateSubmissionMutation(problemId);
+  const runCodeMutation = useRunCodeMutation(problemId);
 
   function handleEditorDidMount(editor) {
     editorRef.current = editor;
     setSource_code(editorRef.current.getValue());
   }
 
-  const handleSubmitCode = (type) => {
+  const handleSubmitCode = () => {
     const data = {
       language_id: getJudge0LangaugeId(language).toString(),
       stdins: problem.testcases.map((tCase) => tCase.input),
@@ -48,6 +54,69 @@ const ProblemPage = () => {
       source_code,
     };
     mutation.mutate(data);
+  };
+  const handleRunCode = () => {
+    const data = {
+      language_id: getJudge0LangaugeId(language).toString(),
+      stdins: problem.testcases.map((tCase) => tCase.input),
+      expected_outputs: problem.testcases.map((tCase) => tCase.output),
+      source_code,
+    };
+
+    runCodeMutation.mutate(data);
+  };
+
+  useEffect(() => {
+    if (runCodeMutation.isPending && testcaseResultTabInputRef.current) {
+      testcaseResultTabInputRef.current.checked = true;
+      setActiveTestcasesOrResultTab("result");
+    }
+  }, [runCodeMutation.isPending]);
+
+  
+  const TestcasesOrResultTabContent = () => {
+    switch (activeTeastcasesOrResultTab) {
+      case "testcases":
+        return (
+          <>
+            {isPending ? (
+              <div className="skeleton bg-base-300 w-full h-[40vh] rounded-lg overflow-y-auto border border-base-content/30"></div>
+            ) : isError ? (
+              <div className="w-full bg-base-300 h-[40vh z-50 rounded-lg border border-base-content/30 overflow-y-auto flex justify-center">
+                <h3 className="text-xl font-extrabold text-error my-6">
+                  {errorMessage}
+                </h3>
+              </div>
+            ) : (
+              <ProblemTestcasesPannel testcases={problem?.testcases} />
+            )}
+          </>
+        );
+      case "result":
+        return (
+          <>
+            {runCodeMutation.isPending ? (
+              <>
+                <div className="flex flex-col items-center justify-center h-[40vh]">
+                  <Loader2 className="animate-spin text-primary" size={48} />
+                  <span className="mt-4 text-base-content">
+                    Running your code...
+                  </span>
+                </div>
+              </>
+            ) : runCodeMutation.isError ? (
+              <div className="w-full bg-base-300 h-[40vh] z-50 rounded-lg border border-base-content/30 overflow-y-auto flex flex-col items-center justify-center">
+                <h3 className="text-xl font-extrabold text-error my-6">
+                  {runCodeMutation.error?.response?.data?.message ||
+                    "An error occurred while running your code."}
+                </h3>
+              </div>
+            ) : (
+              <ProblemTestcasesResultTab result={runCodeMutation.data} />
+            )}
+          </>
+        );
+    }
   };
 
   return (
@@ -69,14 +138,14 @@ const ProblemPage = () => {
               </div>
               <div className="space-x-2">
                 <button
-                  onClick={() => handleSubmitCode("run")}
+                  onClick={handleRunCode}
                   className="btn btn-sm md:btn-md"
                 >
                   <LucidePlay size="18" />
                   Run
                 </button>
                 <button
-                  onClick={() => handleSubmitCode("submit")}
+                  onClick={handleSubmitCode}
                   className="btn btn-accent btn-sm md:btn-md"
                 >
                   <CloudUploadIcon size="18" />
@@ -182,31 +251,46 @@ const ProblemPage = () => {
                     {/* Bottom Testaces Part */}
                     <div className="w-full bg-base-200 h-1/2 z-50 rounded-lg border border-base-content/30 overflow-y-auto">
                       <div>
-                        <div className="bg-base-300 z-50 w-full sticky top-0 rounded-lg border border-base-content/30 rounded-b-none">
+                        <div className="bg-base-300 z-50 w-full sticky top-0 rounded-lg border border-base-content/30 rounded-b-none mb-3">
                           <div className="h-10 flex items-center justify-between  border border-base-content/30 border-b-0 rounded-lg rounded-b-none">
-                            <button className="btn btn-ghost">
-                              <CheckSquare className="text-success" size="18" />
-                              Testcases
-                            </button>
+                            <div className="tabs tabs-lift">
+                              <input
+                                type="radio"
+                                name="testcase_tab"
+                                className="tab"
+                                aria-label="TestCases"
+                                checked={
+                                  activeTeastcasesOrResultTab === "testcases"
+                                }
+                                onChange={() =>
+                                  setActiveTestcasesOrResultTab("testcases")
+                                }
+                              />
+
+                              <input
+                                type="radio"
+                                name="testcase_tab"
+                                className="tab"
+                                aria-label="Result"
+                                ref={testcaseResultTabInputRef}
+                                checked={
+                                  activeTeastcasesOrResultTab === "result"
+                                }
+                                onChange={() =>
+                                  setActiveTestcasesOrResultTab("result")
+                                }
+                              />
+                            </div>
                             <button className="btn btn-ghost">
                               <Maximize size="18" />
                             </button>
                           </div>
                         </div>
+
                         {/* Problem Testcases */}
-                        {isPending ? (
-                          <div className="skeleton bg-base-300 w-full h-[40vh] rounded-lg overflow-y-auto border border-base-content/30"></div>
-                        ) : isError ? (
-                          <div className="w-full bg-base-300 h-[40vh z-50 rounded-lg border border-base-content/30 overflow-y-auto flex justify-center">
-                            <h3 className="text-xl font-extrabold text-error my-6">
-                              {errorMessage}
-                            </h3>
-                          </div>
-                        ) : (
-                          <ProblemTestcasesPannel
-                            testcases={problem?.testcases}
-                          />
-                        )}
+                        <div className="ml-3">
+                          <TestcasesOrResultTabContent />
+                        </div>
                       </div>
                     </div>
                   </div>
