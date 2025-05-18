@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 
 import {
@@ -18,14 +18,37 @@ import ProblemLeftPannel from "../components/ProblemLeftPannel";
 import ProblemTestcasesPannel from "../components/ProblemTestcasesPannel";
 import { useGetProblemByIdQuery } from "../querys/useProblemQuery";
 import { Link, useParams } from "react-router-dom";
+import { getJudge0LangaugeId } from "../utils/language";
+import { useCreateSubmissionMutation } from "../querys/useSubmissionQuery";
 
 const ProblemPage = () => {
   const { problemId } = useParams();
+  const editorRef = useRef(null);
+
   const { data, isPending, isError, error } = useGetProblemByIdQuery(problemId);
   const problem = data?.problem;
   const errorMessage = error?.response?.data.message || "Internal server error";
 
   const [language, setLanguage] = useState("javascript");
+
+  const [source_code, setSource_code] = useState({});
+
+  const mutation = useCreateSubmissionMutation(problemId);
+
+  function handleEditorDidMount(editor) {
+    editorRef.current = editor;
+    setSource_code(editorRef.current.getValue());
+  }
+
+  const handleSubmitCode = (type) => {
+    const data = {
+      language_id: getJudge0LangaugeId(language).toString(),
+      stdins: problem.testcases.map((tCase) => tCase.input),
+      expected_outputs: problem.testcases.map((tCase) => tCase.output),
+      source_code,
+    };
+    mutation.mutate(data);
+  };
 
   return (
     <>
@@ -45,11 +68,17 @@ const ProblemPage = () => {
                 </Link>
               </div>
               <div className="space-x-2">
-                <button className="btn btn-sm md:btn-md">
+                <button
+                  onClick={() => handleSubmitCode("run")}
+                  className="btn btn-sm md:btn-md"
+                >
                   <LucidePlay size="18" />
                   Run
                 </button>
-                <button className="btn btn-accent btn-sm md:btn-md">
+                <button
+                  onClick={() => handleSubmitCode("submit")}
+                  className="btn btn-accent btn-sm md:btn-md"
+                >
                   <CloudUploadIcon size="18" />
                   Submit
                 </button>
@@ -76,7 +105,10 @@ const ProblemPage = () => {
                     </h3>
                   </div>
                 ) : (
-                  <ProblemLeftPannel problem={problem} />
+                  <ProblemLeftPannel
+                    problem={problem}
+                    submissionMutation={mutation}
+                  />
                 )}
 
                 <div className="w-1/2 h-[90vh]">
@@ -98,9 +130,9 @@ const ProblemPage = () => {
                             <div>
                               <select
                                 defaultValue="JavaScript"
-                                onChange={(e) =>
-                                  setLanguage(e.target.value.toLowerCase())
-                                }
+                                onChange={(e) => {
+                                  setLanguage(e.target.value.toLowerCase());
+                                }}
                                 className="select select-sm bg-base-300 border-none outline-none focus:outline-0 text-base-content cursor-pointer"
                               >
                                 <option>JavaScript</option>
@@ -141,6 +173,7 @@ const ProblemPage = () => {
                               problem?.codeSnippets[language.toUpperCase()]
                             }
                             language={language.toLowerCase()}
+                            onMount={handleEditorDidMount}
                           />
                         )}
                       </div>

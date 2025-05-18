@@ -1,6 +1,9 @@
 import React from "react";
 import { useState } from "react";
 
+import { Bookmark, Circle, CircleCheckBig } from "lucide-react";
+import { Link } from "react-router-dom";
+
 import { THEMES } from "../constants";
 import { useThemeStore } from "../store/themeStore";
 
@@ -46,29 +49,98 @@ const Theme = () => {
             ))}
           </div>
 
+          <div className="divider"></div>
+
           {/* Preview Section */}
-          <h3 className="text-lg font-semibold mb-3">Preview</h3>
+          <h3 className="text-lg font-semibold my-3">Preview</h3>
           <div
             data-theme={theme}
             className="rounded-xl border border-base-300 overflow-hidden bg-base-100 shadow-lg"
           >
-            <div className="p-4 bg-base-200">
-              <div className="max-w-lg mx-auto">
+            <div className="p-4 bg-base-100">
+              <div className="">
                 {/* Mock Chat UI */}
-                <div className="bg-base-100 rounded-xl shadow-sm overflow-hidden">
-                  {/* Chat Header */}
-                  <div className="px-4 py-3 border-b border-base-300 bg-base-100">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content font-medium">
-                        J
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-sm">John Doe</h3>
-                        <p className="text-xs text-base-content/70">Online</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Status</th>
+                      <th>Title</th>
+                      <th className="text-right">Acceptance</th>
+                      <th>Difficulty</th>
+                      <th>Progress</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody key="problem-tbody">
+                    <tr className={`bg-base-100`}>
+                      <td className="w-8">
+                        {true ? (
+                          <CircleCheckBig size="18" className="text-success" />
+                        ) : (
+                          <Circle size="18" />
+                        )}
+                      </td>
+                      <td className="font-medium ">
+                        <Link to={`/problems/`} className="hover:underline">
+                          <span className="line-clamp-2 break-words max-w-xs">
+                            1 Problem Title
+                          </span>
+                        </Link>
+                      </td>
+                      <td className="text-right">55.6%</td>
+                      <td className={`capitalize text-success`}>
+                        <span>Easy</span>
+                      </td>
+                      <td>
+                        <div className="w-24 bg-base-200 rounded-full h-2">
+                          <div
+                            className="bg-success h-2 rounded-full"
+                            style={{ width: "55%" }}
+                          ></div>
+                        </div>
+                      </td>
+                      <td>
+                        <button className="btn btn-sm md:btn">
+                          <Bookmark size="18" />
+                        </button>
+                      </td>
+                    </tr>
+                    <tr className={`bg-base-200`}>
+                      <td className="w-8">
+                        {false ? (
+                          <CircleCheckBig size="18" className="text-success" />
+                        ) : (
+                          <Circle size="18" />
+                        )}
+                      </td>
+                      <td className="font-medium ">
+                        <Link to={`/problems/`} className="hover:underline">
+                          <span className="line-clamp-2 break-words max-w-xs">
+                            2 Problem Title
+                          </span>
+                        </Link>
+                      </td>
+                      <td className="text-right">55.6%</td>
+                      <td className={`capitalize text-success`}>
+                        <span>Easy</span>
+                      </td>
+                      <td>
+                        <div className="w-24 bg-base-200 rounded-full h-2">
+                          <div
+                            className="bg-success h-2 rounded-full"
+                            style={{ width: "55%" }}
+                          ></div>
+                        </div>
+                      </td>
+                      <td>
+                        <button className="btn btn-sm md:btn">
+                          <Bookmark size="18" />
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

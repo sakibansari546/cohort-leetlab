@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Cpu, Lightbulb, Tag, Timer } from "lucide-react";
 import { useGetSubmissionsForProblemQuery } from "../querys/useSubmissionQuery";
@@ -36,75 +36,33 @@ const ProblemDescriptionTabContent = ({ problem }) => {
             {/* Problem Examples */}
             <div>
               <div className="mt-7">
-                <div className="mt-5">
-                  <h2 className="text-md font-bold mb-2">Example 1:</h2>
-                  <div className="pl-5">
-                    <p>
-                      <b>Input :</b>{" "}
-                      <span className="font-medium text-base-content/80">
-                        nums = [2,7,11,15], target = 9
-                      </span>{" "}
-                    </p>
-                    <p>
-                      <b>Output :</b>{" "}
-                      <span className="font-medium text-base-content/80">
-                        [0,1]
-                      </span>{" "}
-                    </p>
-                    <p>
-                      <b>Explanation :</b>{" "}
-                      <span className="font-medium text-base-content/80">
-                        Because nums[0] + nums[1] == 9, we return [0, 1].
-                      </span>{" "}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-5">
-                  <h2 className="text-md font-bold mb-2">Example 1:</h2>
-                  <div className="pl-5">
-                    <p>
-                      <b>Input :</b>{" "}
-                      <span className="font-medium text-base-content/80">
-                        nums = [2,7,11,15], target = 9
-                      </span>{" "}
-                    </p>
-                    <p>
-                      <b>Output :</b>{" "}
-                      <span className="font-medium text-base-content/80">
-                        [0,1]
-                      </span>{" "}
-                    </p>
-                    <p>
-                      <b>Explanation :</b>{" "}
-                      <span className="font-medium text-base-content/80">
-                        Because nums[0] + nums[1] == 9, we return [0, 1].
-                      </span>{" "}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <h2 className="text-md font-bold mb-2">Example 1:</h2>
-                  <div className="pl-5">
-                    <p>
-                      <b>Input :</b>{" "}
-                      <span className="font-medium text-base-content/80">
-                        nums = [2,7,11,15], target = 9
-                      </span>{" "}
-                    </p>
-                    <p>
-                      <b>Output :</b>{" "}
-                      <span className="font-medium text-base-content/80">
-                        [0,1]
-                      </span>{" "}
-                    </p>
-                    <p>
-                      <b>Explanation :</b>{" "}
-                      <span className="font-medium text-base-content/80">
-                        Because nums[0] + nums[1] == 9, we return [0, 1].
-                      </span>{" "}
-                    </p>
-                  </div>
-                </div>
+                {Object.entries(problem?.examples).map(
+                  ([name, content], idx) => (
+                    <div key={idx} className="mt-5">
+                      <h2 className="text-md font-bold mb-2">{name} :</h2>
+                      <div className="pl-5">
+                        <p>
+                          <b>Input :</b>{" "}
+                          <span className="font-medium text-base-content/80">
+                            {content.input}
+                          </span>{" "}
+                        </p>
+                        <p>
+                          <b>Output :</b>{" "}
+                          <span className="font-medium text-base-content/80">
+                            {content.input}
+                          </span>{" "}
+                        </p>
+                        <p>
+                          <b>Explanation :</b>{" "}
+                          <span className="font-medium text-base-content/80">
+                            {content.explanation}
+                          </span>{" "}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                )}
               </div>
             </div>
             {/* Problem Constraints */}
@@ -295,7 +253,46 @@ const ProblemSubmissionsTabContent = ({ problemId }) => {
   );
 };
 
-const TabContent = ({ problem, activeTab }) => {
+const SubmissionResultTabContent = ({ submissionMutation }) => {
+  const submission = submissionMutation?.data?.submission;
+
+  if (submissionMutation.isPending) {
+    return (
+      <>
+        <div className=" border-base-300 bg-base-200 py-4 px-3">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
+          <span className="mt-4 text-base font-semibold text-base-content">
+            Evaluating Submission...
+          </span>
+        </div>
+      </>
+    );
+  }
+  if (submissionMutation.isError) {
+    return (
+      <>
+        <div className=" border-base-300 bg-base-200 py-4 px-3">
+          <span className="text-error text-lg font-semibold">
+            {submissionMutation.error?.response?.data?.message ||
+              "An error occurred while submitting your solution."}
+          </span>
+        </div>
+      </>
+    );
+  }
+  return (
+    <>
+      <div className=" border-base-300 bg-base-200 py-4 px-3">
+        <div>
+          {!submission && <h2>Nothing to show now</h2>}
+          <h2>{submission?.status}</h2>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const TabContent = ({ problem, activeTab, submissionMutation }) => {
   switch (activeTab) {
     case "description":
       return <ProblemDescriptionTabContent problem={problem} />;
@@ -307,11 +304,23 @@ const TabContent = ({ problem, activeTab }) => {
       );
     case "submissions":
       return <ProblemSubmissionsTabContent problemId={problem?.id} />;
+    case "submission_result":
+      return (
+        <SubmissionResultTabContent submissionMutation={submissionMutation} />
+      );
   }
 };
 
-const ProblemLeftPannel = ({ problem }) => {
+const ProblemLeftPannel = ({ problem, submissionMutation }) => {
+  const submissionTabInputRef = useRef();
   const [activeTab, setActiveTab] = useState("description");
+
+  useEffect(() => {
+    if (submissionMutation.isPending && submissionTabInputRef.current) {
+      submissionTabInputRef.current.checked = true;
+      setActiveTab("submission_result");
+    }
+  }, [submissionMutation.isPending]);
 
   return (
     <>
@@ -356,9 +365,22 @@ const ProblemLeftPannel = ({ problem }) => {
                 className="tab"
                 aria-label="Submissions"
               />
+
+              <input
+                type="radio"
+                name="my_tabs_2"
+                className={`tab`}
+                ref={submissionTabInputRef}
+                onChange={() => setActiveTab("submission_result")}
+                aria-label="Submission Result"
+              />
             </div>
 
-            <TabContent problem={problem} activeTab={activeTab} />
+            <TabContent
+              problem={problem}
+              activeTab={activeTab}
+              submissionMutation={submissionMutation}
+            />
           </div>
         </div>
       </div>
