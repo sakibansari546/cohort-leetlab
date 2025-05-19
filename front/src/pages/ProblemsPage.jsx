@@ -1,10 +1,17 @@
-import { Bookmark, CheckSquare, Circle, CircleCheckBig } from "lucide-react";
+import {
+  Bookmark,
+  CheckSquare,
+  Circle,
+  CircleCheckBig,
+  Ellipsis,
+} from "lucide-react";
 import ProblemsPageSidebar from "../components/ProblemsPageSidebar";
 import ProblemsHeader from "../components/ProblemsHeader";
 import { useGetProblemsQuery } from "../querys/useProblemQuery";
 import { useGetUserQuery } from "../querys/useUserQuery";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import AddToPlaylistProblemModal from "../components/AddToPlaylistProblemModal";
 
 const ProblemsPage = () => {
   const [tags, setTags] = useState([]);
@@ -14,6 +21,13 @@ const ProblemsPage = () => {
   const problems = data?.problems;
   const errorMessage = error?.response.data.message;
 
+  const [problemId, setProblemId] = useState([]);
+
+  const handleAddProblemInPlaylist = (problemId) => {
+    document.getElementById("add_problem_in_playlist_modal").showModal();
+    setProblemId([problemId]);
+  };
+
   useEffect(() => {
     if (problems) {
       setTags([...new Set(problems.flatMap((problem) => problem.tags || []))]);
@@ -22,6 +36,9 @@ const ProblemsPage = () => {
 
   return (
     <div className="flex min-h-screen bg-base-100 text-base-content">
+      {/* Add Problem to playlist Modal */}
+      <AddToPlaylistProblemModal problemId={problemId} />
+
       {/* Mobile sidebar toggle */}
       <ProblemsPageSidebar />
 
@@ -163,9 +180,29 @@ const ProblemsPage = () => {
                           </div>
                         </td>
                         <td>
-                          <button className="btn btn-sm md:btn">
-                            <Bookmark size="18" />
-                          </button>
+                          <div className="dropdown dropdown-bottom dropdown-end">
+                            <button
+                              tabIndex={0}
+                              role="button"
+                              className="btn btn-sm md:btn"
+                            >
+                              <Ellipsis size="18" />
+                            </button>
+                            <ul
+                              tabIndex={0}
+                              className="dropdown-content menu bg-base-100 rounded-box z-1 w-50 p-2 shadow-sm"
+                            >
+                              <li>
+                                <button
+                                  onClick={() =>
+                                    handleAddProblemInPlaylist(problem.id)
+                                  }
+                                >
+                                  Add to playlist
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
                         </td>
                       </tr>
                     );

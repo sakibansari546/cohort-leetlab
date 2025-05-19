@@ -27,7 +27,29 @@ export const useCreatePlaylistMutation = () => {
     mutationFn: createPlaylist,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["playlists"] });
-      toast.success("Playlist created successfully")
+      toast.success("Playlist created successfully");
+    },
+  });
+};
+
+const addProblemInPlaylist = async (body) => {
+  console.log(body);
+
+  const res = await axiosClient.post(
+    `/playlist/${body.playlistId}/add/problem`,
+    {
+      problemIds: body.problemIds,
+    }
+  );
+  return res.data.data;
+};
+
+export const useAddProblemInPlaylistMutation = () => {
+  return useMutation({
+    mutationFn: addProblemInPlaylist,
+    onSuccess: () => {
+      toast.success("Problem Add Successfully");
+      document.getElementById("add_problem_in_playlist_modal").close();
     },
   });
 };
