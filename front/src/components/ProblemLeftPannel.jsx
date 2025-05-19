@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Cpu, Lightbulb, Tag, Timer } from "lucide-react";
+import { ArrowLeft, Cpu, Lightbulb, LinkIcon, Tag, Timer } from "lucide-react";
 import { useGetSubmissionsForProblemQuery } from "../querys/useSubmissionQuery";
 import { formateDate } from "../utils/date-formate";
+
+import Highlight from "react-highlight";
+import "highlight.js/styles/dracula.css";
 
 const ProblemDescriptionTabContent = ({ problem }) => {
   return (
@@ -159,9 +162,11 @@ const ProblemDescriptionTabContent = ({ problem }) => {
 const ProblemEditorialTabContent = () => {
   return <div className=" border-base-300 bg-base-200 p-10">Editorial</div>;
 };
+
 const ProblemSolutionsTabContent = () => {
   return <div className=" border-base-300 bg-base-200 p-10">solution</div>;
 };
+
 const ProblemSubmissionsTabContent = ({ problemId }) => {
   const { data, isPending, isError, error } =
     useGetSubmissionsForProblemQuery(problemId);
@@ -256,6 +261,29 @@ const ProblemSubmissionsTabContent = ({ problemId }) => {
 const SubmissionResultTabContent = ({ submissionMutation }) => {
   const submission = submissionMutation?.data?.submission;
 
+  let allTestCasesPassed = true;
+  const faildTestcase = submission?.testCases.map((testcase, idx) => {
+    if (!testcase.passed) {
+      allTestCasesPassed = false;
+      return {
+        input: submission.stdin.split("\n")[idx],
+        output: testcase.stdout,
+        expected: testcase.expected,
+        testcaseNo: testcase.testCase,
+      };
+    }
+  });
+
+  const totalMemory = JSON.parse(submission?.memory || "[]")
+    .map((memory) => parseFloat(memory))
+    .reduce((pre, curr) => pre + curr, 0)
+    .toFixed(2);
+
+  const totalTime = JSON.parse(submission?.time || "[]")
+    .map((time) => parseFloat(time))
+    .reduce((pre, curr) => pre + curr, 0)
+    .toFixed(4);
+
   if (submissionMutation.isPending) {
     return (
       <>
@@ -280,12 +308,141 @@ const SubmissionResultTabContent = ({ submissionMutation }) => {
       </>
     );
   }
+  if (!submission) {
+    return (
+      <div className="border-base-300 bg-base-200 py-4 px-3">
+        <h2 className="text-center text-lg font-semibold text-base-content/70">
+          Nothing to show now.
+        </h2>
+      </div>
+    );
+  }
   return (
     <>
-      <div className=" border-base-300 bg-base-200 py-4 px-3">
+      <div className="border-base-300 bg-base-200 py px-3">
         <div>
-          {!submission && <h2>Nothing to show now</h2>}
-          <h2>{submission?.status}</h2>
+          {/* {!submission && <h2>Nothing to show now</h2>} */}
+          <div className="">
+            <div className="flex items-center justify-between  border-b border-base-content/20">
+              <button className="flex items-center gap-2 cursor-pointer hover:bg-base-300 py-2 px-4">
+                <ArrowLeft size="18" />
+                <span>All Submissions</span>
+              </button>
+              <button className="flex items-center gap-2 cursor-pointer hover:bg-base-300 py-2 px-4">
+                <LinkIcon size="18" />
+              </button>
+            </div>
+            <div className="px-8 py-8">
+              <div>
+                <div>
+                  <div className="flex items-center gap-8">
+                    <h1
+                      className={`text-2xl font-semibold ${
+                        allTestCasesPassed ? "text-success" : "text-error"
+                      }`}
+                    >
+                      {allTestCasesPassed
+                        ? submission?.status
+                        : submission.stderr !== null
+                        ? "An Error Accured"
+                        : "Worng Answer"}
+                    </h1>
+                    <h1 className="mt-2 text-base-content/70">
+                      {allTestCasesPassed
+                        ? submission?.testCases.length
+                        : faildTestcase[0]?.testcaseNo}
+                      /{submission?.testCases.length} testcases passed
+                    </h1>
+                  </div>
+                  <div className="py-3">
+                    <p className="text-base-content/80">
+                      Submited at{" "}
+                      <span className="font-medium">
+                        {formateDate(submission?.createdAt)}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  {submission?.stderr === null ? (
+                    <>
+                      {allTestCasesPassed ? (
+                        <div className="my-4 flex items-center gap-6 text-center">
+                          <div className="py-5 px-10 bg-base-content/10 flex gap-3 rounded-md flex-col items-center justify-cente">
+                            <Cpu size="30" />
+                            <p className="font-bold text-lg">Memory</p>
+                            <p>{totalMemory} KB</p>
+                          </div>
+                          <div className="py-5 px-10 bg-base-content/10 flex rounded-md gap-3 flex-col items-center justify-center">
+                            <Timer size="30" />
+                            <p className="font-bold text-lg">Runtime</p>
+                            <p>{totalTime} s</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="my-6 space-y-6">
+                          <div>
+                            <p className="text-md font-medium">Input: </p>
+                            <input
+                              className="py-4 px-4 bg-base-300  w-full text-base-content/80 text-lg font-medium"
+                              value={faildTestcase[0]?.input}
+                              type="text"
+                              disabled
+                            />
+                          </div>
+                          <div>
+                            <p className="text-md font-medium">Output: </p>
+                            <input
+                              className="py-4 px-4 bg-base-300 w-full text-error text-lg font-medium"
+                              value={faildTestcase[0]?.output}
+                              type="text"
+                              disabled
+                            />
+                          </div>
+                          <div>
+                            <p className="text-md font-medium">Expected: </p>
+                            <input
+                              className="py-4 px-4 bg-base-300 w-full text-lg font-medium text-success"
+                              value={faildTestcase[0]?.expected}
+                              type="text"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                      )}
+                      <div className="py-5">
+                        <div className="flex items-center font-medium text-base-content/70">
+                          <p className="border-r border-base-content/20 px-4 py-3 bg-base-100/30">
+                            Code
+                          </p>
+                          <p className="px-4 py-3 bg-base-100/30">
+                            {submission?.language.toLowerCase()}
+                          </p>
+                        </div>
+                        <div className="w-full h-full ">
+                          <div className="py-3 px-6 bg-[#282a36]">
+                            <Highlight
+                              className={`${submission?.language.toLowerCase()} `}
+                            >
+                              {submission?.source_code}
+                            </Highlight>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="py-3 px-6 bg-[#282a36] mt-6">
+                        <p className="text-lg text-error font-medium">
+                          {JSON.parse(submission?.stderr || "[]")[0]}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
