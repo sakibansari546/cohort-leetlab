@@ -9,7 +9,7 @@ const AddToPlaylistProblemModal = ({ problemId }) => {
   const playlists = data?.playlists;
   const [selectedPlaylistId, setSelectedPlaylistId] = useState("");
 
-  const mutation = useAddProblemInPlaylistMutation();
+  const mutation = useAddProblemInPlaylistMutation(selectedPlaylistId);
 
   const handleSelectChange = (e) => {
     setSelectedPlaylistId(e.target.value);

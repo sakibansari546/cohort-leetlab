@@ -12,6 +12,7 @@ import Navbar from "./components/Navbar";
 
 import { useThemeStore } from "./store/themeStore";
 import { useGetUserQuery } from "./querys/useUserQuery";
+import PlaylistsPage from "./pages/PlaylistsPage";
 
 function App() {
   const { theme } = useThemeStore();
@@ -63,12 +64,17 @@ function App() {
               path="/problems"
               element={user ? <ProblemsPage /> : <Navigate to="/login" />}
             />
+
+            <Route
+              path="/playlists/:playlistId"
+              element={user ? <PlaylistsPage /> : <Navigate to="/login" />}
+            />
             <Route path="theme" element={<Theme />} />
           </Route>
-            <Route
-              path="/problems/:problemId"
-              element={user ? <ProblemPage /> : <Navigate to="/login" />}
-            />
+          <Route
+            path="/problems/:problemId"
+            element={user ? <ProblemPage /> : <Navigate to="/login" />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
