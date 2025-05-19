@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 
 import {
@@ -7,6 +8,7 @@ import {
   ChevronLeft,
   CloudUploadIcon,
   Code2,
+  Code2Icon,
   Loader2,
   LucidePlay,
   Maximize,
@@ -14,14 +16,15 @@ import {
   Palette,
 } from "lucide-react";
 
-import ProblemLeftPannel from "../components/ProblemLeftPannel";
 import ProblemTestcasesPannel from "../components/ProblemTestcasesPannel";
-import { useGetProblemByIdQuery } from "../querys/useProblemQuery";
-import { Link, useParams } from "react-router-dom";
+import ProblemLeftPannel from "../components/ProblemLeftPannel";
+import ProblemTestcasesResultTab from "../components/ProblemTestcasesResultTab";
+
 import { getJudge0LangaugeId } from "../utils/language";
+
+import { useGetProblemByIdQuery } from "../querys/useProblemQuery";
 import { useCreateSubmissionMutation } from "../querys/useSubmissionQuery";
 import { useRunCodeMutation } from "../querys/useRunCodeQuery";
-import ProblemTestcasesResultTab from "../components/ProblemTestcasesResultTab";
 
 const ProblemPage = () => {
   const { problemId } = useParams();
@@ -62,10 +65,8 @@ const ProblemPage = () => {
       expected_outputs: problem.testcases.map((tCase) => tCase.output),
       source_code,
     };
-
     runCodeMutation.mutate(data);
   };
-
   useEffect(() => {
     if (runCodeMutation.isPending && testcaseResultTabInputRef.current) {
       testcaseResultTabInputRef.current.checked = true;
@@ -73,7 +74,6 @@ const ProblemPage = () => {
     }
   }, [runCodeMutation.isPending]);
 
-  
   const TestcasesOrResultTabContent = () => {
     switch (activeTeastcasesOrResultTab) {
       case "testcases":
@@ -140,16 +140,36 @@ const ProblemPage = () => {
                 <button
                   onClick={handleRunCode}
                   className="btn btn-sm md:btn-md"
+                  disabled={mutation.isPending || runCodeMutation.isPending}
                 >
-                  <LucidePlay size="18" />
-                  Run
+                  {runCodeMutation.isPending ? (
+                    <>
+                      <Loader2 className="animate-spin" size="18" />
+                      Running...
+                    </>
+                  ) : (
+                    <>
+                      <LucidePlay size="18" />
+                      Run
+                    </>
+                  )}
                 </button>
                 <button
                   onClick={handleSubmitCode}
                   className="btn btn-accent btn-sm md:btn-md"
+                  disabled={mutation.isPending || runCodeMutation.isPending}
                 >
-                  <CloudUploadIcon size="18" />
-                  Submit
+                  {mutation.isPending ? (
+                    <>
+                      <Loader2 className="animate-spin" size="18" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <CloudUploadIcon size="18" />
+                      Submit
+                    </>
+                  )}
                 </button>
               </div>
               <div>
@@ -201,6 +221,11 @@ const ProblemPage = () => {
                                 defaultValue="JavaScript"
                                 onChange={(e) => {
                                   setLanguage(e.target.value.toLowerCase());
+                                  setSource_code(
+                                    problem?.codeSnippets[
+                                      e.target.value.toUpperCase()
+                                    ]
+                                  );
                                 }}
                                 className="select select-sm bg-base-300 border-none outline-none focus:outline-0 text-base-content cursor-pointer"
                               >
@@ -220,6 +245,7 @@ const ProblemPage = () => {
                           </div>
                         </div>
                       </div>
+                      {/* Editor */}
                       <div className="overflow-hidden">
                         {isPending ? (
                           <div className="skeleton bg-base-300 w-full h-[40vh] rounded-lg overflow-y-auto border border-base-content/30"></div>
@@ -243,6 +269,7 @@ const ProblemPage = () => {
                             }
                             language={language.toLowerCase()}
                             onMount={handleEditorDidMount}
+                            onChange={(value) => setSource_code(value)}
                           />
                         )}
                       </div>
@@ -254,32 +281,54 @@ const ProblemPage = () => {
                         <div className="bg-base-300 z-50 w-full sticky top-0 rounded-lg border border-base-content/30 rounded-b-none mb-3">
                           <div className="h-10 flex items-center justify-between  border border-base-content/30 border-b-0 rounded-lg rounded-b-none">
                             <div className="tabs tabs-lift">
-                              <input
-                                type="radio"
-                                name="testcase_tab"
-                                className="tab"
-                                aria-label="TestCases"
-                                checked={
-                                  activeTeastcasesOrResultTab === "testcases"
-                                }
-                                onChange={() =>
-                                  setActiveTestcasesOrResultTab("testcases")
-                                }
-                              />
+                              <label className="tab space-x-2">
+                                <input
+                                  type="radio"
+                                  name="testcase_tab"
+                                  className="tab"
+                                  aria-label="TestCases"
+                                  checked={
+                                    activeTeastcasesOrResultTab === "testcases"
+                                  }
+                                  onChange={() =>
+                                    setActiveTestcasesOrResultTab("testcases")
+                                  }
+                                />
+                                <CheckSquare
+                                  size="18"
+                                  className={`${
+                                    activeTeastcasesOrResultTab == "testcases"
+                                      ? "text-success"
+                                      : ""
+                                  }`}
+                                />
+                                <span>TestCases</span>
+                              </label>
 
-                              <input
-                                type="radio"
-                                name="testcase_tab"
-                                className="tab"
-                                aria-label="Result"
-                                ref={testcaseResultTabInputRef}
-                                checked={
-                                  activeTeastcasesOrResultTab === "result"
-                                }
-                                onChange={() =>
-                                  setActiveTestcasesOrResultTab("result")
-                                }
-                              />
+                              <label className="tab space-x-2">
+                                <input
+                                  type="radio"
+                                  name="testcase_tab"
+                                  className="tab"
+                                  aria-label="Result"
+                                  ref={testcaseResultTabInputRef}
+                                  checked={
+                                    activeTeastcasesOrResultTab === "result"
+                                  }
+                                  onChange={() =>
+                                    setActiveTestcasesOrResultTab("result")
+                                  }
+                                />
+                                <Code2Icon
+                                  size="20"
+                                  className={`${
+                                    activeTeastcasesOrResultTab == "result"
+                                      ? "text-success"
+                                      : ""
+                                  }`}
+                                />
+                                <span>Result</span>
+                              </label>
                             </div>
                             <button className="btn btn-ghost">
                               <Maximize size="18" />
