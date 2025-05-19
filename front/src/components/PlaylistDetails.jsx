@@ -23,6 +23,7 @@ import {
   useRemoveProblemInPlaylistMutation,
 } from "../querys/usePlaylistQuery";
 import EditPlaylistModal from "./EditPlaylistModal";
+import AddProblemsInPlaylistModal from "./AddProblemsInPlaylistModal";
 
 const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
   const { playlistId } = useParams();
@@ -90,6 +91,7 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
     <div className="w-[100vw] overflow-x-auto ">
       <AddToPlaylistProblemModal problemId={problemId} />
       <EditPlaylistModal playlist={playlist} />
+      <AddProblemsInPlaylistModal playlist={playlist} />
 
       <div className="w-full  py-8 px-14 flex gap-16">
         <div className="w-[400px] max-h-[600px] bg-base-content/10 py-3 px-4 rounded-lg">
@@ -112,7 +114,14 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                   <Play size="18" /> Practice
                 </button>
                 <div className="flex items-center gap-2">
-                  <button className="btn btn-circle">
+                  <button
+                    onClick={() =>
+                      document
+                        .getElementById("add_problems_in_playlist")
+                        .showModal()
+                    }
+                    className="btn btn-circle"
+                  >
                     <Plus size="18" />
                   </button>
                   <button className="btn btn-circle">
@@ -176,7 +185,10 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                   <div className="relative w-32 h-32">
                     <div className="absolute inset-0 flex items-center justify-center flex-col">
                       <div className="text-4xl font-bold">
-                        0<span className="text-lg opacity-50">/3</span>
+                        0
+                        <span className="text-lg opacity-50">
+                          /{problems?.length}
+                        </span>
                       </div>
                       <div className="text-sm opacity-70">Solved</div>
                     </div>
@@ -282,7 +294,7 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                             className="hover:underline"
                           >
                             <span className="line-clamp-2 break-words max-w-xs">
-                              {idx + 1}. {problem.title}
+                              {problem.title}
                             </span>
                           </Link>
                         </td>
