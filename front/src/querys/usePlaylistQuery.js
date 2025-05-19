@@ -82,7 +82,7 @@ export const useRemoveProblemInPlaylistMutation = (playlistId) => {
   return useMutation({
     mutationFn: removeProblemInPlaylist,
     onSuccess: () => {
-      toast.success("Problem Add Successfully");
+      toast.success("Problem remove Successfully");
       queryClient.invalidateQueries({ queryKey: ["playlists", playlistId] });
     },
     onError: (error) => {
@@ -91,3 +91,35 @@ export const useRemoveProblemInPlaylistMutation = (playlistId) => {
   });
 };
 
+const editPlaylist = async (body, playlistId) => {
+  const res = await axiosClient.put(`/playlist/${playlistId}/edit`, body);
+  return res.data.data;
+};
+
+export const useEditPlaylistMutation = (playlistId) => {
+  return useMutation({
+    mutationFn: (data) => editPlaylist(data, playlistId),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["playlists", playlistId] });
+      toast.success(data?.message || "Playlist Edit successfully");
+    },
+  });
+};
+
+const deletePlaylist = async (playlistId) => {
+  const res = await axiosClient.delete(`/playlist/${playlistId}/delete`);
+  return res.data.data;
+};
+
+export const useDeletePlaylistMutation = (playlistId) => {
+  return useMutation({
+    mutationFn: () => deletePlaylist(playlistId),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["playlists"] });
+      toast.success(data?.message || "Playlist delete successfully");
+    },
+    onError: (error) => {
+      toast.success(error?.response?.data?.message || "Something went wrong");
+    },
+  });
+};

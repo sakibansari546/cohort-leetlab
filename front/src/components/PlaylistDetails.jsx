@@ -14,20 +14,28 @@ import {
   RefreshCcw,
   SortAsc,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetUserQuery } from "../querys/useUserQuery";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AddToPlaylistProblemModal from "./AddToPlaylistProblemModal";
-import { useRemoveProblemInPlaylistMutation } from "../querys/usePlaylistQuery";
+import {
+  useDeletePlaylistMutation,
+  useRemoveProblemInPlaylistMutation,
+} from "../querys/usePlaylistQuery";
 import EditPlaylistModal from "./EditPlaylistModal";
 
 const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
   const { playlistId } = useParams();
+  const navigate = useNavigate();
   const { data } = useGetUserQuery();
   const problems = playlist?.problems;
   const [problemId, setProblemId] = useState([]);
 
-  const removeProblemMutation = useRemoveProblemInPlaylistMutation(playlistId);
+  const removeProblemMutation = useRemoveProblemInPlaylistMutation(
+    playlist?.id
+  );
+
+  const deletePlaylistMutation = useDeletePlaylistMutation(playlist?.id);
 
   const handleAddProblemInPlaylist = (problemId) => {
     document.getElementById("add_problem_in_playlist_modal").showModal();
@@ -41,6 +49,10 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
     });
   };
 
+  const handleDeletePlaylist = () => {
+    deletePlaylistMutation.mutate();
+  };
+
   const difficultyCounts = problems?.reduce(
     (acc, curr) => {
       const diff = curr?.problem?.difficulty;
@@ -51,6 +63,10 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
     },
     { EASY: 0, MEDIUM: 0, HARD: 0 }
   );
+
+  useEffect(() => {
+    if (deletePlaylistMutation.isSuccess) navigate("/problems");
+  }, [deletePlaylistMutation.isSuccess, navigate]);
 
   if (isPending) {
     return (
@@ -127,7 +143,14 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                           </button>
                         </li>
                         <li>
-                          <button>Delete playlist</button>
+                          <button
+                            disabled={deletePlaylistMutation.isPending}
+                            onClick={handleDeletePlaylist}
+                          >
+                            {deletePlaylistMutation.isPending
+                              ? "Loading..."
+                              : "Delete Playlist"}
+                          </button>
                         </li>
                       </ul>
                     </div>

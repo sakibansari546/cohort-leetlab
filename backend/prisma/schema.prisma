@@ -143,7 +143,7 @@ model Playlist {
 
   problems ProblemInPlaylist[]
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([name, userId])
 }
@@ -156,8 +156,8 @@ model ProblemInPlaylist {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  playlist Playlist @relation(fields: [playlistId], references: [id])
-  problem  Problem  @relation(fields: [problemId], references: [id])
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([playlistId, problemId])
 }

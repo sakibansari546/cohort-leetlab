@@ -43,6 +43,7 @@ class PlaylistController {
     await prisma.playlist.delete({
       where: {
         id: playlistId,
+        userId: req.userId,
       },
     });
 
