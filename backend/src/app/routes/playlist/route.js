@@ -19,6 +19,11 @@ export function register() {
     isAuth,
     controller.deletePlaylistHandler.bind(controller)
   );
+  router.put(
+    "/:playlistId/edit",
+    isAuth,
+    controller.editPlaylisthandler.bind(controller)
+  );
 
   router.get(
     "/playlists",
@@ -30,7 +35,6 @@ export function register() {
     isAuth,
     controller.getPlaylistByIdHandler.bind(controller)
   );
-
 
   router.post(
     "/:playlistId/add/problem",

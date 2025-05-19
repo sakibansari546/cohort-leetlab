@@ -48,7 +48,39 @@ class PlaylistController {
 
     res.status(200).json(new ApiResponse(200, "Playlist delete successfully"));
   });
+  editPlaylisthandler = AsyncHandler(async (req, res) => {
+    const { playlistId } = req.params;
+    const { name, description } = handleZodError(
+      this.validateParseData(createPlaylistSchema, req.body)
+    );
+    if (!playlistId) {
+      throw new ApiError(400, "playlistId is required");
+    }
 
+    const updatePlaylist = await prisma.playlist.update({
+      where: {
+        id: playlistId,
+        userId: req.userId,
+      },
+      data: {
+        name: name,
+        description: description || null,
+      },
+    });
+
+    if (!updatePlaylist) {
+      throw new ApiError(
+        404,
+        "Playlist not found or you do not have permission to edit"
+      );
+    }
+
+    res.status(200).json(
+      new ApiResponse(200, "Playlist updated successfully", {
+        playlist: updatePlaylist,
+      })
+    );
+  });
   getAllPlaylistsHandler = AsyncHandler(async (req, res) => {
     const playlists = await prisma.playlist.findMany({
       where: {
