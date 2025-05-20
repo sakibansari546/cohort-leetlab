@@ -3,6 +3,27 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosClient } from "../utils/axios";
 import { queryClient } from "../main";
 
+const getSubmissions = async () => {
+  const res = await axiosClient.get(`/submission/submissions/all`);
+  return res.data.data;
+};
+
+export const useGetSubmissionsQuery = () => {
+  return useQuery({
+    queryKey: ["submissions"],
+    queryFn: getSubmissions,
+    select: (data) => ({
+      ...data,
+      submissions: data.submissions
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        ),
+    }),
+  });
+};
+
 const getSubmissionsForProblem = async (problemId) => {
   const res = await axiosClient.get(`/submission/submissions/${problemId}`);
   return res.data.data;

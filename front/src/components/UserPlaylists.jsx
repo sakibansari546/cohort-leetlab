@@ -9,8 +9,19 @@ const UserPlaylists = () => {
   if (isError) {
     return (
       <div>
-        <h2 className="text-lg font-bold text-center">
-          {error?.response?.data?.message}
+        <h2 className="text-lg font-bold text-center py-4 text-error">
+          {error?.response?.data?.message || "Something went wrong"}
+        </h2>
+      </div>
+    );
+  }
+
+  if (isPending) {
+    return (
+      <div>
+        <h2 className="text-lg font-bold text-center py-4">
+          <span className="loading"></span>
+          <span> Loading...</span>
         </h2>
       </div>
     );
@@ -28,7 +39,7 @@ const UserPlaylists = () => {
           </div>
         ) : (
           lists?.playlists?.map((list) => (
-            <div className="flex items-center gap-5">
+            <div key={list.id} className="flex items-center gap-5">
               {/* List */}
               <Link to={`/playlists/${list.id}`} className="w-full bg-base-200">
                 <div className="p-3 flex items-center justify-between">
