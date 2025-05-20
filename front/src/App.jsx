@@ -8,11 +8,14 @@ import NotFoundPage from "./pages/NotFound";
 import VerifyEmail from "./pages/VerifyEmail";
 import ProblemsPage from "./pages/ProblemsPage";
 import ProblemPage from "./pages/ProblemPage";
+import PlaylistsPage from "./pages/PlaylistsPage";
+
 import Navbar from "./components/Navbar";
 
 import { useThemeStore } from "./store/themeStore";
 import { useGetUserQuery } from "./querys/useUserQuery";
-import PlaylistsPage from "./pages/PlaylistsPage";
+import UserProfilePage from "./pages/UserProfilePage";
+import UserDashboardPage from "./pages/UserDashboardPage";
 
 function App() {
   const { theme } = useThemeStore();
@@ -60,6 +63,16 @@ function App() {
             element={user ? <Navbar /> : <Navigate to="/login" />}
           >
             <Route index element={user ? <Home /> : <Navigate to="/login" />} />
+
+            <Route
+              path="/profile"
+              element={user ? <UserProfilePage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/dashboard"
+              element={user ? <UserDashboardPage /> : <Navigate to="/login" />}
+            />
+
             <Route
               path="/problems"
               element={user ? <ProblemsPage /> : <Navigate to="/login" />}

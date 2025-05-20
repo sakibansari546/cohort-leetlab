@@ -223,10 +223,8 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                   </div>
                   <div className="bg-base-300 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-error text-sm">
-                        {difficultyCounts.HARD}
-                      </span>
-                      <span className="text-sm">0</span>
+                      <span className="text-error text-sm">Hard</span>
+                      <span className="text-sm"> {difficultyCounts.HARD}</span>
                     </div>
                   </div>
                 </div>

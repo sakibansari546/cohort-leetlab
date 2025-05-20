@@ -8,6 +8,7 @@ import {
   Loader,
   Loader2,
   LogOut,
+  LucideLayoutDashboard,
   Palette,
   TypeOutline,
   User,
@@ -77,6 +78,12 @@ const Navbar = () => {
                       <Link to="/profile">
                         <User size="18" />
                         Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/dashboard">
+                        <LucideLayoutDashboard size="18" />
+                        Dashboard
                       </Link>
                     </li>
                     {user?.role === "ADMIN" && (
