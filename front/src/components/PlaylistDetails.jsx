@@ -36,6 +36,15 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
     playlist?.id
   );
 
+  const solvedProblemCount = problems?.reduce((count, problem) => {
+    const isSolved = problem.problem.solvedBy?.some(
+      (s) => s.userId === data?.user?.id
+    );
+    console.log(problem.problem);
+
+    return isSolved ? count + 1 : count;
+  }, 0);
+
   const deletePlaylistMutation = useDeletePlaylistMutation(playlist?.id);
 
   const handleAddProblemInPlaylist = (problemId) => {
@@ -110,9 +119,12 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                 </p>
               </div>
               <div className="flex items-center gap-6 py-3 ">
-                <button className="btn btn-primary">
+                <Link
+                  to={`/problems/${problems[0]?.problem?.id}`}
+                  className="btn btn-primary"
+                >
                   <Play size="18" /> Practice
-                </button>
+                </Link>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() =>
@@ -185,7 +197,7 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                   <div className="relative w-32 h-32">
                     <div className="absolute inset-0 flex items-center justify-center flex-col">
                       <div className="text-4xl font-bold">
-                        0
+                        {solvedProblemCount || 0}
                         <span className="text-lg opacity-50">
                           /{problems?.length}
                         </span>

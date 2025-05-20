@@ -321,12 +321,7 @@ const SubmissionResultTabContent = ({ submissionMutation }) => {
   if (submissionMutation.isPending) {
     return (
       <>
-        <div className=" border-base-300 bg-base-200 py-4 px-3">
-          <span className="loading loading-spinner loading-lg text-primary"></span>
-          <span className="mt-4 text-base font-semibold text-base-content">
-            Evaluating Submission...
-          </span>
-        </div>
+        <div className="skeleton border-base-300 bg-base-200 h-[82vh] py-4 px-3 overflow-y-auto"></div>
       </>
     );
   }

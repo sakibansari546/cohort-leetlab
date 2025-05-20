@@ -114,7 +114,11 @@ class PlaylistController {
       include: {
         problems: {
           include: {
-            problem: true,
+            problem: {
+              include: {
+                solvedBy: true,
+              },
+            },
           },
         },
       },
