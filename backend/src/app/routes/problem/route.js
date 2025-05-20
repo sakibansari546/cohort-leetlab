@@ -42,5 +42,16 @@ export function register() {
     controller.getSolvedProblemsHandler.bind(controller)
   );
 
+  router.get(
+    "/problems/solved/count",
+    isAuth,
+    controller.getSolvedProblemsCountHandler.bind(controller)
+  );
+  router.get(
+    "/problems/count",
+    isAuth,
+    controller.getProblemsCountHandler.bind(controller)
+  );
+
   return router;
 }

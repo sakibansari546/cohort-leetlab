@@ -21,7 +21,7 @@ const UserDashboardPage = () => {
 
   return (
     <div className="bg-base-100 py-6">
-      <div className="bg-base-100 w-[60%] min-h-screen my-6 mx-auto">
+      <div className="bg-base-100 w-[60%] min-h-screen mx-auto">
         <div className="p-4 space-y-3  w-full">
           <UserDashBoardHead />
           <div className="w-full bg-base-300">

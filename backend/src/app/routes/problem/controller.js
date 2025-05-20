@@ -282,12 +282,35 @@ class ProblemController {
       },
     });
 
-    if (!solvedProblems || solvedProblems.length === 0) {
-      throw new ApiError(404, "No solved problem found");
-    }
     res.status(200).json(
       new ApiResponse(200, "Solved Problem fetched successfully", {
         solvedProblems,
+      })
+    );
+  });
+  getSolvedProblemsCountHandler = AsyncHandler(async (req, res) => {
+    const solvedProblems = await prisma.problem.count({
+      where: {
+        solvedBy: {
+          some: {
+            userId: req.userId,
+          },
+        },
+      },
+    });
+
+    res.status(200).json(
+      new ApiResponse(200, "Solved Problem count fetched successfully", {
+        count: solvedProblems,
+      })
+    );
+  });
+  getProblemsCountHandler = AsyncHandler(async (req, res) => {
+    const problems = await prisma.problem.count({});
+
+    res.status(200).json(
+      new ApiResponse(200, "Solved Problem count fetched successfully", {
+        count: problems,
       })
     );
   });

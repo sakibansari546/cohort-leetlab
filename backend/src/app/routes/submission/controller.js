@@ -65,6 +65,19 @@ class SubmissionController {
       })
     );
   });
+  getAllSubmissionCount = AsyncHandler(async (req, res) => {
+    const submissionsCount = await prisma.submission.count({
+      where: {
+        userId: req.userId,
+      },
+    });
+
+    res.status(200).json(
+      new ApiResponse(200, "Submissions count fetched", {
+        count: submissionsCount,
+      })
+    );
+  });
 }
 
 export default SubmissionController;

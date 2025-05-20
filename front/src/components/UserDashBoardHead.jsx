@@ -1,6 +1,44 @@
 import React from "react";
+import {
+  useGetProblemsCountQuery,
+  useGetProblemsQuery,
+  useGetSolvedProblemsCountQuery,
+  useGetSolvedProblemsQuery,
+} from "../querys/useProblemQuery";
+import {
+  useGetSubmissionsCountQuery,
+  useGetSubmissionsQuery,
+} from "../querys/useSubmissionQuery";
 
 const UserDashBoardHead = () => {
+  const { data, isPending } = useGetSolvedProblemsCountQuery();
+  const { data: problemsCountData } = useGetProblemsCountQuery();
+  const { data: solvedProblemsData } = useGetSolvedProblemsQuery();
+
+  const { data: submissionsCountData } = useGetSubmissionsCountQuery();
+  const { data: submissionsData } = useGetSubmissionsQuery();
+
+  const difficultyCounts = solvedProblemsData?.solvedProblems?.reduce(
+    (acc, curr) => {
+      const diff = curr?.difficulty;
+      if (diff) {
+        acc[diff] = (acc[diff] || 0) + 1;
+      }
+      return acc;
+    },
+    { EASY: 0, MEDIUM: 0, HARD: 0 }
+  );
+  const submissionsLanguageCounts = submissionsData?.submissions?.reduce(
+    (acc, curr) => {
+      const lang = curr?.language;
+      if (lang) {
+        acc[lang] = (acc[lang] || 0) + 1;
+      }
+      return acc;
+    },
+    { JAVASCRIPT: 0, PYTHON: 0, JAVA: 0 }
+  );
+
   return (
     <div>
       <div className="flex flex-col gap-5">
@@ -12,7 +50,10 @@ const UserDashBoardHead = () => {
                   <div className="relative w-32 h-32">
                     <div className="absolute inset-0 flex items-center justify-center flex-col">
                       <div className="text-4xl font-bold">
-                        0<span className="text-lg opacity-50">/343</span>
+                        {isPending ? "0" : data?.count}
+                        <span className="text-lg opacity-50">
+                          /{problemsCountData?.count}
+                        </span>
                       </div>
                       <div className="text-sm opacity-70">Solved</div>
                     </div>
@@ -36,19 +77,21 @@ const UserDashBoardHead = () => {
                   <div className="bg-base-200 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-success text-sm">Easy</span>
-                      <span className="text-sm">3</span>
+                      <span className="text-sm">{difficultyCounts?.EASY}</span>
                     </div>
                   </div>
                   <div className="bg-base-200 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-warning text-sm">Med.</span>
-                      <span className="text-sm">4</span>
+                      <span className="text-sm">
+                        {difficultyCounts?.MEDIUM}
+                      </span>
                     </div>
                   </div>
                   <div className="bg-base-200 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-error text-sm">Hard</span>
-                      <span className="text-sm"> 54</span>
+                      <span className="text-sm">{difficultyCounts?.HARD}</span>
                     </div>
                   </div>
                 </div>
@@ -62,7 +105,7 @@ const UserDashBoardHead = () => {
                   <div className="relative w-32 h-32">
                     <div className="absolute inset-0 flex items-center justify-center flex-col">
                       <div className="text-4xl font-bold">
-                        0<span className="text-lg opacity-50">/343</span>
+                        {submissionsData?.submissions?.length || 0}
                       </div>
                       <div className="text-sm opacity-70">Submissions</div>
                     </div>
@@ -85,20 +128,26 @@ const UserDashBoardHead = () => {
                 <div className="space-y-2">
                   <div className="bg-base-200 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-success text-sm">Easy</span>
-                      <span className="text-sm">3</span>
+                      <span className="text-success text-sm">Javascript</span>
+                      <span className="text-sm">
+                        {submissionsLanguageCounts?.JAVASCRIPT}
+                      </span>
                     </div>
                   </div>
                   <div className="bg-base-200 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-warning text-sm">Med.</span>
-                      <span className="text-sm">4</span>
+                      <span className="text-warning text-sm">Python</span>
+                      <span className="text-sm">
+                        {submissionsLanguageCounts?.PYTHON}
+                      </span>
                     </div>
                   </div>
                   <div className="bg-base-200 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-error text-sm">Hard</span>
-                      <span className="text-sm"> 54</span>
+                      <span className="text-error text-sm">Java</span>
+                      <span className="text-sm">
+                        {submissionsLanguageCounts?.JAVA}
+                      </span>
                     </div>
                   </div>
                 </div>

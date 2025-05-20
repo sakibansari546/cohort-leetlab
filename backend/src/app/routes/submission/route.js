@@ -24,6 +24,11 @@ export function register() {
     isAuth,
     controller.getAllSubmissionCountForProblem.bind(controller)
   );
+  router.get(
+    "/submissions/count",
+    isAuth,
+    controller.getAllSubmissionCount.bind(controller)
+  );
 
   return router;
 }
