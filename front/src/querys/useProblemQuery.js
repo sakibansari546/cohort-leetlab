@@ -13,6 +13,15 @@ export const useGetProblemsQuery = () => {
     queryKey: ["problems"],
     queryFn: getProblems,
     staleTime: 5 * 60 * 1000,
+    select: (data) => ({
+      ...data,
+      problems: data.problems
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        ),
+    }),
   });
 };
 

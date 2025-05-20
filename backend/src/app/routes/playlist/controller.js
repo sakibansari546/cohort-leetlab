@@ -95,11 +95,6 @@ class PlaylistController {
         },
       },
     });
-
-    if (!playlists || playlists.length === 0) {
-      throw new ApiError(404, "No playlists found");
-    }
-
     res
       .status(200)
       .json(

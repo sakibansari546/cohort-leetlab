@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   BookOpen,
-  GraduationCap,
   Star,
   FileText,
   FilePlus,
@@ -19,6 +18,7 @@ const ProblemsPageSidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data, isPending, isError, error } = useGetPlaylistsQuery();
   const playlists = data?.playlists;
+
   const errorMessage =
     error?.response?.data.message || "Failed to load playlists.";
 
@@ -56,10 +56,13 @@ const ProblemsPageSidebar = () => {
         <div className="flex flex-col h-full overflow-y-auto lg:overflow-visible">
           {/* Main navigation */}
           <div className="p-4 space-y-2">
-            <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-300 cursor-pointer">
+            <Link
+              to="/problems"
+              className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-300 cursor-pointer"
+            >
               <BookOpen className="w-5 h-5" />
               <span className="font-medium">Library</span>
-            </div>
+            </Link>
           </div>
 
           <div className="divider mx-4 my-1"></div>

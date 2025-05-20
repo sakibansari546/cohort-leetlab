@@ -10,7 +10,7 @@ import ProblemsHeader from "../components/ProblemsHeader";
 import { useGetProblemsQuery } from "../querys/useProblemQuery";
 import { useGetUserQuery } from "../querys/useUserQuery";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AddToPlaylistProblemModal from "../components/AddToPlaylistProblemModal";
 
 const ProblemsPage = () => {
@@ -18,7 +18,13 @@ const ProblemsPage = () => {
 
   const { data, isFetching, isError, error } = useGetProblemsQuery();
   const { data: user } = useGetUserQuery();
-  const problems = data?.problems;
+  // const problems = data?.problems;
+
+  const problems = useMemo(
+    () => data?.problems.slice().sort((a, b) => a.createdAt - b.createdAt),
+    [data?.problems]
+  );
+  
   const errorMessage = error?.response.data.message;
 
   const [problemId, setProblemId] = useState([]);

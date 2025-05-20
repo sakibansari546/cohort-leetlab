@@ -163,8 +163,42 @@ const ProblemEditorialTabContent = () => {
   return <div className=" border-base-300 bg-base-200 p-10">Editorial</div>;
 };
 
-const ProblemSolutionsTabContent = () => {
-  return <div className=" border-base-300 bg-base-200 p-10">solution</div>;
+const ProblemSolutionsTabContent = ({ problem }) => {
+  return (
+    <div className=" border-base-300 bg-base-200">
+      <div className="py-6 px-4 space-y-3">
+        <div className="px-2">
+          <h2 className="text-2xl font-bold">Solutions</h2>
+        </div>
+        <div
+          tabIndex={0}
+          className="collapse collapse-arrow border-base-300 border bg-base-300"
+        >
+          <div className="collapse-title font-semibold">
+            <div className="flex items-center justify-between ">
+              <h2 className="text-lg">{problem.title}</h2>
+            </div>
+          </div>
+          <div className="collapse-content text-sm">
+            <div className="w-full h-full space-y-3">
+              {Object.entries(problem.referenceSolutions).map(
+                ([language, code]) => (
+                  <div>
+                    <h3 className="py-3 text-lg font-semibold">{language}</h3>
+                    <div className="py-3 px-6 bg-[#282a36]">
+                      <Highlight className={`${language.toLowerCase()}`}>
+                        {code}
+                      </Highlight>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const ProblemSubmissionsTabContent = ({ problemId }) => {
@@ -193,10 +227,10 @@ const ProblemSubmissionsTabContent = ({ problemId }) => {
 
   if (submissions?.length === 0) {
     return (
-      <div className="border-base-300 bg-base-200 h-[82vh] py-4 px-3 overflow-y-auto">
-        <h3 className="text-center text-2xl font-extrabold text-error my-6">
-          No submissions to show yet.
-        </h3>
+      <div className="border-base-300 bg-base-200 py-4 px-3">
+        <h2 className="text-center text-lg font-semibold text-base-content/70">
+          Nothing to show now.
+        </h2>
       </div>
     );
   }
@@ -224,7 +258,7 @@ const ProblemSubmissionsTabContent = ({ problemId }) => {
                   <td>
                     <h2
                       className={`font-semibold ${
-                        submission.status === "Wrong_Answer"
+                        submission.status === "Wrong Answer"
                           ? "text-error"
                           : "text-success"
                       }`}
@@ -456,9 +490,7 @@ const TabContent = ({ problem, activeTab, submissionMutation }) => {
     case "editorial":
       return <ProblemEditorialTabContent editorial={problem?.editorial} />;
     case "solutions":
-      return (
-        <ProblemSolutionsTabContent editorial={problem?.referenceSolutions} />
-      );
+      return <ProblemSolutionsTabContent problem={problem} />;
     case "submissions":
       return <ProblemSubmissionsTabContent problemId={problem?.id} />;
     case "submission_result":

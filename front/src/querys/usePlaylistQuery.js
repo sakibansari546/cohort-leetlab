@@ -14,6 +14,15 @@ export const useGetPlaylistsQuery = () => {
     queryKey: ["playlists"],
     queryFn: getPlaylists,
     staleTime: 5 * 60 * 1000,
+    select: (data) => ({
+      ...data,
+      playlists: data.playlists
+        .slice() // clone original array
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        ),
+    }),
   });
 };
 const getPlaylistById = async (playlistId) => {
