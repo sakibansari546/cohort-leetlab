@@ -8,5 +8,5 @@ export function formateDate(date) {
 
   const formateedDate = newDate.toLocaleDateString(undefined, options);
   const fromatedTime = newDate.toLocaleTimeString("en-US");
-  return `${formateedDate} ${fromatedTime}`;
+  return `${formateedDate} - ${fromatedTime}`;
 }

@@ -16,9 +16,9 @@ class SubmissionController {
       },
     });
 
-    if (!submissions || submissions.length == 0) {
-      throw new ApiError(404, "No Submissions");
-    }
+    // if (!submissions || submissions.length == 0) {
+    // throw new ApiError(404, "No Submissions");
+    // }
 
     res
       .status(200)

@@ -17,16 +17,18 @@ export const useGetUserQuery = () => {
   });
 };
 
-const signupAndLogin = async (body) => {
-  const res = await axiosClient.post(`/auth/${body.type}`, { ...body });
+const signupAndLogin = async (body, type) => {
+  const res = await axiosClient.post(`/auth/${type}`, body);
   return res.data.data;
 };
 
-export const useSignupAndLoginMutation = () => {
+export const useSignupAndLoginMutation = (type) => {
   return useMutation({
-    mutationFn: signupAndLogin,
+    mutationFn: (data) => signupAndLogin(data, type),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      if (type === "login") {
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      }
     },
   });
 };

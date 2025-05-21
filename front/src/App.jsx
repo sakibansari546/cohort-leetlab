@@ -20,11 +20,11 @@ import UserDashboardPage from "./pages/UserDashboardPage";
 function App() {
   const { theme } = useThemeStore();
   const { data, isLoading } = useGetUserQuery({
-    onError: (err) => {
-      if (err.response?.status === 401) {
-        window.location.href = "/login";
-      }
-    },
+    // onError: (err) => {
+    //   if (err.response?.status === 401) {
+    //     window.location.href = "/login";
+    //   }
+    // },
   });
   const user = data?.user;
 
@@ -39,7 +39,7 @@ function App() {
   return (
     <>
       <div data-theme={theme} className="max-w-[2000px] mx-auto min-h-00px]">
-        <ToastContainer position="bottom-right" />
+        <ToastContainer theme={theme} position="bottom-right" />
         <Routes>
           <Route
             path="/login"

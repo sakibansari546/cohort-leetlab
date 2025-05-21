@@ -32,6 +32,7 @@ export const useGetSubmissionsQuery = () => {
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         ),
     }),
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -68,6 +69,7 @@ export const useCreateSubmissionMutation = (problemId) => {
     mutationFn: (data) => createSubmission(data, problemId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["submissions", problemId] });
+      queryClient.invalidateQueries({ queryKey: ["problems"] });
     },
   });
 };

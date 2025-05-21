@@ -1,6 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { ArrowLeft, Cpu, Lightbulb, LinkIcon, Tag, Timer } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  Cpu,
+  FileText,
+  FlaskConical,
+  Lightbulb,
+  LinkIcon,
+  Tag,
+  Timer,
+  TimerReset,
+} from "lucide-react";
 import { useGetSubmissionsForProblemQuery } from "../querys/useSubmissionQuery";
 import { formateDate } from "../utils/date-formate";
 
@@ -510,54 +521,62 @@ const ProblemLeftPannel = ({ problem, submissionMutation }) => {
     <>
       <div className="bg-base-200 w-1/2 h-[90vh] rounded-lg overflow-y-auto border border-base-content/30">
         <div className="bg-base-300 w-full h-12 rounded-lg border border-base-content/30 ">
-          <div>
+          <div className="">
             {/* name of each tab group should be unique */}
-            <div className="tabs tabs-border">
+            <div className="tabs tabs-box border-b border-base-content/20 rounded-none">
               {/* Description */}
-              <input
-                type="radio"
-                name="my_tabs_2"
-                className="tab"
-                aria-label="Description"
-                onChange={() => setActiveTab("description")}
-                defaultChecked
-              />
-
+              <label className="tab flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="my_tabs_2"
+                  onChange={() => setActiveTab("description")}
+                  checked={activeTab === "description"}
+                />
+                <FileText size="18" />
+                Description
+              </label>
               {/* Editorail */}
-              <input
-                type="radio"
-                name="my_tabs_2"
-                className="tab"
-                onChange={() => setActiveTab("editorial")}
-                aria-label="Editorial"
-              />
+              <label className="tab flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="my_tabs_2"
+                  onChange={() => setActiveTab("editorial")}
+                />
+                <BookOpen size="18" />
+                Description
+              </label>
 
               {/* Solutions */}
-              <input
-                type="radio"
-                name="my_tabs_2"
-                className="tab"
-                aria-label="Solutions"
-                onChange={() => setActiveTab("solutions")}
-              />
-
+              <label className="tab flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="my_tabs_2"
+                  onChange={() => setActiveTab("solutions")}
+                />
+                <FlaskConical size="18" />
+                Solutions
+              </label>
               {/* All Submissions */}
-              <input
-                type="radio"
-                onChange={() => setActiveTab("submissions")}
-                name="my_tabs_2"
-                className="tab"
-                aria-label="Submissions"
-              />
+              <label className="tab flex items-center gap-2">
+                <input
+                  type="radio"
+                  onChange={() => setActiveTab("submissions")}
+                  name="my_tabs_2"
+                />
+                <TimerReset size="20" />
+                Submissions
+              </label>
 
-              <input
-                type="radio"
-                name="my_tabs_2"
-                className={`tab`}
-                ref={submissionTabInputRef}
-                onChange={() => setActiveTab("submission_result")}
-                aria-label="Submission Result"
-              />
+              <label className="tab flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="my_tabs_2"
+                  ref={submissionTabInputRef}
+                  onChange={() => setActiveTab("submission_result")}
+                />
+                <TimerReset className="text-accent" size="20" />
+                Result
+              </label>
             </div>
 
             <TabContent

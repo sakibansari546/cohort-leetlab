@@ -11,7 +11,7 @@ const UserSubmissions = () => {
   if (isError) {
     return (
       <div>
-        <h2 className="text-lg font-bold text-center py-4 text-error">
+        <h2 className="text-lg font-bold text-center py-4">
           {error?.response?.data?.message || "Something went wrong"}
         </h2>
       </div>
@@ -30,7 +30,7 @@ const UserSubmissions = () => {
   }
 
   return (
-    <div className="bg-base-300 border-base-300 py-6">
+    <div className="bg-base-300 border-base-300 py-3">
       <div>
         {" "}
         <table className="table table-zebra">

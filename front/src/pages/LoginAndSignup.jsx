@@ -13,7 +13,7 @@ import { useSignupAndLoginMutation } from "../querys/useUserQuery";
 const LoginAndSignup = ({ type }) => {
   const isSignupPage = type === "signup";
   const navigate = useNavigate();
-  const mutation = useSignupAndLoginMutation();
+  const mutation = useSignupAndLoginMutation(type);
 
   const {
     register,
@@ -24,7 +24,7 @@ const LoginAndSignup = ({ type }) => {
   });
 
   const onSubmit = async (data) => {
-    mutation.mutate({ ...data, type });
+    mutation.mutate(data);
   };
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const LoginAndSignup = ({ type }) => {
                             : errors.password && errors.password.message}
 
                           {mutation.isError &&
-                            mutation.error.response.data.message}
+                            mutation.error?.response?.data?.message}
                         </p>
                       </div>
                     )}

@@ -2,6 +2,7 @@ import { FileText, ListCheckIcon } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetPlaylistsQuery } from "../querys/usePlaylistQuery";
+import { formateDate } from "../utils/date-formate";
 
 const UserPlaylists = () => {
   const { data: lists, isPending, isError, error } = useGetPlaylistsQuery();
@@ -45,7 +46,12 @@ const UserPlaylists = () => {
                 <div className="p-3 flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <FileText size="30" />
-                    <h2 className="text-lg font-semibold">{list.name}</h2>
+                    <div>
+                      <h2 className="text-lg font-semibold">{list.name}</h2>
+                      <p className="text-base-content/60">
+                        {formateDate(list.createdAt).split("-")[0]}
+                      </p>
+                    </div>
                   </div>
                   <div className="flex items-center gap-1 btn">
                     <ListCheckIcon size="24" />

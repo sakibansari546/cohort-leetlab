@@ -1,5 +1,7 @@
 import {
   Book,
+  Circle,
+  CircleCheckBig,
   Dot,
   Edit,
   Ellipsis,
@@ -31,6 +33,8 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
   const { data } = useGetUserQuery();
   const problems = playlist?.problems;
   const [problemId, setProblemId] = useState([]);
+
+  const { data: user } = useGetUserQuery();
 
   const removeProblemMutation = useRemoveProblemInPlaylistMutation(
     playlist?.id
@@ -290,88 +294,102 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                       </td>
                     </tr>
                   ) : (
-                    problems?.map(({ problem }, idx) => (
-                      <tr
-                        key={problem.id}
-                        className={` ${
-                          idx % 2 == 0 && "bg-base-200"
-                        } rounded-xl`}
-                      >
-                        <td className="w-8">{idx + 1}</td>
-                        <td className="font-medium ">
-                          <Link
-                            to={`/problems/${problem.id}`}
-                            className="hover:underline"
-                          >
-                            <span className="line-clamp-2 break-words max-w-xs">
-                              {problem.title}
-                            </span>
-                          </Link>
-                        </td>
-                        <td className="text-right">55.6%</td>
-                        <td
-                          className={`capitalize ${
-                            problem.difficulty === "EASY".toUpperCase()
-                              ? "text-success"
-                              : problem.difficulty === "MEDIUM".toUpperCase()
-                              ? "text-warning"
-                              : "text-error"
-                          }`}
+                    problems?.map(({ problem }, idx) => {
+                      const isSolved = problem.solvedBy?.some(
+                        (userP) => userP.userId == user?.user?.id
+                      );
+                      return (
+                        <tr
+                          key={problem.id}
+                          className={` ${
+                            idx % 2 == 0 && "bg-base-200"
+                          } rounded-xl`}
                         >
-                          <span>{problem.difficulty}</span>
-                        </td>
-                        <td>
-                          <div className="w-24 bg-base-200 rounded-full h-2">
-                            <div
-                              className="bg-success h-2 rounded-full"
-                              style={{ width: "55%" }}
-                            ></div>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="dropdown dropdown-bottom dropdown-end">
-                            <button
-                              tabIndex={0}
-                              role="button"
-                              className="btn btn-sm md:btn"
+                          <td className="w-8">
+                            {isSolved ? (
+                              <CircleCheckBig
+                                size="18"
+                                className="text-success"
+                              />
+                            ) : (
+                              <Circle size="18" />
+                            )}
+                          </td>
+                          <td className="font-medium ">
+                            <Link
+                              to={`/problems/${problem.id}`}
+                              className="hover:underline"
                             >
-                              <Ellipsis size="18" />
-                            </button>
-                            <ul
-                              tabIndex={0}
-                              className="dropdown-content menu bg-base-100 rounded-box z-1 w-50 p-2 shadow-sm"
-                            >
-                              <li>
-                                <button
-                                  onClick={() =>
-                                    handleAddProblemInPlaylist(problem.id)
-                                  }
-                                >
-                                  Add to playlist
-                                </button>
-                                <button
-                                  disabled={removeProblemMutation.isPending}
-                                  onClick={() =>
-                                    handleRemoveProblemInPlaylist(problem.id)
-                                  }
-                                >
-                                  {removeProblemMutation.isPending ? (
-                                    <>
-                                      <Loader2
-                                        size="18"
-                                        className="animate-spin"
-                                      />
-                                    </>
-                                  ) : (
-                                    "Remove from playlist"
-                                  )}
-                                </button>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
+                              <span className="line-clamp-2 break-words max-w-xs">
+                                {problem.title}
+                              </span>
+                            </Link>
+                          </td>
+                          <td className="text-right">55.6%</td>
+                          <td
+                            className={`capitalize ${
+                              problem.difficulty === "EASY".toUpperCase()
+                                ? "text-success"
+                                : problem.difficulty === "MEDIUM".toUpperCase()
+                                ? "text-warning"
+                                : "text-error"
+                            }`}
+                          >
+                            <span>{problem.difficulty}</span>
+                          </td>
+                          <td>
+                            <div className="w-24 bg-base-200 rounded-full h-2">
+                              <div
+                                className="bg-success h-2 rounded-full"
+                                style={{ width: "55%" }}
+                              ></div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="dropdown dropdown-bottom dropdown-end">
+                              <button
+                                tabIndex={0}
+                                role="button"
+                                className="btn btn-sm md:btn"
+                              >
+                                <Ellipsis size="18" />
+                              </button>
+                              <ul
+                                tabIndex={0}
+                                className="dropdown-content menu bg-base-100 rounded-box z-1 w-50 p-2 shadow-sm"
+                              >
+                                <li>
+                                  <button
+                                    onClick={() =>
+                                      handleAddProblemInPlaylist(problem.id)
+                                    }
+                                  >
+                                    Add to playlist
+                                  </button>
+                                  <button
+                                    disabled={removeProblemMutation.isPending}
+                                    onClick={() =>
+                                      handleRemoveProblemInPlaylist(problem.id)
+                                    }
+                                  >
+                                    {removeProblemMutation.isPending ? (
+                                      <>
+                                        <Loader2
+                                          size="18"
+                                          className="animate-spin"
+                                        />
+                                      </>
+                                    ) : (
+                                      "Remove from playlist"
+                                    )}
+                                  </button>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
                   )}
                 </tbody>
               </table>

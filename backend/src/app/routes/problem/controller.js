@@ -239,9 +239,6 @@ class ProblemController {
       },
     });
 
-    if (!problems || problems.length === 0)
-      throw new ApiError(404, "No problem found!");
-
     res.json(
       new ApiResponse(200, "Problem fetched successfully", { problems })
     );
