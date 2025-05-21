@@ -124,7 +124,7 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
               </div>
               <div className="flex items-center gap-6 py-3 ">
                 <Link
-                  to={`/problems/${problems[0]?.problem?.id}`}
+                  to={`/problems/${problems[0]?.problem?.id || ""}`}
                   className="btn btn-primary"
                 >
                   <Play size="18" /> Practice

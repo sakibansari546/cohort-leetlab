@@ -1,10 +1,39 @@
 import React, { useState } from "react";
+import {
+  Camera,
+  Github,
+  Info,
+  Laptop2,
+  Linkedin,
+  Twitter,
+  Wrench,
+} from "lucide-react";
+
 import UserBasicInfoTab from "../components/UserBasicInfoTab";
 import UserAccountInfoTab from "../components/UserAccountInfoTab";
-import { Camera, Info, Wrench } from "lucide-react";
+
+import { useGetUserQuery } from "../querys/useUserQuery";
 
 const UserProfilePage = () => {
   const [activeTab, steActiveTab] = useState("basic-info");
+  const { data, isPending, isError, error } = useGetUserQuery();
+  const user = data?.user;
+
+  if (isPending) {
+    return (
+      <div className="w-full flex items-center flex-col justify-center h-[70vh]">
+        <span className="loading loading-bars loading-xl"></span>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full flex items-center flex-col justify-center h-[70vh]">
+        <h3 className="text-2xl font-bold">{error?.response?.data?.message}</h3>
+      </div>
+    );
+  }
 
   const RenderTabContent = () => {
     switch (activeTab) {
@@ -19,20 +48,39 @@ const UserProfilePage = () => {
     <div className="">
       <div className="w-[60%] mx-auto bg-base-00 min-h-screen space-y-6 py-6">
         <div className="p-8 bg-base-200">
-          <div className="flex items-center  gap- justify-around w-[50%] mx-auto">
+          <div className="flex items-center gap-15 justify-center w-[40vw] mx-auto">
             <div className="relative">
               <img
-                className="w-50 h-50"
-                src="https://avatar.iran.liara.run/public/girl"
+                className="w-50 h-50 object-cover rounded-full"
+                src={user?.profileImage}
                 alt=""
               />
               <button className="btn btn-lg btn-circle btn-accent absolute bottom-[5%] right-2">
                 <Camera />
               </button>
             </div>
-            <div>
-              <h2 className="text-3xl font-extrabold">Full Name</h2>
-              <h3 className="text-xl font-semibold">@username</h3>
+            <div className="space-y-1.5">
+              <h2 className="text-2xl font-extrabold">{user?.fullname}</h2>
+              <h3 className="text-xl font-semibold">
+                @{user?.username || "@username"}
+              </h3>
+              <p className="text-sm text-base-content/80">
+                {user?.basicInfo?.bio || "bio."}
+              </p>
+              <div className="flex items-center gap-4 pt-3">
+                <a href={user?.basicInfo?.socials.website || ""}>
+                  <Laptop2 />
+                </a>
+                <a href={user?.basicInfo?.socials.github || ""}>
+                  <Github />
+                </a>
+                <a href={user?.basicInfo?.socials.twitter || ""}>
+                  <Twitter />
+                </a>
+                <a href={user?.basicInfo?.socials.linkedIn || ""}>
+                  <Linkedin />
+                </a>
+              </div>
             </div>
           </div>
         </div>

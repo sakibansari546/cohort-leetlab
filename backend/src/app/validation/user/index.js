@@ -15,13 +15,17 @@ const updateUserBasicInfoSchema = z.object({
   gender: z.optional(
     z.enum(["MALE", "FEMALE", "OTHER"], { message: "Invalid Gender" })
   ),
-  birth: z.optional(z.date({ message: "Invalid date" })),
-  bio: z.optional(
-    z
-      .string({ message: "Bio must be string" })
-      .min(3, { message: "Bio must be at least 3 characters long" })
-      .max(30, { message: "Bio must not exceed 200 characters" })
-  ),
+  birth: z.preprocess((val) => {
+    if (typeof val === "string" && val.trim() === "") return undefined;
+    // HTML date inputs give us "YYYY-MM-DD" strings:
+    return val ? new Date(val) : undefined;
+  }, z.date({ message: "Invalid date" }).optional()),
+
+  bio: z.preprocess((val) => {
+    if (typeof val === "string" && val.trim() === "") return undefined;
+    return val;
+  }, z.string({ message: "Bio must be a string" }).min(3, { message: "Bio must be at least 3 characters long" }).max(200, { message: "Bio must not exceed 200 characters" }).optional()),
+
   website: z.optional(z.string({ message: "Website url must be string" })),
   github: z.optional(z.string({ message: "Github url must be string" })),
   twitter: z.optional(z.string({ message: "Twitter url must be string" })),

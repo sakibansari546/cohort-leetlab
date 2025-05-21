@@ -15,7 +15,7 @@ import {
 
 class ExecuteCodeController {
   validateParseData(schema, body) {
-    return schema.safeParse(body);
+    return schema.safeParse(body || {});
   }
   submitCode = AsyncHandler(async (req, res) => {
     const { source_code, language_id, stdins, expected_outputs } =

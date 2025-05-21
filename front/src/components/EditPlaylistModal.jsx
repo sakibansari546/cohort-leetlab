@@ -29,7 +29,7 @@ const EditPlaylistModal = ({ playlist }) => {
   return (
     <dialog id="edit_playlist_modal" className="modal">
       <div className="modal-box">
-        <h3 className="font-bold text-lg mb-4">Create Playlist</h3>
+        <h3 className="font-bold text-lg mb-4">Update Playlist</h3>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           <div className="form-control mb-4">
             <label htmlFor="playlist-name" className="label">

@@ -10,7 +10,6 @@ const createPlaylistSchema = z.object({
   description: z.optional(
     z
       .string({ message: "Description must be string" })
-      .nonempty({ message: "Description is required" })
       .max(200, { message: "Description must not exceed 200 characters" })
   ),
 });

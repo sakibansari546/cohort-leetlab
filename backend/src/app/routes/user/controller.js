@@ -14,7 +14,7 @@ import { updateUserBasicInfoSchema } from "../../validation/user/index.js";
 
 class UserController {
   validateParseData(schema, body) {
-    return schema.safeParse(body);
+    return schema.safeParse(body || {});
   }
 
   getUserHandler = AsyncHandler(async (req, res) => {
@@ -32,6 +32,11 @@ class UserController {
       },
       include: {
         solvedProblems: true,
+        basicInfo: {
+          include: {
+            socials: true,
+          },
+        },
       },
     });
 

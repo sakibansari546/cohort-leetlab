@@ -1,11 +1,41 @@
 import React, { useState } from "react";
 import { Calendar, Edit, Link, Send, User } from "lucide-react";
+import { useGetUserQuery } from "../querys/useUserQuery";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { updateUserBasicInfoSchema } from "../utils/zod-schema";
+
 const UserBasicInfoTab = () => {
   const [isEdit, setIsEsit] = useState(false);
+  const { data, isError, error } = useGetUserQuery();
+  const user = data?.user;
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(updateUserBasicInfoSchema),
+  });
+
+  console.log(errors);
+  const handleOnSubmit = (data) => {
+    console.log(data);
+  };
+
+  if (isError) {
+    return (
+      <div className="w-full flex items-center flex-col justify-center h-[70vh]">
+        <h3 className="text-2xl font-bold">{error?.response?.data?.message}</h3>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-base-100 border-base-300 p-6">
       <div>
-        <form>
+        <form onSubmit={handleSubmit(handleOnSubmit)}>
           {/* Basic Info */}
           <div className="pb-4">
             <h3 className="text-xl font-bold">Basic Infomation</h3>
@@ -17,6 +47,9 @@ const UserBasicInfoTab = () => {
                   <label className="input w-full">
                     <User size="20" />
                     <input
+                      {...register("fullname")}
+                      name="fullname"
+                      defaultValue={user?.fullname}
                       disabled={!isEdit}
                       type="text"
                       className="pl-2"
@@ -32,6 +65,9 @@ const UserBasicInfoTab = () => {
                   <label className="input w-full">
                     <User size="20" />
                     <input
+                      {...register("username")}
+                      name="username"
+                      defaultValue={user?.username}
                       disabled={!isEdit}
                       type="text"
                       className="pl-2"
@@ -47,14 +83,16 @@ const UserBasicInfoTab = () => {
                   <legend className="fieldset-legend text-lg">Gender</legend>
                   <label className="select w-full">
                     <select
+                      {...register("gender")}
+                      name="gender"
                       disabled={!isEdit}
-                      defaultValue="Male"
+                      defaultValue={user?.basicInfo?.gender}
                       className="ml-6"
                     >
                       <option disabled={true}>Select Gender</option>
-                      <option>Male</option>
-                      <option>Female</option>
-                      <option>Other</option>
+                      <option>MALE</option>
+                      <option>FEMALE</option>
+                      <option>OTHER</option>
                     </select>
                   </label>
                 </fieldset>
@@ -66,6 +104,11 @@ const UserBasicInfoTab = () => {
                   <label className="input w-full">
                     <Calendar size="20" />
                     <input
+                      {...register("birth")}
+                      name="birth"
+                      defaultValue={
+                        (user?.basicInfo?.birth, { valueAsDate: true })
+                      }
                       disabled={!isEdit}
                       type="date"
                       className="pl-2"
@@ -79,6 +122,9 @@ const UserBasicInfoTab = () => {
                 <fieldset className="fieldset w-full">
                   <legend className="fieldset-legend text-lg">Bio</legend>
                   <textarea
+                    {...register("bio")}
+                    name="bio"
+                    defaultValue={user?.basicInfo?.bio}
                     disabled={!isEdit}
                     className="textarea w-full"
                     placeholder="Bio"
@@ -100,11 +146,14 @@ const UserBasicInfoTab = () => {
                   <label className="input w-full">
                     <Link size="20" />
                     <input
+                      {...register("website")}
+                      name="website"
                       disabled={!isEdit}
-                      type="url"
-                      required
+                      type="text"
                       placeholder="https://"
-                      defaultValue="https://"
+                      defaultValue={
+                        user?.basicInfo?.socials.website || "https://"
+                      }
                     />
                   </label>
                 </fieldset>
@@ -112,15 +161,18 @@ const UserBasicInfoTab = () => {
               {/* Github */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">Fullname</legend>
+                  <legend className="fieldset-legend text-lg">Github</legend>
                   <label className="input w-full">
                     <Link size="20" />
                     <input
+                      {...register("github")}
+                      name="github"
                       disabled={!isEdit}
-                      type="url"
-                      required
+                      type="text"
                       placeholder="https://"
-                      defaultValue="https://"
+                      defaultValue={
+                        user?.basicInfo?.socials.github || "https://"
+                      }
                     />
                   </label>
                 </fieldset>
@@ -132,11 +184,14 @@ const UserBasicInfoTab = () => {
                   <label className="input w-full">
                     <Link size="20" />
                     <input
+                      {...register("twitter")}
+                      name="twitter"
                       disabled={!isEdit}
-                      type="url"
-                      required
+                      type="text"
                       placeholder="https://"
-                      defaultValue="https://"
+                      defaultValue={
+                        user?.basicInfo?.socials.twitter || "https://"
+                      }
                     />
                   </label>
                 </fieldset>
@@ -148,16 +203,23 @@ const UserBasicInfoTab = () => {
                   <label className="input w-full">
                     <Link size="20" />
                     <input
+                      {...register("linkedIn")}
+                      name="linkedIn"
                       disabled={!isEdit}
-                      type="url"
-                      required
+                      type="text"
                       placeholder="https://"
-                      defaultValue="https://"
+                      defaultValue={
+                        user?.basicInfo?.socials.linkedIn || "https://"
+                      }
                     />
                   </label>
                 </fieldset>
               </div>
             </div>
+          </div>
+
+          <div className="py-3">
+            <p className="text-error">Error</p>
           </div>
 
           <div className="flex items-center gap-4 justify-end">

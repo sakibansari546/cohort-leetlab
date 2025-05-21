@@ -47,8 +47,8 @@ export default function Hero() {
             <div className="absolute -z-10 -top-6 -left-6 w-32 h-32 bg-secondary opacity-5 rounded-full"></div>
           </div>
           <div className="flex-1">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              <h1 className="font-bold leading-14">
+            <div className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="font-bold leading-16">
                 {" "}
                 Master Coding Challenges with{" "}
               </h1>
@@ -56,7 +56,7 @@ export default function Hero() {
                 <span className="text-primary logo">HYPE </span>
                 <span className="logo">Coding</span>
               </h1>
-            </h1>
+            </div>
             <p className="py-6 text-lg md:text-xl text-base-content opacity-80">
               The ultimate platform to practice, learn, and excel in coding
               interviews. Solve problems, track progress, and build your coding

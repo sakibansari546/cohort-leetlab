@@ -26,7 +26,7 @@ import { handleZodError } from "../../utils/handle-zod-error.js";
 
 class AuthColtroller {
   validateParseData(schema, body) {
-    return schema.safeParse(body);
+    return schema.safeParse(body || {});
   }
 
   generateJWTTokens = {

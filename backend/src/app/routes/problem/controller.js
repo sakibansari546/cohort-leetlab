@@ -18,7 +18,7 @@ import { handleZodError } from "../../utils/handle-zod-error.js";
 
 class ProblemController {
   validateParseData(schema, body) {
-    return schema.safeParse(body);
+    return schema.safeParse(body || {});
   }
   createProblemHandler = AsyncHandler(async (req, res) => {
     // Get all data
