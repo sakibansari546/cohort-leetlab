@@ -543,7 +543,7 @@ const ProblemLeftPannel = ({ problem, submissionMutation }) => {
                   onChange={() => setActiveTab("editorial")}
                 />
                 <BookOpen size="18" />
-                Description
+                Editirial
               </label>
 
               {/* Solutions */}
