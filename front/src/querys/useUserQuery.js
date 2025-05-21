@@ -63,3 +63,21 @@ export const useUpdateUserBasicInfoMutation = () => {
     },
   });
 };
+
+export const updateUserProfileImage = async (body) => {
+  console.log(body);
+
+  const res = await axiosClient.patch(`/user/update/profile-image`, body, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data.data;
+};
+
+export const useUpdateUserProfileImageMutation = () => {
+  return useMutation({
+    mutationFn: updateUserProfileImage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+  });
+};

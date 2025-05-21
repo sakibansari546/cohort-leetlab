@@ -11,12 +11,12 @@ export function register() {
 
   router.get("/me", isAuth, controller.getUserHandler.bind(controller));
 
-  router.patch(
-    "/update/profile-image",
-    isAuth,
-    handleProfileImageWithMulter("profileImage"),
-    controller.updateProfileImageHandler.bind(controller)
-  );
+    router.patch(
+      "/update/profile-image",
+      isAuth,
+      handleProfileImageWithMulter("profileImage"),
+      controller.updateProfileImageHandler.bind(controller)
+    );
 
   router.patch(
     "/update/basic/info",

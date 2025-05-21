@@ -22,8 +22,6 @@ const UserBasicInfoTab = () => {
     updateError,
   } = useUpdateUserBasicInfoMutation();
 
-  console.log(user?.basicInfo.birth);
-
   const {
     handleSubmit,
     register,
@@ -50,6 +48,7 @@ const UserBasicInfoTab = () => {
   }
 
   return (
+    // Not Proper error handling
     <div className="bg-base-100 border-base-300 p-6">
       <div>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
@@ -60,7 +59,9 @@ const UserBasicInfoTab = () => {
               {/* Fullname */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">Fullname</legend>
+                  <legend className="fieldset-legend text-[16px]">
+                    Fullname
+                  </legend>
                   <label className="input w-full">
                     <User size="20" />
                     <input
@@ -78,7 +79,9 @@ const UserBasicInfoTab = () => {
               {/* Username */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">Username</legend>
+                  <legend className="fieldset-legend text-[16px] text-lg">
+                    Username
+                  </legend>
                   <label className="input w-full">
                     <User size="20" />
                     <input
@@ -97,7 +100,9 @@ const UserBasicInfoTab = () => {
               {/* Gender */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">Gender</legend>
+                  <legend className="fieldset-legend text-[16px] text-lg">
+                    Gender
+                  </legend>
                   <label className="select w-full">
                     <select
                       {...register("gender")}
@@ -117,7 +122,9 @@ const UserBasicInfoTab = () => {
               {/* Date of birth */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">Birth</legend>
+                  <legend className="fieldset-legend text-[16px] text-lg">
+                    Birth
+                  </legend>
                   <label className="input w-full">
                     <Calendar size="20" />
                     <input
@@ -135,7 +142,9 @@ const UserBasicInfoTab = () => {
               {/* Bio */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">Bio</legend>
+                  <legend className="fieldset-legend text-[16px] text-lg">
+                    Bio
+                  </legend>
                   <textarea
                     {...register("bio")}
                     name="bio"
@@ -157,7 +166,9 @@ const UserBasicInfoTab = () => {
               {/* Website */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">Website</legend>
+                  <legend className="fieldset-legend text-[16px] text-lg">
+                    Website
+                  </legend>
                   <label className="input w-full">
                     <Link size="20" />
                     <input
@@ -176,7 +187,9 @@ const UserBasicInfoTab = () => {
               {/* Github */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">Github</legend>
+                  <legend className="fieldset-legend text-[16px] text-lg">
+                    Github
+                  </legend>
                   <label className="input w-full">
                     <Link size="20" />
                     <input
@@ -195,7 +208,9 @@ const UserBasicInfoTab = () => {
               {/* Twitter */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">Twitter</legend>
+                  <legend className="fieldset-legend text-[16px] text-lg">
+                    Twitter
+                  </legend>
                   <label className="input w-full">
                     <Link size="20" />
                     <input
@@ -214,7 +229,9 @@ const UserBasicInfoTab = () => {
               {/* LinkdeIn */}
               <div className="w-full">
                 <fieldset className="fieldset w-full">
-                  <legend className="fieldset-legend text-lg">LinkdeIn</legend>
+                  <legend className="fieldset-legend text-[16px] text-lg">
+                    LinkdeIn
+                  </legend>
                   <label className="input w-full">
                     <Link size="20" />
                     <input
