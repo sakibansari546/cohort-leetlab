@@ -49,3 +49,17 @@ export const useLogoutMutation = () => {
     },
   });
 };
+
+export const updateUserBasicInfo = async (body) => {
+  const res = await axiosClient.patch(`/user/update/basic/info`, body);
+  return res.data.data;
+};
+
+export const useUpdateUserBasicInfoMutation = () => {
+  return useMutation({
+    mutationFn: updateUserBasicInfo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+  });
+};

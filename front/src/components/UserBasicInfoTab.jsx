@@ -1,15 +1,28 @@
 import React, { useState } from "react";
-import { Calendar, Edit, Link, Send, User } from "lucide-react";
-import { useGetUserQuery } from "../querys/useUserQuery";
+import { Calendar, Edit, Link, Loader2, Send, User } from "lucide-react";
+import {
+  useGetUserQuery,
+  useUpdateUserBasicInfoMutation,
+} from "../querys/useUserQuery";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateUserBasicInfoSchema } from "../utils/zod-schema";
+import { toast } from "react-toastify";
 
 const UserBasicInfoTab = () => {
   const [isEdit, setIsEsit] = useState(false);
   const { data, isError, error } = useGetUserQuery();
   const user = data?.user;
+
+  const {
+    mutateAsync,
+    isPending,
+    isError: updateIsError,
+    updateError,
+  } = useUpdateUserBasicInfoMutation();
+
+  console.log(user?.basicInfo.birth);
 
   const {
     handleSubmit,
@@ -19,9 +32,13 @@ const UserBasicInfoTab = () => {
     resolver: zodResolver(updateUserBasicInfoSchema),
   });
 
-  console.log(errors);
-  const handleOnSubmit = (data) => {
-    console.log(data);
+  const handleOnSubmit = async (data) => {
+    await mutateAsync(data, {
+      onSuccess: (data) => {
+        setIsEsit(false);
+        toast.success(data?.message || "Profile updated successfully");
+      },
+    });
   };
 
   if (isError) {
@@ -106,9 +123,7 @@ const UserBasicInfoTab = () => {
                     <input
                       {...register("birth")}
                       name="birth"
-                      defaultValue={
-                        (user?.basicInfo?.birth, { valueAsDate: true })
-                      }
+                      defaultValue={user?.basicInfo.birth}
                       disabled={!isEdit}
                       type="date"
                       className="pl-2"
@@ -219,7 +234,9 @@ const UserBasicInfoTab = () => {
           </div>
 
           <div className="py-3">
-            <p className="text-error">Error</p>
+            <p className="text-error">
+              {updateIsError && updateError?.response?.data?.message}
+            </p>
           </div>
 
           <div className="flex items-center gap-4 justify-end">
@@ -237,6 +254,7 @@ const UserBasicInfoTab = () => {
                 <div className="flex items-center gap-4">
                   {" "}
                   <button
+                    disabled={isPending}
                     type="button"
                     onClick={() => setIsEsit(false)}
                     className="btn flex items-center btn-md"
@@ -244,11 +262,21 @@ const UserBasicInfoTab = () => {
                     <span>Cancle</span>
                   </button>
                   <button
+                    disabled={isPending}
                     type="submit"
                     className="btn btn-primary flex items-center btn-md"
                   >
-                    <Send className="mt-0.5" size="18" />
-                    <span>Submit</span>
+                    {isPending ? (
+                      <>
+                        <Loader2 className="mt-0.5 animate-spin" size="18" />
+                        <span>loading</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mt-0.5" size="18" />
+                        <span>Submit</span>
+                      </>
+                    )}
                   </button>
                 </div>
               )}
