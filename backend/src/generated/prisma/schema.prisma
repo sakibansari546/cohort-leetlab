@@ -25,10 +25,37 @@ enum Difficulty {
   HARD
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model Social {
+  id       String  @id @default(uuid())
+  website  String?
+  twitter  String?
+  github   String?
+  linkedIn String?
+
+  BasicInfo BasicInfo?
+}
+
+model BasicInfo {
+  id       String  @id @default(uuid())
+  gender   Gender?
+  bio      String?
+  socialId String? @unique
+  socials  Social? @relation(fields: [socialId], references: [id])
+
+  user User?
+}
+
 model User {
   id                      String    @id @default(uuid())
   fullname                String?
   email                   String    @unique
+  username                String?   @unique
   password                String
   avatar                  String    @default("https://img.freepik.com/premium-vector/men-icon-trendy-avatar-character-cheerful-happy-people-flat-vector-illustration-round-frame-male-portraits-group-team-adorable-guys-isolated-white-background_275421-282.jpg?w=826")
   role                    UserRole  @default(USER)
@@ -46,6 +73,9 @@ model User {
   Submission     Submission[]
   solvedProblems SolvedProblem[]
   playlist       Playlist[]
+
+  basicInfoId String?    @unique
+  basicInfo   BasicInfo? @relation(fields: [basicInfoId], references: [id])
 }
 
 model Problem {

@@ -117,10 +117,26 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.SocialScalarFieldEnum = {
+  id: 'id',
+  website: 'website',
+  twitter: 'twitter',
+  github: 'github',
+  linkedIn: 'linkedIn'
+};
+
+exports.Prisma.BasicInfoScalarFieldEnum = {
+  id: 'id',
+  gender: 'gender',
+  bio: 'bio',
+  socialId: 'socialId'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   fullname: 'fullname',
   email: 'email',
+  username: 'username',
   password: 'password',
   avatar: 'avatar',
   role: 'role',
@@ -131,7 +147,8 @@ exports.Prisma.UserScalarFieldEnum = {
   forgotPasswordExpiry: 'forgotPasswordExpiry',
   refreshToken: 'refreshToken',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  basicInfoId: 'basicInfoId'
 };
 
 exports.Prisma.ProblemScalarFieldEnum = {
@@ -234,6 +251,12 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
+exports.Gender = exports.$Enums.Gender = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  OTHER: 'OTHER'
+};
+
 exports.UserRole = exports.$Enums.UserRole = {
   ADMIN: 'ADMIN',
   USER: 'USER'
@@ -246,6 +269,8 @@ exports.Difficulty = exports.$Enums.Difficulty = {
 };
 
 exports.Prisma.ModelName = {
+  Social: 'Social',
+  BasicInfo: 'BasicInfo',
   User: 'User',
   Problem: 'Problem',
   Submission: 'Submission',
