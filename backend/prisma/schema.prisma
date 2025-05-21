@@ -45,8 +45,9 @@ model BasicInfo {
   id       String  @id @default(uuid())
   gender   Gender?
   bio      String?
+  birth    String?
   socialId String? @unique
-  socials  Social? @relation(fields: [socialId], references: [id])
+  socials  Social? @relation(fields: [socialId], references: [id], onDelete: Cascade)
 
   user User?
 }
@@ -57,7 +58,7 @@ model User {
   email                   String    @unique
   username                String?   @unique
   password                String
-  avatar                  String    @default("https://img.freepik.com/premium-vector/men-icon-trendy-avatar-character-cheerful-happy-people-flat-vector-illustration-round-frame-male-portraits-group-team-adorable-guys-isolated-white-background_275421-282.jpg?w=826")
+  profileImage            String    @default("https://img.freepik.com/premium-vector/men-icon-trendy-avatar-character-cheerful-happy-people-flat-vector-illustration-round-frame-male-portraits-group-team-adorable-guys-isolated-white-background_275421-282.jpg?w=826")
   role                    UserRole  @default(USER)
   isEmailVerified         Boolean   @default(false)
   emailVerificationToken  String?
@@ -75,7 +76,7 @@ model User {
   playlist       Playlist[]
 
   basicInfoId String?    @unique
-  basicInfo   BasicInfo? @relation(fields: [basicInfoId], references: [id])
+  basicInfo   BasicInfo? @relation(fields: [basicInfoId], references: [id], onDelete: Cascade)
 }
 
 model Problem {

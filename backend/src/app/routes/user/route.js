@@ -10,11 +10,18 @@ export function register() {
   const controller = new UserController();
 
   router.get("/me", isAuth, controller.getUserHandler.bind(controller));
+
   router.patch(
-    "/update",
+    "/update/profile-image",
     isAuth,
     handleProfileImageWithMulter("profileImage"),
-    controller.updateUserHandler.bind(controller)
+    controller.updateProfileImageHandler.bind(controller)
+  );
+
+  router.patch(
+    "/update/basic/info",
+    isAuth,
+    controller.updateBasicInfoHandler.bind(controller)
   );
 
   return router;

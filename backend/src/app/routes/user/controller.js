@@ -10,7 +10,7 @@ import path from "path";
 import fs from "fs/promises";
 
 import { handleZodError } from "../../utils/handle-zod-error.js";
-import { updateUserSchema } from "../../validation/user/index.js";
+import { updateUserBasicInfoSchema } from "../../validation/user/index.js";
 
 class UserController {
   validateParseData(schema, body) {
@@ -44,74 +44,110 @@ class UserController {
       .json(new ApiResponse(200, "User retrieved successfully!", { user }));
   });
 
-  updateUserHandler = AsyncHandler(async (req, res) => {
-    const { fullname } = handleZodError(
-      this.validateParseData(updateUserSchema, req.body)
-    );
+  updateProfileImageHandler = AsyncHandler(async (req, res) => {
     const profileImage = req.file;
+    console.log(req.file);
 
-    if (!fullname && !profileImage) {
-      throw new ApiError(400, "Fullname or Profile image is required");
-    }
-
-    if (profileImage) {
-      let uploadPath;
-      try {
-        uploadPath = path.resolve(profileImage.path);
-        const uploadResult = await cloudinary.uploader.upload(uploadPath, {
-          folder: "leetlab/user/profileImages",
-        });
-        let avatarUrl = uploadResult.secure_url;
-        await fs.unlink(uploadPath);
-
-        const updatedUser = await prisma.user.update({
-          where: { id: req.userId },
-          data: {
-            fullname,
-            avatar: avatarUrl,
-          },
-          select: {
-            id: true,
-            fullname: true,
-            avatar: true,
-          },
-        });
-
-        return res.status(200).json(
-          new ApiResponse(200, "User updated successfully!", {
-            updatedUser,
-          })
-        );
-      } catch (uploadError) {
-        logger.error(`Error uploading profile image: ${uploadError}`);
-        await fs.unlink(uploadPath);
-        throw new ApiError(500, "Error uploading profile image!");
-      }
+    if (!profileImage) {
+      throw new ApiError(400, "Profile Image is required");
     }
 
     try {
+      let uploadPath = path.resolve(profileImage.path);
+
+      const uploadResult = await cloudinary.uploader.upload(uploadPath, {
+        folder: "leetlab/user/profileImages",
+      });
+      let imageUrl = uploadResult.secure_url;
+      await fs.unlink(uploadPath);
+
       const updatedUser = await prisma.user.update({
         where: { id: req.userId },
         data: {
-          fullname,
+          profileImage: imageUrl,
         },
         select: {
           id: true,
           fullname: true,
+          profileImage: true,
         },
       });
 
       res.status(200).json(
-        new ApiResponse(200, "User updated successfully!", {
-          updatedUser,
+        new ApiResponse(200, "Profile image updated successfully!", {
+          user: updatedUser,
         })
       );
-    } catch (updateError) {
-      logger.error(`Error updating user: ${updateError}`);
-      res
-        .status(500)
-        .json(new ApiError(500, false, "Error updating user!", updateError));
+    } catch (uploadError) {
+      logger.error(`Error uploading profile image: ${uploadError}`);
+      await fs.unlink(uploadPath);
+      throw new ApiError(500, "Error uploading profile image!");
     }
+  });
+
+  updateBasicInfoHandler = AsyncHandler(async (req, res) => {
+    const {
+      fullname,
+      username,
+      gender,
+      birth,
+      bio,
+      website,
+      github,
+      twitter,
+      linkedIn,
+    } = handleZodError(
+      this.validateParseData(updateUserBasicInfoSchema, req.body)
+    );
+
+    const updateUser = await prisma.user.update({
+      where: {
+        id: req.userId,
+      },
+      data: {
+        fullname: fullname,
+        username: username,
+        basicInfo: {
+          upsert: {
+            create: {
+              gender,
+              birth,
+              bio,
+              socials: {
+                create: { website, github, twitter, linkedIn },
+              },
+            },
+            update: {
+              gender,
+              birth,
+              bio,
+              socials: {
+                upsert: {
+                  create: { website, github, twitter, linkedIn },
+                  update: { website, github, twitter, linkedIn },
+                },
+              },
+            },
+          },
+        },
+      },
+      select: {
+        fullname: true,
+        username: true,
+        isEmailVerified: true,
+        email: true,
+      },
+    });
+
+    if (!updateUser) {
+      throw new ApiError(500, "Faild to update user");
+    }
+
+    res.status(200).json(
+      new ApiResponse(200, "Profile updated successfully", {
+        user: updateUser,
+      })
+    );
   });
 }
 export default UserController;
