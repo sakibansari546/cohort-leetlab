@@ -36,6 +36,41 @@ class AdminController {
       })
     );
   });
+
+  getUsersHandler = AsyncHandler(async (req, res) => {
+    const userId = req.userId;
+    const users = await prisma.user.findMany({
+      omit: {
+        password: true,
+        emailVerificationToken: true,
+        emailVerificationExpiry: true,
+        forgotPasswordToken: true,
+        forgotPasswordExpiry: true,
+        refreshToken: true,
+      },
+      include: {
+        solvedProblems: {
+          where: {
+            userId: userId,
+          },
+        },
+        submissions: {
+          where: {
+            userId: userId,
+          },
+        },
+        playlists: {
+          where: {
+            userId: userId,
+          },
+        },
+      },
+    });
+
+    res
+      .status(200)
+      .json(new ApiResponse(200, "Users fetched successfully", { users }));
+  });
 }
 
 export default AdminController;

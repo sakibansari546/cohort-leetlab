@@ -14,5 +14,7 @@ export function register() {
   router.get("/playlists/count", controller.getPlaylistsCountHandler);
   router.get("/submissions/count", controller.getSubmissionsCountHandler);
 
+  router.get("/users", controller.getUsersHandler);
+
   return router;
 }
