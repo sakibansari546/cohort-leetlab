@@ -36,7 +36,7 @@ export default function AdminSidebar() {
           <ul className="space-y-2 font-medium">
             <li>
               <Link
-                to="/admin/dashboard"
+                to="/admin"
                 className="flex items-center p-2 hover:bg-base-100"
               >
                 <svg

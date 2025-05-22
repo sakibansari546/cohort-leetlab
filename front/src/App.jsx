@@ -87,7 +87,7 @@ function App() {
               }
             >
               <Route
-                path="dashboard"
+                index
                 element={
                   user && user?.role === "ADMIN" ? (
                     <AdminPage />

@@ -5,6 +5,7 @@ export default function StatsCard({
   icon,
   color = "primary",
 }) {
+  
   return (
     <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all">
       <div className="card-body p-6">

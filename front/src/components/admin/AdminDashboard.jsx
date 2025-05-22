@@ -10,13 +10,35 @@ import {
   FilePlus,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  useGetPlaylistsCount,
+  useGetProblemsCount,
+  useGetSubmissionsCount,
+  useGetUsersCount,
+} from "../../querys/admin/useAdminQuery";
+
+function useGetAllCounts() {
+  const { data: userData } = useGetUsersCount();
+  const { data: problemData } = useGetProblemsCount();
+  const { data: playlistData } = useGetPlaylistsCount();
+  const { data: submissionData } = useGetSubmissionsCount();
+
+  return {
+    usersCount: userData?.count,
+    problemsCount: problemData?.count,
+    playlistsCount: playlistData?.count,
+    submissionsCount: submissionData?.count,
+  };
+}
 
 export default function AdminDashboard() {
+  const { usersCount, problemsCount, playlistsCount, submissionsCount } =
+    useGetAllCounts();
   // Mock stats data
   const stats = [
     {
       title: "Total Users",
-      value: "12,345",
+      value: usersCount,
       description: "+15% from last month",
       icon: <Users size={24} className="text-primary" />,
       color: "primary",
@@ -24,7 +46,7 @@ export default function AdminDashboard() {
     },
     {
       title: "Total Problems",
-      value: "1,587",
+      value: problemsCount,
       description: "+23 added this month",
       icon: <Code size={24} className="text-secondary" />,
       color: "secondary",
@@ -32,7 +54,7 @@ export default function AdminDashboard() {
     },
     {
       title: "Playlists",
-      value: "3,241",
+      value: playlistsCount,
       description: "543 public playlists",
       icon: <ListTodo size={24} className="text-accent" />,
       color: "accent",
@@ -40,7 +62,7 @@ export default function AdminDashboard() {
     },
     {
       title: "Submissions",
-      value: "891,234",
+      value: submissionsCount,
       description: "72% acceptance rate",
       icon: <FileText size={24} className="text-success" />,
       color: "success",
@@ -133,7 +155,7 @@ export default function AdminDashboard() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
           <p className="text-base-content opacity-70">
-            Welcome to the HypeCoding admin panel. Here's an overview of your
+            Welcome to the HypeCoding admin panel. Here's an overview of our
             platform.
           </p>
         </div>

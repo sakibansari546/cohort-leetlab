@@ -10,6 +10,8 @@ import { register as registerExecuteCodeRoutes } from "./routes/executeCode/rout
 import { register as registerSubmissionRoutes } from "./routes/submission/route.js";
 import { register as registerPlaylistRoutes } from "./routes/playlist/route.js";
 
+import { register as registerAdminRoutes } from "./routes/admin/route.js";
+
 import { prisma } from "../libs/db.js";
 import { env } from "../libs/env.js";
 
@@ -43,6 +45,8 @@ export function createExpressApp() {
   app.use("/api/v1/code/", registerExecuteCodeRoutes());
   app.use("/api/v1/submission", registerSubmissionRoutes());
   app.use("/api/v1/playlist", registerPlaylistRoutes());
+
+  app.use("/api/v1/admin", registerAdminRoutes());
 
   app.use((err, req, res, next) => {
     if (err.code == "P2002" && err.meta.target[0] === "email") {
