@@ -19,12 +19,14 @@ import UserDashboardPage from "./pages/UserDashboardPage";
 
 function App() {
   const { theme } = useThemeStore();
-  const { data, isLoading } = useGetUserQuery({
-    // onError: (err) => {
-    //   if (err.response?.status === 401) {
-    //     window.location.href = "/login";
-    //   }
-    // },
+  const { data, isLoading, isError, error } = useGetUserQuery({
+    onError: (err) => {
+      console.log(err);
+
+      if (err.response?.status === 401) {
+        window.location.href = "/login";
+      }
+    },
   });
   const user = data?.user;
 

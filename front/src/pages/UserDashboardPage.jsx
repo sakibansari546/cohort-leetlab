@@ -24,10 +24,10 @@ const UserDashboardPage = () => {
       <div className="bg-base-100 w-[60%] min-h-screen mx-auto">
         <div className="p-4 space-y-3  w-full">
           <UserDashBoardHead />
-          <div className="w-full bg-base-300">
+          <div className="w-full bg-base-200">
             <div className="p-6">
               <div>
-                <div className="bg-base-300 w-full">
+                <div className="bg-base-200 w-full">
                   <div className="tabs tabs-lift border-b border-base-content/10">
                     <label className="tab flex gap-2">
                       <input

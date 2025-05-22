@@ -41,13 +41,13 @@ const UserDashBoardHead = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-5">
-        <div className="w-full flex gap-5">
-          <div className=" w-full bg-base-300  rounded-lg flex items-center justify-center">
+      <div className="flex flex-col justify-center gap-5">
+        <div className="w-full flex items-center justify-center gap-5">
+          <div className=" w-full bg-base-200  rounded-lg flex items-center justify-center">
             <div className="w-full flex items-center gap-2.5 py-4 px-4">
-              <div className="w-[60%] h-38 bg-base-200/40">
-                <div className="bg-base-300 rounded-lg p-2 md:col-span-2 flex items-center justify-center">
-                  <div className="relative w-32 h-32">
+              <div className="w-[60%] py-4 bg-base-200/40">
+                <div className="bg-base-100 rounded-lg p-2 md:col-span-2 py-4 flex items-center justify-center">
+                  <div className="relative w-32 ">
                     <div className="absolute inset-0 flex items-center justify-center flex-col">
                       <div className="text-4xl font-bold">
                         {isPending ? "0" : data?.count}
@@ -72,15 +72,15 @@ const UserDashBoardHead = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-[40%] h-38 ">
+              <div className="w-[40%]">
                 <div className="space-y-2">
-                  <div className="bg-base-200 rounded-lg p-3">
+                  <div className="bg-base-100 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-success text-sm">Easy</span>
                       <span className="text-sm">{difficultyCounts?.EASY}</span>
                     </div>
                   </div>
-                  <div className="bg-base-200 rounded-lg p-3">
+                  <div className="bg-base-100 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-warning text-sm">Med.</span>
                       <span className="text-sm">
@@ -88,7 +88,7 @@ const UserDashBoardHead = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="bg-base-200 rounded-lg p-3">
+                  <div className="bg-base-100 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-error text-sm">Hard</span>
                       <span className="text-sm">{difficultyCounts?.HARD}</span>
@@ -98,11 +98,11 @@ const UserDashBoardHead = () => {
               </div>
             </div>
           </div>
-          <div className=" w-full bg-base-300 min-h-[20vh] rounded-lg flex items-center justify-center">
+          <div className=" w-full bg-base-200 min-h-[20vh] rounded-lg flex items-center justify-center">
             <div className="w-full flex items-center gap-2.5 py-4 px-4">
-              <div className="w-[60%] h-38 bg-base-200/40">
-                <div className="bg-base-300 rounded-lg p-2 md:col-span-2 flex items-center justify-center">
-                  <div className="relative w-32 h-32">
+              <div className="w-[60%] py-4 bg-base-200/40">
+                <div className="bg-base-100  rounded-lg p-2 md:col-span-2 py-4 flex items-center justify-center">
+                  <div className="relative w-32 ">
                     <div className="absolute inset-0 flex items-center justify-center flex-col">
                       <div className="text-4xl font-bold">
                         {submissionsData?.submissions?.length || 0}
@@ -124,9 +124,9 @@ const UserDashBoardHead = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-[40%] h-38 ">
+              <div className="w-[40%] ">
                 <div className="space-y-2">
-                  <div className="bg-base-200 rounded-lg p-3">
+                  <div className="bg-base-100 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-success text-sm">Javascript</span>
                       <span className="text-sm">
@@ -134,7 +134,7 @@ const UserDashBoardHead = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="bg-base-200 rounded-lg p-3">
+                  <div className="bg-base-100 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-warning text-sm">Python</span>
                       <span className="text-sm">
@@ -142,7 +142,7 @@ const UserDashBoardHead = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="bg-base-200 rounded-lg p-3">
+                  <div className="bg-base-100 rounded-lg p-3">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-error text-sm">Java</span>
                       <span className="text-sm">

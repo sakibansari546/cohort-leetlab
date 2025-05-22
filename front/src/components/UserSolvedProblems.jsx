@@ -28,7 +28,7 @@ const UserSolvedProblems = () => {
     );
   }
   return (
-    <div className="bg-base-300 border-base-300 py-6">
+    <div className="bg-base-100 border-base-300 my-6">
       <div>
         <div className="overflow-x-auto">
           <table className="table table-zebra">

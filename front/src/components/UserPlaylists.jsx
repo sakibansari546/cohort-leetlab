@@ -29,7 +29,7 @@ const UserPlaylists = () => {
   }
 
   return (
-    <div className="bg-base-300 border-base-300 py-6">
+    <div className="bg-base-300 border-base-100 my-6">
       <div className="w-full flex flex-col gap-3">
         {/* All Lists */}
         {lists?.playlists?.length === 0 ? (
@@ -42,7 +42,7 @@ const UserPlaylists = () => {
           lists?.playlists?.map((list) => (
             <div key={list.id} className="flex items-center gap-5">
               {/* List */}
-              <Link to={`/playlists/${list.id}`} className="w-full bg-base-200">
+              <Link to={`/playlists/${list.id}`} className="w-full bg-base-100">
                 <div className="p-3 flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <FileText size="30" />

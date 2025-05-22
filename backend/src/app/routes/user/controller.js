@@ -51,8 +51,6 @@ class UserController {
 
   updateProfileImageHandler = AsyncHandler(async (req, res) => {
     const profileImage = req.file;
-    console.log(req.file);
-
     if (!profileImage) {
       throw new ApiError(400, "Profile Image is required");
     }

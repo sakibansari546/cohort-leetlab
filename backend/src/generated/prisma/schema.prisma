@@ -42,12 +42,12 @@ model Social {
 }
 
 model BasicInfo {
-  id       String  @id @default(uuid())
+  id       String    @id @default(uuid())
   gender   Gender?
   bio      String?
-  birth    String?
-  socialId String? @unique
-  socials  Social? @relation(fields: [socialId], references: [id], onDelete: Cascade)
+  birth    DateTime?
+  socialId String?   @unique
+  socials  Social?   @relation(fields: [socialId], references: [id], onDelete: Cascade)
 
   user User?
 }

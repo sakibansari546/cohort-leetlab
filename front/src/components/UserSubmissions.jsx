@@ -30,7 +30,7 @@ const UserSubmissions = () => {
   }
 
   return (
-    <div className="bg-base-300 border-base-300 py-3">
+    <div className="bg-base-100 border-base-300 my-3">
       <div>
         {" "}
         <table className="table table-zebra">
