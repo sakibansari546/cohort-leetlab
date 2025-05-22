@@ -15,6 +15,7 @@ export function register() {
   router.get("/submissions/count", controller.getSubmissionsCountHandler);
 
   router.get("/users", controller.getUsersHandler);
+  router.delete("/user/:userId/delete", controller.deleteUserhandler);
 
   return router;
 }

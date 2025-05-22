@@ -15,7 +15,7 @@ import {
   useGetProblemsCount,
   useGetSubmissionsCount,
   useGetUsersCount,
-} from "../../querys/admin/useAdminQuery";
+} from "../../querys/useAdminQuery";
 
 function useGetAllCounts() {
   const { data: userData } = useGetUsersCount();

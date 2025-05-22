@@ -1,228 +1,46 @@
 "use client";
-import { useState } from "react";
-import DataTable from "../../components/admin/DataTable";
-import { UserPlus, Upload, Download } from "lucide-react";
+import {
+  UserPlus,
+  Upload,
+  Download,
+  Search,
+  Edit,
+  Trash2,
+  EllipsisVertical,
+  Loader2,
+} from "lucide-react";
+import {
+  useDeleteUserMutation,
+  useGetUsersQuery,
+} from "../../querys/useAdminQuery";
+import { formateDate } from "../../utils/date-formate";
 
 export default function UsersPage() {
-  // Mock users data
-  const users = [
-    {
-      id: 1,
-      name: "Alex Johnson",
-      email: "alex.johnson@example.com",
-      username: "alexcode",
-      role: "user",
-      problems_solved: 387,
-      join_date: "2023-01-15",
-      last_active: "2023-05-15",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Sarah Chen",
-      email: "sarah.chen@example.com",
-      username: "sarahc",
-      role: "user",
-      problems_solved: 215,
-      join_date: "2023-02-20",
-      last_active: "2023-05-14",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Michael Rodriguez",
-      email: "michael.r@example.com",
-      username: "mikerod",
-      role: "user",
-      problems_solved: 156,
-      join_date: "2023-03-05",
-      last_active: "2023-05-10",
-      status: "active",
-    },
-    {
-      id: 4,
-      name: "Emma Wilson",
-      email: "emma.wilson@example.com",
-      username: "emmaw",
-      role: "admin",
-      problems_solved: 412,
-      join_date: "2022-11-12",
-      last_active: "2023-05-15",
-      status: "active",
-    },
-    {
-      id: 5,
-      name: "Daniel Lee",
-      email: "daniel.lee@example.com",
-      username: "danlee",
-      role: "user",
-      problems_solved: 89,
-      join_date: "2023-04-10",
-      last_active: "2023-05-01",
-      status: "inactive",
-    },
-    {
-      id: 6,
-      name: "Olivia Taylor",
-      email: "olivia.t@example.com",
-      username: "oliviat",
-      role: "moderator",
-      problems_solved: 267,
-      join_date: "2023-01-05",
-      last_active: "2023-05-14",
-      status: "active",
-    },
-    {
-      id: 7,
-      name: "James Brown",
-      email: "james.b@example.com",
-      username: "jamesb",
-      role: "user",
-      problems_solved: 134,
-      join_date: "2023-03-22",
-      last_active: "2023-05-12",
-      status: "active",
-    },
-    {
-      id: 8,
-      name: "Sophia Martinez",
-      email: "sophia.m@example.com",
-      username: "sophiam",
-      role: "user",
-      problems_solved: 75,
-      join_date: "2023-04-15",
-      last_active: "2023-05-13",
-      status: "active",
-    },
-    {
-      id: 9,
-      name: "William Garcia",
-      email: "william.g@example.com",
-      username: "williamg",
-      role: "user",
-      problems_solved: 42,
-      join_date: "2023-04-30",
-      last_active: "2023-05-10",
-      status: "active",
-    },
-    {
-      id: 10,
-      name: "Ava Hernandez",
-      email: "ava.h@example.com",
-      username: "avah",
-      role: "user",
-      problems_solved: 18,
-      join_date: "2023-05-05",
-      last_active: "2023-05-15",
-      status: "active",
-    },
-    {
-      id: 11,
-      name: "Ethan Smith",
-      email: "ethan.s@example.com",
-      username: "ethans",
-      role: "user",
-      problems_solved: 7,
-      join_date: "2023-05-10",
-      last_active: "2023-05-14",
-      status: "active",
-    },
-    {
-      id: 12,
-      name: "Isabella Lopez",
-      email: "isabella.l@example.com",
-      username: "isabellal",
-      role: "user",
-      problems_solved: 0,
-      join_date: "2023-05-14",
-      last_active: "2023-05-14",
-      status: "pending",
-    },
-  ];
+  const { data, isPending, isError, error } = useGetUsersQuery();
+  const users = data?.users;
 
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const { mutateAsync, isPending: deleteIsPending } = useDeleteUserMutation();
 
-  const columns = [
-    {
-      header: "Name",
-      accessor: "name",
-      render: (user) => (
-        <div className="flex items-center gap-2">
-          <div className="avatar placeholder">
-            <div className="bg-neutral-focus text-neutral-content rounded-full w-8">
-              <span className="text-xs">
-                {user.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
-              </span>
-            </div>
-          </div>
-          <div>
-            <div className="font-medium">{user.name}</div>
-            <div className="text-xs opacity-70">{user.email}</div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      header: "Username",
-      accessor: "username",
-    },
-    {
-      header: "Role",
-      accessor: "role",
-      render: (user) => (
-        <div className="badge badge-outline badge-sm">
-          {user.role === "admin"
-            ? "Admin"
-            : user.role === "moderator"
-            ? "Moderator"
-            : "User"}
-        </div>
-      ),
-    },
-    {
-      header: "Problems",
-      accessor: "problems_solved",
-    },
-    {
-      header: "Status",
-      accessor: "status",
-      render: (user) => (
-        <div
-          className={`badge badge-sm ${
-            user.status === "active"
-              ? "badge-success"
-              : user.status === "inactive"
-              ? "badge-warning"
-              : "badge-info"
-          }`}
-        >
-          {user.status}
-        </div>
-      ),
-    },
-    {
-      header: "Joined",
-      accessor: "join_date",
-    },
-  ];
-
-  const handleEditUser = (user) => {
-    console.log("Edit user:", user);
-    // This would open a modal or navigate to an edit page
+  const handleUserDelete = async (userId) => {
+    await mutateAsync({ userId: userId });
   };
 
-  const handleDeleteUser = (user) => {
-    if (confirm(`Are you sure you want to delete user ${user.name}?`)) {
-      console.log("Delete user:", user);
-      // This would call an API to delete the user
-    }
-  };
+  if (isError) {
+    return (
+      <div class="p-4 sm:ml-64 w-full">
+        <div class="p-4 rounded-lg max-h-[80vh]">
+          <div className="flex items-center py-6">
+            <h1 className="text-2xl font-semibold text-center w-full">
+              {error?.response?.data?.message || "Something went wrong"}
+            </h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div class="p-4 sm:ml-64">
+    <div class="p-4 sm:ml-64 min-h-screen">
       <div class="p-4 rounded-lg">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">User Management</h1>
@@ -235,10 +53,8 @@ export default function UsersPage() {
           <div className="stats bg-base-100 shadow">
             <div className="stat">
               <div className="stat-title">Total Users</div>
-              <div className="stat-value">{users.length}</div>
-              <div className="stat-desc">
-                {users.filter((u) => u.status === "active").length} active users
-              </div>
+              <div className="stat-value">{users?.length}</div>
+              <div className="stat-desc">active users</div>
             </div>
             <div className="stat">
               <div className="stat-title">New Users</div>
@@ -249,8 +65,14 @@ export default function UsersPage() {
               <div className="stat-title">Avg. Problems Solved</div>
               <div className="stat-value">
                 {Math.round(
-                  users.reduce((acc, user) => acc + user.problems_solved, 0) /
-                    users.length
+                  users?.reduce(
+                    (accu, user) =>
+                      (accu +=
+                        user.solvedProblems.length !== 0
+                          ? user.solvedProblems.length
+                          : 0),
+                    0
+                  ) / users?.length
                 )}
               </div>
               <div className="stat-desc">per user</div>
@@ -272,14 +94,127 @@ export default function UsersPage() {
             </button>
           </div>
         </div>
+      </div>
 
-        <DataTable
-          columns={columns}
-          data={users}
-          title="Users"
-          onEdit={handleEditUser}
-          onDelete={handleDeleteUser}
-        />
+      <div className="flex items-center justify-between px-6 ">
+        <h2 className="text-xl font-medium">Users</h2>
+        <div>
+          <label className="input w-68">
+            <Search />
+            <input type="text" placeholder="Search" id="" />
+          </label>
+        </div>
+      </div>
+
+      <div className="py-10">
+        <div>
+          <div className="overflow-x-auto">
+            <table className="table table-zebra">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>Solved Problems</th>
+                  <th>Status</th>
+                  <th>joined</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* row 1 */}
+                {isPending ? (
+                  <div className="absolute top-1/2 left-1/2">
+                    <div className="loading text-lg"></div>
+                  </div>
+                ) : users.lenght === 0 ? (
+                  <div className="absolute top-1/2 left-1/2">
+                    <div className="text-lg">No Users found</div>
+                  </div>
+                ) : (
+                  users?.map((user) => (
+                    <tr key={user.id}>
+                      <th>
+                        <img
+                          className="w-8 h-8 rounded-full object-cover"
+                          src={user.profileImage}
+                          alt=""
+                        />
+                      </th>
+                      <td>
+                        <p className="text-lg">{user.fullname}</p>
+                        <p className="text-base-content/80">{user.email}</p>
+                      </td>
+                      <td>@{user.username || "username"}</td>
+                      <td>
+                        <span className="badge badge-ghost">{user.role}</span>
+                      </td>
+                      <td>{user.solvedProblems.length}</td>
+                      <td>
+                        {user.isActive ? (
+                          <span className="badge badge-success">Active</span>
+                        ) : (
+                          <span className="badge badge-error">InActive</span>
+                        )}
+                      </td>
+                      <td>{formateDate(user.createdAt).split("-")[0]}</td>
+                      <td>
+                        <div className="flex items-center gap-2">
+                          <div className="dropdown dropdown-end">
+                            <button
+                              tabIndex={0}
+                              role="button"
+                              className="btn btn-sm"
+                            >
+                              <EllipsisVertical size="16" />
+                            </button>
+                            <ul
+                              tabIndex={0}
+                              className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                            >
+                              <li>
+                                <button className="flex items-center gap-3">
+                                  <Edit size="18" />
+                                  Edit
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                  disabled={deleteIsPending}
+                                  onClick={() => handleUserDelete(user.id)}
+                                  className="flex items-center gap-3 text-error"
+                                >
+                                  {deleteIsPending ? (
+                                    <>
+                                      {" "}
+                                      <Loader2
+                                        className="animate-spin"
+                                        size="18"
+                                      />
+                                      Loading
+                                    </>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <Trash2 size="18" />
+                                      Delete
+                                    </>
+                                  )}
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { prisma } from "../../../libs/db.js";
+import ApiError from "../../utils/api-error.js";
 import ApiResponse from "../../utils/api-response.js";
 
 import AsyncHandler from "../../utils/async-handler.js";
@@ -70,6 +71,21 @@ class AdminController {
     res
       .status(200)
       .json(new ApiResponse(200, "Users fetched successfully", { users }));
+  });
+  deleteUserhandler = AsyncHandler(async (req, res) => {
+    const { userId } = req.params;
+
+    if (!userId) {
+      throw new ApiError(400, "UserId is required");
+    }
+
+    await prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+
+    res.status(200).json(new ApiResponse(200, "User deleted successfully"));
   });
 }
 

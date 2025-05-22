@@ -1,7 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { axiosClient } from "../../utils/axios";
-import { queryClient } from "../../main";
+import { axiosClient } from "../utils/axios";
+import { queryClient } from "../main";
+import { toast } from "react-toastify";
 
 const getUsersCount = async () => {
   const res = await axiosClient.get("/admin/users/count");
@@ -49,5 +50,35 @@ export const useGetSubmissionsCount = () => {
     queryKey: ["submissions", "count"],
     queryFn: getSubmissionsCount,
     staleTime: Infinity,
+  });
+};
+
+const getUsers = async () => {
+  const res = await axiosClient.get("/admin/users");
+  return res.data.data;
+};
+
+export const useGetUsersQuery = () => {
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
+};
+
+const deleteUser = async ({ userId }) => {
+  const res = await axiosClient.delete(`/admin/user/${userId}/delete`);
+  return res.data.data;
+};
+
+export const useDeleteUserMutation = () => {
+  return useMutation({
+    mutationFn: (data) => deleteUser(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success(data.message || "User deleted successfully!");
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message);
+    },
   });
 };
