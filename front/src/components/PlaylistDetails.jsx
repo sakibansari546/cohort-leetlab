@@ -107,7 +107,7 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
       <AddProblemsInPlaylistModal playlist={playlist} />
 
       <div className="w-full  py-8 px-14 flex gap-16">
-        <div className="w-[400px] max-h-[600px] bg-base-content/10 py-3 px-4 rounded-lg">
+        <div className="w-[400px] max-h-[600px] bg-base-200 py-3 px-4 rounded-lg">
           <div>
             <div>
               <FileText size="100" />

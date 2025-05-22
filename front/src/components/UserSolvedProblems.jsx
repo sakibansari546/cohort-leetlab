@@ -44,7 +44,9 @@ const UserSolvedProblems = () => {
                   <tr key={problem.id} className="bg-base-00 rounded-lg">
                     <th>{idx + 1}</th>
                     <td className="hover:underline">
-                      <Link to={`/problems/problemId`}>{problem.title}</Link>
+                      <Link to={`/problems/${problem.id}`}>
+                        {problem.title}
+                      </Link>
                     </td>
                     <td
                       className={`${

@@ -14,8 +14,17 @@ import Navbar from "./components/Navbar";
 
 import { useThemeStore } from "./store/themeStore";
 import { useGetUserQuery } from "./querys/useUserQuery";
+
 import UserProfilePage from "./pages/UserProfilePage";
 import UserDashboardPage from "./pages/UserDashboardPage";
+
+import AdminPage from "./pages/admin/AdminPage";
+import AdminSidebar from "./components/admin/Siadebar";
+import CreateProblemPage from "./pages/admin/CreateProblemPage";
+import UsersPage from "./pages/admin/UsersPage";
+import SubmissionsPage from "./pages/admin/SubmissionsPage";
+import AdminPlaylistsPage from "./pages/admin/PlaylistsPage";
+import AdminProblemsPage from "./pages/admin/ProblemsPage";
 
 function App() {
   const { theme } = useThemeStore();
@@ -66,6 +75,80 @@ function App() {
           >
             <Route index element={user ? <Home /> : <Navigate to="/login" />} />
 
+            {/* Admin */}
+            <Route
+              path="/admin/"
+              element={
+                user && user?.role === "ADMIN" ? (
+                  <AdminSidebar />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            >
+              <Route
+                path="dashboard"
+                element={
+                  user && user?.role === "ADMIN" ? (
+                    <AdminPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+
+              <Route
+                path="create-problem"
+                element={
+                  user && user?.role === "ADMIN" ? (
+                    <CreateProblemPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="users"
+                element={
+                  user && user?.role === "ADMIN" ? (
+                    <UsersPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="problems"
+                element={
+                  user && user?.role === "ADMIN" ? (
+                    <AdminProblemsPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="playlists"
+                element={
+                  user && user?.role === "ADMIN" ? (
+                    <AdminPlaylistsPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="submissions"
+                element={
+                  user && user?.role === "ADMIN" ? (
+                    <SubmissionsPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+            </Route>
+
             <Route
               path="/profile"
               element={user ? <UserProfilePage /> : <Navigate to="/login" />}
@@ -84,8 +167,10 @@ function App() {
               path="/playlists/:playlistId"
               element={user ? <PlaylistsPage /> : <Navigate to="/login" />}
             />
+
             <Route path="theme" element={<Theme />} />
           </Route>
+
           <Route
             path="/problems/:problemId"
             element={user ? <ProblemPage /> : <Navigate to="/login" />}

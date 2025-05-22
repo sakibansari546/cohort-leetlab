@@ -88,7 +88,7 @@ const Navbar = () => {
                     </li>
                     {user?.role === "ADMIN" && (
                       <li>
-                        <Link to="/profile">
+                        <Link to="/admin">
                           <UserLockIcon size="18" />
                           Admin
                         </Link>
