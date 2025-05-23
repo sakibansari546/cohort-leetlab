@@ -137,6 +137,54 @@ class AdminController {
 
     res.status(200).json(new ApiResponse(200, "Playlist deleted successfully"));
   });
+
+  getSubmissionsHandler = AsyncHandler(async (req, res) => {
+    const submissions = await prisma.submission.findMany({
+      include: {
+        problem: {
+          select: {
+            id: true,
+            title: true,
+            difficulty: true,
+            tags: true,
+            isDemo: true,
+            company: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            fullname: true,
+            email: true,
+            profileImage: true,
+            role: true,
+          },
+        },
+      },
+    });
+
+    res.status(200).json(
+      new ApiResponse(200, "Submissions fetched successfully", {
+        submissions,
+      })
+    );
+  });
+  deleteSubmissionHandler = AsyncHandler(async (req, res) => {
+    const { submissionId } = req.params;
+    if (!submissionId) {
+      throw new ApiError(200, "Submission id is required");
+    }
+
+    await prisma.submission.delete({
+      where: {
+        id: submissionId,
+      },
+    });
+
+    res
+      .status(200)
+      .json(new ApiResponse(200, "Submission deleted successfully"));
+  });
 }
 
 export default AdminController;

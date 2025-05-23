@@ -1,272 +1,58 @@
 "use client";
+import { Link } from "react-router-dom";
 import DataTable from "../../components/admin/DataTable";
-import { ArrowUpDown, Download } from "lucide-react";
+import {
+  ArrowUpDown,
+  Download,
+  Edit,
+  Ellipsis,
+  Loader2,
+  Search,
+  Trash2,
+} from "lucide-react";
+import {
+  useDeleteSubmissionMutation,
+  useGeSubmissionsQuery,
+} from "../../querys/useAdminQuery";
+import { formateDate } from "../../utils/date-formate";
 
 export default function SubmissionsPage() {
-  // Mock submissions data
-  const submissions = [
-    {
-      id: "sub12345",
-      user_id: 1,
-      user_name: "Alex Johnson",
-      problem_id: 1,
-      problem_title: "Two Sum",
-      language: "JavaScript",
-      status: "Accepted",
-      runtime: "76 ms",
-      memory: "42.1 MB",
-      timestamp: "2023-05-15 14:32:45",
-    },
-    {
-      id: "sub12346",
-      user_id: 2,
-      user_name: "Sarah Chen",
-      problem_id: 2,
-      problem_title: "Add Two Numbers",
-      language: "Python",
-      status: "Accepted",
-      runtime: "68 ms",
-      memory: "13.9 MB",
-      timestamp: "2023-05-15 09:15:22",
-    },
-    {
-      id: "sub12347",
-      user_id: 3,
-      user_name: "Michael Rodriguez",
-      problem_id: 3,
-      problem_title: "Longest Substring Without Repeating Characters",
-      language: "Java",
-      status: "Wrong Answer",
-      runtime: "N/A",
-      memory: "N/A",
-      timestamp: "2023-05-15 16:48:10",
-    },
-    {
-      id: "sub12348",
-      user_id: 3,
-      user_name: "Michael Rodriguez",
-      problem_id: 3,
-      problem_title: "Longest Substring Without Repeating Characters",
-      language: "Java",
-      status: "Accepted",
-      runtime: "5 ms",
-      memory: "42.3 MB",
-      timestamp: "2023-05-15 17:22:37",
-    },
-    {
-      id: "sub12349",
-      user_id: 4,
-      user_name: "Emma Wilson",
-      problem_id: 4,
-      problem_title: "Median of Two Sorted Arrays",
-      language: "C++",
-      status: "Time Limit Exceeded",
-      runtime: "N/A",
-      memory: "N/A",
-      timestamp: "2023-05-14 11:05:19",
-    },
-    {
-      id: "sub12350",
-      user_id: 4,
-      user_name: "Emma Wilson",
-      problem_id: 4,
-      problem_title: "Median of Two Sorted Arrays",
-      language: "C++",
-      status: "Accepted",
-      runtime: "32 ms",
-      memory: "89.5 MB",
-      timestamp: "2023-05-14 13:40:55",
-    },
-    {
-      id: "sub12351",
-      user_id: 5,
-      user_name: "Daniel Lee",
-      problem_id: 5,
-      problem_title: "Longest Palindromic Substring",
-      language: "JavaScript",
-      status: "Accepted",
-      runtime: "88 ms",
-      memory: "44.7 MB",
-      timestamp: "2023-05-14 10:27:33",
-    },
-    {
-      id: "sub12352",
-      user_id: 6,
-      user_name: "Olivia Taylor",
-      problem_id: 6,
-      problem_title: "ZigZag Conversion",
-      language: "Python",
-      status: "Accepted",
-      runtime: "52 ms",
-      memory: "14.1 MB",
-      timestamp: "2023-05-13 18:12:45",
-    },
-    {
-      id: "sub12353",
-      user_id: 7,
-      user_name: "James Brown",
-      problem_id: 7,
-      problem_title: "Reverse Integer",
-      language: "C++",
-      status: "Runtime Error",
-      runtime: "N/A",
-      memory: "N/A",
-      timestamp: "2023-05-13 15:34:21",
-    },
-    {
-      id: "sub12354",
-      user_id: 7,
-      user_name: "James Brown",
-      problem_id: 7,
-      problem_title: "Reverse Integer",
-      language: "C++",
-      status: "Accepted",
-      runtime: "0 ms",
-      memory: "6.1 MB",
-      timestamp: "2023-05-13 15:50:09",
-    },
-    {
-      id: "sub12355",
-      user_id: 8,
-      user_name: "Sophia Martinez",
-      problem_id: 8,
-      problem_title: "String to Integer (atoi)",
-      language: "Java",
-      status: "Wrong Answer",
-      runtime: "N/A",
-      memory: "N/A",
-      timestamp: "2023-05-12 09:22:17",
-    },
-    {
-      id: "sub12356",
-      user_id: 8,
-      user_name: "Sophia Martinez",
-      problem_id: 8,
-      problem_title: "String to Integer (atoi)",
-      language: "Java",
-      status: "Accepted",
-      runtime: "2 ms",
-      memory: "38.9 MB",
-      timestamp: "2023-05-12 10:15:33",
-    },
-    {
-      id: "sub12357",
-      user_id: 9,
-      user_name: "William Garcia",
-      problem_id: 9,
-      problem_title: "Palindrome Number",
-      language: "Python",
-      status: "Accepted",
-      runtime: "56 ms",
-      memory: "13.8 MB",
-      timestamp: "2023-05-12 14:47:52",
-    },
-    {
-      id: "sub12358",
-      user_id: 10,
-      user_name: "Ava Hernandez",
-      problem_id: 10,
-      problem_title: "Regular Expression Matching",
-      language: "JavaScript",
-      status: "Wrong Answer",
-      runtime: "N/A",
-      memory: "N/A",
-      timestamp: "2023-05-11 11:11:27",
-    },
-    {
-      id: "sub12359",
-      user_id: 10,
-      user_name: "Ava Hernandez",
-      problem_id: 10,
-      problem_title: "Regular Expression Matching",
-      language: "JavaScript",
-      status: "Time Limit Exceeded",
-      runtime: "N/A",
-      memory: "N/A",
-      timestamp: "2023-05-11 12:05:44",
-    },
-    {
-      id: "sub12360",
-      user_id: 10,
-      user_name: "Ava Hernandez",
-      problem_id: 10,
-      problem_title: "Regular Expression Matching",
-      language: "JavaScript",
-      status: "Accepted",
-      runtime: "92 ms",
-      memory: "47.2 MB",
-      timestamp: "2023-05-11 14:30:18",
-    },
-  ];
+  const { data, isPending, isError, error } = useGeSubmissionsQuery();
+  const submissions = data?.submissions;
 
-  const columns = [
-    {
-      header: "ID",
-      accessor: "id",
-    },
-    {
-      header: "User",
-      accessor: "user_name",
-      render: (submission) => (
-        <a
-          href={`/admin/users/${submission.user_id}`}
-          className="link link-hover"
-        >
-          {submission.user_name}
-        </a>
-      ),
-    },
-    {
-      header: "Problem",
-      accessor: "problem_title",
-      render: (submission) => (
-        <a
-          href={`/admin/problems/${submission.problem_id}`}
-          className="link link-hover link-primary"
-        >
-          {submission.problem_title}
-        </a>
-      ),
-    },
-    {
-      header: "Language",
-      accessor: "language",
-      render: (submission) => (
-        <div className="badge badge-outline badge-sm">
-          {submission.language}
+  const { mutateAsync, isPending: deleteIsPending } =
+    useDeleteSubmissionMutation();
+
+  const subs = submissions ?? [];
+  const topLangCounts = subs.reduce((acc, sub) => {
+    acc[sub.language] = (acc[sub.language] || 0) + 1;
+    return acc;
+  }, {});
+
+  const topLangEntries = Object.entries(topLangCounts).sort(
+    ([, a], [, b]) => b - a
+  );
+  const [topLang, topCount] = topLangEntries[0] || ["—", 0];
+  const topLangPercent =
+    subs.length > 0 ? Math.round((topCount / subs.length) * 100) : 0;
+
+  const handleDeleteSubmission = async (submissionId) => {
+    await mutateAsync({ submissionId });
+  };
+
+  if (isError) {
+    return (
+      <div class="p-4 sm:ml-64 w-full">
+        <div class="p-4 rounded-lg max-h-[80vh]">
+          <div className="flex items-center py-6">
+            <h1 className="text-2xl font-semibold text-center w-full">
+              {error?.response?.data?.message || "Something went wrong"}
+            </h1>
+          </div>
         </div>
-      ),
-    },
-    {
-      header: "Status",
-      accessor: "status",
-      render: (submission) => (
-        <span
-          className={`badge badge-sm ${
-            submission.status === "Accepted"
-              ? "badge-success"
-              : submission.status === "Wrong Answer"
-              ? "badge-error"
-              : "badge-warning"
-          }`}
-        >
-          {submission.status}
-        </span>
-      ),
-    },
-    {
-      header: "Runtime",
-      accessor: "runtime",
-    },
-    {
-      header: "Memory",
-      accessor: "memory",
-    },
-    {
-      header: "Timestamp",
-      accessor: "timestamp",
-    },
-  ];
+      </div>
+    );
+  }
 
   return (
     <div class="p-4 sm:ml-64">
@@ -274,57 +60,36 @@ export default function SubmissionsPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Submission History</h1>
           <p className="text-base-content opacity-70">
-            View and analyze code submissions from all users.
+            View and analyze code submissionss from all users.
           </p>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
           <div className="stats bg-base-100 shadow">
             <div className="stat">
-              <div className="stat-title">Total Submissions</div>
-              <div className="stat-value">{submissions.length}</div>
+              <div className="stat-title">Total Submissionss</div>
+              <div className="stat-value">{submissions?.length}</div>
               <div className="stat-desc">Last 7 days</div>
             </div>
             <div className="stat">
               <div className="stat-title">Acceptance Rate</div>
               <div className="stat-value text-success">
                 {Math.round(
-                  (submissions.filter((s) => s.status === "Accepted").length /
-                    submissions.length) *
+                  (submissions?.filter((s) => s.status === "Accepted").length /
+                    submissions?.length) *
                     100
                 )}
                 %
               </div>
               <div className="stat-desc">
-                {submissions.filter((s) => s.status === "Accepted").length}{" "}
-                accepted submissions
+                {submissions?.filter((s) => s.status === "Accepted").length}{" "}
+                accepted submissionss
               </div>
             </div>
             <div className="stat">
               <div className="stat-title">Most Used Language</div>
-              <div className="stat-value text-primary">
-                {
-                  Object.entries(
-                    submissions.reduce((acc, sub) => {
-                      acc[sub.language] = (acc[sub.language] || 0) + 1;
-                      return acc;
-                    }, {})
-                  ).sort((a, b) => b[1] - a[1])[0][0]
-                }
-              </div>
-              <div className="stat-desc">
-                {Math.round(
-                  (Object.entries(
-                    submissions.reduce((acc, sub) => {
-                      acc[sub.language] = (acc[sub.language] || 0) + 1;
-                      return acc;
-                    }, {})
-                  ).sort((a, b) => b[1] - a[1])[0][1] /
-                    submissions.length) *
-                    100
-                )}
-                % of submissions
-              </div>
+              <div className="stat-value text-primary">{topLang}</div>
+              <div className="stat-desc">{topLangPercent}% of submissions</div>
             </div>
           </div>
 
@@ -340,12 +105,147 @@ export default function SubmissionsPage() {
           </div>
         </div>
 
-        <DataTable
-          columns={columns}
-          data={submissions}
-          title="Recent Submissions"
-          actions={false}
-        />
+        <div className="flex items-center justify-between px-6 ">
+          <h2 className="text-xl font-medium">Submissions</h2>
+          <div>
+            <label className="input w-68">
+              <Search />
+              <input type="text" placeholder="Search" id="" />
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Problem</th>
+                <th>Language</th>
+                <th>Status</th>
+                <th>Runtime</th>
+                <th>Memory</th>
+                <th>Timestamp</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isPending ? (
+                <td className="absolute top-1/2 left-1/2">
+                  <span className="loading text-lg"></span>
+                </td>
+              ) : submissions.lenght === 0 ? (
+                <td className="absolute top-1/2 left-1/2">
+                  <span className="text-lg">No Users found</span>
+                </td>
+              ) : (
+                submissions?.map((submission) => {
+                  const totalTime = JSON.parse(submission.time)
+                    .reduce((accu, time) => (accu += parseFloat(time)), 0)
+                    .toFixed(2);
+                  const totalMemory = JSON.parse(submission.memory)
+                    .reduce((accu, memory) => (accu += parseFloat(memory)), 0)
+                    .toFixed(2);
+                  return (
+                    <tr key={submission.id}>
+                      <td className="font-medium">
+                        {submission.user.fullname}
+                      </td>
+                      <td className="font-medium ">
+                        <Link className="hover:underline text-primary">
+                          <span className="line-clamp-2 break-words max-w-xs">
+                            {submission.problem?.title}
+                          </span>
+                        </Link>
+                      </td>
+                      <td>
+                        <span
+                          className={`badge ${
+                            submission.language == "JAVASCRIPT"
+                              ? "badge-ghost"
+                              : submission.language == "PYTHON"
+                              ? "badge-error"
+                              : "badge-warning"
+                          }`}
+                        >
+                          {submission.language}
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          className={`badge ${
+                            submission.stderr !== null
+                              ? "badge-warning"
+                              : submission.status === "Accepted"
+                              ? "badge-success"
+                              : "badge-error"
+                          }`}
+                        >
+                          {submission.stderr !== null
+                            ? "Error"
+                            : submission.status}
+                        </span>
+                      </td>
+                      <td>{totalTime} s</td>
+                      <td>{(totalMemory / 1024).toFixed(2)} MB </td>
+                      <td>{formateDate(submission.createdAt)}</td>
+                      <td>
+                        <div className="flex items-center gap-2">
+                          <div className="dropdown dropdown-end">
+                            <button
+                              tabIndex={0}
+                              role="button"
+                              className="btn btn-sm"
+                            >
+                              <Ellipsis size="16" />
+                            </button>
+                            <ul
+                              tabIndex={0}
+                              className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                            >
+                              <li>
+                                <button className="flex items-center gap-3">
+                                  <Edit size="18" />
+                                  Edit
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                  disabled={deleteIsPending}
+                                  onClick={() =>
+                                    handleDeleteSubmission(submission.id)
+                                  }
+                                  className="flex items-center gap-3 text-error"
+                                >
+                                  {deleteIsPending ? (
+                                    <>
+                                      {" "}
+                                      <Loader2
+                                        className="animate-spin"
+                                        size="18"
+                                      />
+                                      Loading
+                                    </>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <Trash2 size="18" />
+                                      Delete
+                                    </>
+                                  )}
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

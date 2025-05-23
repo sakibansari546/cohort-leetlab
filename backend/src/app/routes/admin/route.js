@@ -23,5 +23,11 @@ export function register() {
     controller.deletePlaylistHadler
   );
 
+  router.get("/submissions", controller.getSubmissionsHandler);
+  router.delete(
+    "/submission/:submissionId/delete",
+    controller.deleteSubmissionHandler
+  );
+
   return router;
 }

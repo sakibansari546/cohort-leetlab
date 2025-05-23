@@ -16,6 +16,7 @@ import {
   useGetSubmissionsCount,
   useGetUsersCount,
 } from "../../querys/useAdminQuery";
+import AdminDashboardChart from "./AdminDashboardChart";
 
 function useGetAllCounts() {
   const { data: userData } = useGetUsersCount();
@@ -40,7 +41,7 @@ export default function AdminDashboard() {
       title: "Total Users",
       value: usersCount,
       description: "+15% from last month",
-      icon: <Users size={24} className="text-primary" />,
+      icon: <Users size={24} className="text" />,
       color: "primary",
       link: "/admin/users",
     },
@@ -48,7 +49,7 @@ export default function AdminDashboard() {
       title: "Total Problems",
       value: problemsCount,
       description: "+23 added this month",
-      icon: <Code size={24} className="text-secondary" />,
+      icon: <Code size={24} className="text-" />,
       color: "secondary",
       link: "/admin/problems",
     },
@@ -56,7 +57,7 @@ export default function AdminDashboard() {
       title: "Playlists",
       value: playlistsCount,
       description: "543 public playlists",
-      icon: <ListTodo size={24} className="text-accent" />,
+      icon: <ListTodo size={24} className="text-acent" />,
       color: "accent",
       link: "/admin/playlists",
     },
@@ -64,7 +65,7 @@ export default function AdminDashboard() {
       title: "Submissions",
       value: submissionsCount,
       description: "72% acceptance rate",
-      icon: <FileText size={24} className="text-success" />,
+      icon: <FileText size={24} className="text-sucess" />,
       color: "success",
       link: "/admin/submissions",
     },
@@ -179,7 +180,10 @@ export default function AdminDashboard() {
         </div>
 
         <div className="mb-8">
-          <ActivityChart />
+          <h1 className="text-2xl font-bold pb-4 text-error">
+            Currently, Just for UI
+          </h1>
+          <AdminDashboardChart />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

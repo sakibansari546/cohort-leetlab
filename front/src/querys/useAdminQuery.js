@@ -112,3 +112,35 @@ export const useDeletePlaylistMutation = () => {
     },
   });
 };
+
+const getSubmissions = async () => {
+  const res = await axiosClient.get("/admin/submissions");
+  return res.data.data;
+};
+
+export const useGeSubmissionsQuery = () => {
+  return useQuery({
+    queryKey: ["submissions", "admin"],
+    queryFn: getSubmissions,
+  });
+};
+
+const deleteSubmission = async ({ submissionId }) => {
+  const res = await axiosClient.delete(
+    `/admin/submission/${submissionId}/delete`
+  );
+  return res.data.data;
+};
+
+export const useDeleteSubmissionMutation = () => {
+  return useMutation({
+    mutationFn: (data) => deleteSubmission(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["submissions", "admin"] });
+      toast.success(data.message || "Submission deleted successfully!");
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "somehting went worng");
+    },
+  });
+};
