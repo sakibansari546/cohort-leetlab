@@ -87,6 +87,56 @@ class AdminController {
 
     res.status(200).json(new ApiResponse(200, "User deleted successfully"));
   });
+
+  getPlaylistsHandler = AsyncHandler(async (req, res) => {
+    const playlists = await prisma.playlist.findMany({
+      where: {},
+      include: {
+        problems: {
+          include: {
+            problem: {
+              select: {
+                title: true,
+                id: true,
+                difficulty: true,
+                userId: true,
+                isDemo: true,
+              },
+            },
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            fullname: true,
+            email: true,
+            profileImage: true,
+            role: true,
+          },
+        },
+      },
+    });
+
+    res
+      .status(200)
+      .json(
+        new ApiResponse(200, "Playlists fetched successfully", { playlists })
+      );
+  });
+  deletePlaylistHadler = AsyncHandler(async (req, res) => {
+    const { playlistId } = req.params;
+    if (!playlistId) {
+      throw new ApiError(400, "playlistId is required");
+    }
+
+    await prisma.playlist.delete({
+      where: {
+        id: playlistId,
+      },
+    });
+
+    res.status(200).json(new ApiResponse(200, "Playlist deleted successfully"));
+  });
 }
 
 export default AdminController;

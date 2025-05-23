@@ -17,5 +17,11 @@ export function register() {
   router.get("/users", controller.getUsersHandler);
   router.delete("/user/:userId/delete", controller.deleteUserhandler);
 
+  router.get("/playlists", controller.getPlaylistsHandler);
+  router.delete(
+    "/playlist/:playlistId/delete",
+    controller.deletePlaylistHadler
+  );
+
   return router;
 }

@@ -1,222 +1,47 @@
 "use client";
+import { Link } from "react-router-dom";
 import DataTable from "../../components/admin/DataTable";
-import { ListPlus, Upload, Download } from "lucide-react";
+import {
+  ListPlus,
+  Upload,
+  Download,
+  Search,
+  EllipsisVertical,
+  Edit,
+  Trash2,
+  Ellipsis,
+  Loader2,
+} from "lucide-react";
+import {
+  useDeletePlaylistMutation,
+  useGetPlaylistsQuery,
+} from "../../querys/useAdminQuery";
+import { formateDate } from "../../utils/date-formate";
 
 export default function PlaylistsPage() {
-  // Mock playlists data
-  const playlists = [
-    {
-      id: 1,
-      title: "Top Interview Questions",
-      creator: "Admin",
-      creator_id: 0,
-      problem_count: 50,
-      views: 45678,
-      is_official: true,
-      is_public: true,
-      created_at: "2023-01-10",
-      last_updated: "2023-05-01",
-    },
-    {
-      id: 2,
-      title: "Dynamic Programming Essentials",
-      creator: "Admin",
-      creator_id: 0,
-      problem_count: 35,
-      views: 32543,
-      is_official: true,
-      is_public: true,
-      created_at: "2023-01-15",
-      last_updated: "2023-04-20",
-    },
-    {
-      id: 3,
-      title: "Graph Algorithms",
-      creator: "Admin",
-      creator_id: 0,
-      problem_count: 28,
-      views: 28765,
-      is_official: true,
-      is_public: true,
-      created_at: "2023-01-20",
-      last_updated: "2023-04-15",
-    },
-    {
-      id: 4,
-      title: "Google Interview Prep",
-      creator: "Alex Johnson",
-      creator_id: 1,
-      problem_count: 42,
-      views: 21543,
-      is_official: false,
-      is_public: true,
-      created_at: "2023-02-10",
-      last_updated: "2023-05-10",
-    },
-    {
-      id: 5,
-      title: "Beginner Friendly Problems",
-      creator: "Sarah Chen",
-      creator_id: 2,
-      problem_count: 20,
-      views: 34567,
-      is_official: false,
-      is_public: true,
-      created_at: "2023-02-15",
-      last_updated: "2023-04-01",
-    },
-    {
-      id: 6,
-      title: "Hard Problems Collection",
-      creator: "Michael Rodriguez",
-      creator_id: 3,
-      problem_count: 30,
-      views: 12345,
-      is_official: false,
-      is_public: true,
-      created_at: "2023-02-20",
-      last_updated: "2023-04-10",
-    },
-    {
-      id: 7,
-      title: "Array Manipulation",
-      creator: "Admin",
-      creator_id: 0,
-      problem_count: 25,
-      views: 19876,
-      is_official: true,
-      is_public: true,
-      created_at: "2023-03-01",
-      last_updated: "2023-04-25",
-    },
-    {
-      id: 8,
-      title: "String Algorithms",
-      creator: "Admin",
-      creator_id: 0,
-      problem_count: 22,
-      views: 17654,
-      is_official: true,
-      is_public: true,
-      created_at: "2023-03-05",
-      last_updated: "2023-04-30",
-    },
-    {
-      id: 9,
-      title: "Binary Tree Problems",
-      creator: "Emma Wilson",
-      creator_id: 4,
-      problem_count: 18,
-      views: 15432,
-      is_official: false,
-      is_public: true,
-      created_at: "2023-03-10",
-      last_updated: "2023-05-05",
-    },
-    {
-      id: 10,
-      title: "Recursion Practice",
-      creator: "Daniel Lee",
-      creator_id: 5,
-      problem_count: 15,
-      views: 13210,
-      is_official: false,
-      is_public: true,
-      created_at: "2023-03-15",
-      last_updated: "2023-04-15",
-    },
-    {
-      id: 11,
-      title: "Greedy Algorithms",
-      creator: "Olivia Taylor",
-      creator_id: 6,
-      problem_count: 12,
-      views: 9876,
-      is_official: false,
-      is_public: false,
-      created_at: "2023-03-20",
-      last_updated: "2023-04-20",
-    },
-    {
-      id: 12,
-      title: "Backtracking Problems",
-      creator: "James Brown",
-      creator_id: 7,
-      problem_count: 10,
-      views: 8765,
-      is_official: false,
-      is_public: false,
-      created_at: "2023-03-25",
-      last_updated: "2023-04-25",
-    },
-  ];
+  const { data, isPending, isError, error } = useGetPlaylistsQuery();
+  const playlists = data?.playlists;
 
-  const columns = [
-    {
-      header: "Title",
-      accessor: "title",
-      render: (playlist) => (
-        <div>
-          <a
-            href={`/admin/playlists/${playlist.id}`}
-            className="link link-hover link-primary"
-          >
-            {playlist.title}
-          </a>
-          {playlist.is_official && (
-            <span className="badge badge-primary badge-sm ml-2">Official</span>
-          )}
-          {!playlist.is_public && (
-            <span className="badge badge-ghost badge-sm ml-2">Private</span>
-          )}
+  const { mutateAsync, isPending: deleteIsPending } =
+    useDeletePlaylistMutation();
+
+  const handleDeletePlaylist = async (playlistId) => {
+    await mutateAsync({ playlistId });
+  };
+
+  if (isError) {
+    return (
+      <div class="p-4 sm:ml-64 w-full">
+        <div class="p-4 rounded-lg max-h-[80vh]">
+          <div className="flex items-center py-6">
+            <h1 className="text-2xl font-semibold text-center w-full">
+              {error?.response?.data?.message || "Something went wrong"}
+            </h1>
+          </div>
         </div>
-      ),
-    },
-    {
-      header: "Creator",
-      accessor: "creator",
-    },
-    {
-      header: "Problems",
-      accessor: "problem_count",
-    },
-    {
-      header: "Views",
-      accessor: "views",
-      render: (playlist) => <span>{playlist.views.toLocaleString()}</span>,
-    },
-    {
-      header: "Last Updated",
-      accessor: "last_updated",
-    },
-    {
-      header: "Status",
-      accessor: "is_public",
-      render: (playlist) => (
-        <span
-          className={`badge ${
-            playlist.is_public ? "badge-success" : "badge-ghost"
-          }`}
-        >
-          {playlist.is_public ? "Public" : "Private"}
-        </span>
-      ),
-    },
-  ];
-
-  const handleEditPlaylist = (playlist) => {
-    console.log("Edit playlist:", playlist);
-    // This would open a modal or navigate to an edit page
-  };
-
-  const handleDeletePlaylist = (playlist) => {
-    if (
-      confirm(`Are you sure you want to delete playlist "${playlist.title}"?`)
-    ) {
-      console.log("Delete playlist:", playlist);
-      // This would call an API to delete the playlist
-    }
-  };
+      </div>
+    );
+  }
 
   return (
     <div class="p-4 sm:ml-64">
@@ -232,29 +57,35 @@ export default function PlaylistsPage() {
           <div className="stats bg-base-100 shadow">
             <div className="stat">
               <div className="stat-title">Total Playlists</div>
-              <div className="stat-value">{playlists.length}</div>
+              <div className="stat-value">{playlists?.length}</div>
               <div className="stat-desc">
-                {playlists.filter((p) => p.is_official).length} official,{" "}
-                {playlists.filter((p) => !p.is_official).length} user-created
+                {playlists?.reduce(
+                  (accu, playlist) => (accu += playlist.isPrivate ? 1 : 0),
+                  0
+                )}{" "}
+                Private,{" "}
+                {playlists?.reduce(
+                  (accu, playlist) =>
+                    (accu += playlist.user?.role == "USER" ? 1 : 0),
+                  0
+                )}{" "}
+                user-created
               </div>
             </div>
             <div className="stat">
               <div className="stat-title">Total Views</div>
-              <div className="stat-value text-primary">
-                {playlists
-                  .reduce((acc, playlist) => acc + playlist.views, 0)
-                  .toLocaleString()}
-              </div>
+              <div className="stat-value text-primary">56</div>
               <div className="stat-desc">All time</div>
             </div>
             <div className="stat">
               <div className="stat-title">Avg. Problems</div>
               <div className="stat-value">
                 {Math.round(
-                  playlists.reduce(
-                    (acc, playlist) => acc + playlist.problem_count,
+                  playlists?.reduce(
+                    (accu, playlist) =>
+                      (accu += playlist.problems?.length ?? 0),
                     0
-                  ) / playlists.length
+                  ) / playlists?.length
                 )}
               </div>
               <div className="stat-desc">per playlist</div>
@@ -277,13 +108,122 @@ export default function PlaylistsPage() {
           </div>
         </div>
 
-        <DataTable
-          columns={columns}
-          data={playlists}
-          title="Playlists"
-          onEdit={handleEditPlaylist}
-          onDelete={handleDeletePlaylist}
-        />
+        <div className="flex items-center justify-between px-6 ">
+          <h2 className="text-xl font-medium">Playlists</h2>
+          <div>
+            <label className="input w-68">
+              <Search />
+              <input type="text" placeholder="Search" id="" />
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Creator</th>
+                <th>Problems</th>
+                <th>Last Updated</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isPending ? (
+                <td className="absolute top-1/2 left-1/2">
+                  <span className="loading text-lg"></span>
+                </td>
+              ) : playlists.lenght === 0 ? (
+                <td className="absolute top-1/2 left-1/2">
+                  <span className="text-lg">No Users found</span>
+                </td>
+              ) : (
+                playlists?.map((playlist) => (
+                  <tr key={playlist.id}>
+                    <td className="font-medium ">
+                      <Link
+                        to={`/playlists/${playlist.id}`}
+                        className="hover:underline text-primary"
+                      >
+                        <span className="line-clamp-2 break-words max-w-xs">
+                          {playlist.name}
+                        </span>
+                      </Link>
+                    </td>
+                    <td>
+                      {playlist.user?.role == "ADMIN"
+                        ? "ADMIN"
+                        : playlist.user?.fullname}
+                    </td>
+                    <td>{playlist.problems.length || 0}</td>
+                    <td>{formateDate(playlist.updatedAt).split("-")[0]}</td>
+                    <td>
+                      <span className="badge badge-success">
+                        {playlist.isPrivate ? "Private" : "Public"}
+                      </span>
+                    </td>
+                    <td>
+                      <td>
+                        <div className="flex items-center gap-2">
+                          <div className="dropdown dropdown-end">
+                            <button
+                              tabIndex={0}
+                              role="button"
+                              className="btn btn-sm"
+                            >
+                              <Ellipsis size="16" />
+                            </button>
+                            <ul
+                              tabIndex={0}
+                              className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                            >
+                              <li>
+                                <button className="flex items-center gap-3">
+                                  <Edit size="18" />
+                                  Edit
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                  disabled={deleteIsPending}
+                                  onClick={() =>
+                                    handleDeletePlaylist(playlist.id)
+                                  }
+                                  className="flex items-center gap-3 text-error"
+                                >
+                                  {deleteIsPending ? (
+                                    <>
+                                      {" "}
+                                      <Loader2
+                                        className="animate-spin"
+                                        size="18"
+                                      />
+                                      Loading
+                                    </>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <Trash2 size="18" />
+                                      Delete
+                                    </>
+                                  )}
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </td>
+                    </td>
+                  </tr>
+                ))
+              )}
+
+              {/* Row 1 */}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

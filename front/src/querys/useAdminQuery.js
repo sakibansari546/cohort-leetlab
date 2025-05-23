@@ -82,3 +82,33 @@ export const useDeleteUserMutation = () => {
     },
   });
 };
+
+const getPlaylists = async () => {
+  const res = await axiosClient.get("/admin/playlists");
+  return res.data.data;
+};
+
+export const useGetPlaylistsQuery = () => {
+  return useQuery({
+    queryKey: ["playlists", "admin"],
+    queryFn: getPlaylists,
+  });
+};
+
+const deletePlaylist = async ({ playlistId }) => {
+  const res = await axiosClient.delete(`/admin/playlist/${playlistId}/delete`);
+  return res.data.data;
+};
+
+export const useDeletePlaylistMutation = () => {
+  return useMutation({
+    mutationFn: (data) => deletePlaylist(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["playlists", "admin"] });
+      toast.success(data.message || "Playlist deleted successfully!");
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "somehting went worng");
+    },
+  });
+};
