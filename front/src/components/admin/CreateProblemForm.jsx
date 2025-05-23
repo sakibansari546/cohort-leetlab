@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import useTagInput from "../../hooks/useTagInput";
 import { TagField } from "../TagFeild";
 
-import { CheckCircle2, Code2, Plus, Trash2 } from "lucide-react";
+import { CheckCircle2, Code2, Plus, Send, Trash2 } from "lucide-react";
 
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,17 +12,15 @@ import { createProblemSchema } from "../../utils/zod-schema";
 import Editor from "@monaco-editor/react";
 
 const formDefaultValues = {
+  title: "",
+  description: "",
+  isDemo: false,
+  examples: [{ input: "", output: "", explanation: "" }],
   testcases: [{ input: "", output: "" }],
-  tags: [""],
   hints: [""],
+  company: "",
+  tags: [""],
   constraints: "",
-  examples: [
-    {
-      input: "",
-      output: "",
-      explanation: "",
-    },
-  ],
   codeSnippets: {
     JAVASCRIPT: "function solution() {\n  // Write your code here\n}",
     PYTHON: "def solution():\n    # Write your code here\n    pass",
@@ -52,32 +50,21 @@ const CreateProblemForm = () => {
 
   const {
     fields: exampleFields,
-    append: appendExample,
+    append: addExample,
     remove: removeExample,
-    replace: replaceExamples,
-  } = useFieldArray({
-    control,
-    name: "examples",
-  });
-  const {
-    fields: hintsFields,
-    append: appendHint,
-    remove: removeHint,
-    replace: replaceHints,
-  } = useFieldArray({
-    control,
-    name: "hints",
-  });
+  } = useFieldArray({ control, name: "examples" });
 
   const {
-    fields: testCaseFields,
-    append: appendTestCase,
-    remove: removeTestCase,
-    replace: replaceTestCases,
-  } = useFieldArray({
-    control,
-    name: "testCases",
-  });
+    fields: testcaseFields,
+    append: addTestcase,
+    remove: removeTestcase,
+  } = useFieldArray({ control, name: "testcases" });
+
+  const {
+    fields: hintFields,
+    append: addHint,
+    remove: removeHint,
+  } = useFieldArray({ control, name: "hints" });
 
   const MAX_TAGS = 10;
   //Retrieve all the returned items from the hook
@@ -196,7 +183,9 @@ const CreateProblemForm = () => {
             >
               <span className="label-text mb-2">Examples</span>
               <button
-                onClick={() => appendExample("")}
+                onClick={() =>
+                  addExample({ input: "", output: "", explanation: "" })
+                }
                 type="button"
                 className="btn flex items-center gap-2"
               >
@@ -233,11 +222,12 @@ const CreateProblemForm = () => {
                             className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
                             {...register(`examples.${index}.input`)}
                             placeholder="Enter input for example"
+                            defaultValue={field.input}
                           />
                           {errors.examples?.[index]?.input && (
                             <label className="label">
                               <span className="label-text-alt text-error">
-                                {errors.testCases[index].input.message}
+                                {errors.examples[index].input.message}
                               </span>
                             </label>
                           )}
@@ -250,13 +240,14 @@ const CreateProblemForm = () => {
                           </label>
                           <textarea
                             className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
-                            {...register(`testCases.${index}.output`)}
+                            {...register(`examples.${index}.output`)}
+                            defaultValue={field.output}
                             placeholder="Enter output for example"
                           />
-                          {errors.examples?.[index].output && (
+                          {errors.examples?.[index]?.output && (
                             <label className="label">
                               <span className="label-text-alt text-error">
-                                {errors.examples?.[index].output.message}
+                                {errors.examples?.[index]?.output.message}
                               </span>
                             </label>
                           )}
@@ -273,11 +264,12 @@ const CreateProblemForm = () => {
                             className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
                             {...register(`examples.${index}.explanation`)}
                             placeholder="Explain your example"
+                            defaultValue={field.explanation}
                           />
-                          {errors.examples?.[index].explanation && (
+                          {errors.examples?.[index]?.explanation && (
                             <label className="label">
                               <span className="label-text-alt text-error">
-                                {errors.examples?.[index].explanation.message}
+                                {errors.examples?.[index]?.explanation.message}
                               </span>
                             </label>
                           )}
@@ -320,23 +312,19 @@ const CreateProblemForm = () => {
               className="label flex items-center justify-between gap-2 py-4"
             >
               <span className="label-text mb-2">Hints</span>
-              <button
-                type="button"
-                className="btn"
-                onClick={() => appendHint("")}
-              >
+              <button type="button" className="btn" onClick={() => addHint("")}>
                 <Plus className="w-4 h-4 mr-1" /> Add Hint
               </button>
             </label>
             <div className="w-full">
               <div className="">
-                {hintsFields.map((field, index) => (
+                {hintFields.map((field, index) => (
                   <div key={field.id}>
                     <div className="flex gap-2 items-center">
                       <input
                         type="text"
                         {...register(`hints.${index}`)}
-                        defaultValue={field} // or field.value
+                        defaultValue={field}
                         className="input input-bordered w-full my-3"
                         placeholder={`Hint #${index + 1}`}
                       />
@@ -345,7 +333,7 @@ const CreateProblemForm = () => {
                         type="button"
                         className="btn btn-ghost btn-square btn-sm"
                         onClick={() => removeHint(index)}
-                        disabled={hintsFields.length === 1}
+                        disabled={hintFields.length === 1}
                       >
                         <Trash2 className="w-4 h-4 text-error" />
                       </button>
@@ -374,7 +362,7 @@ const CreateProblemForm = () => {
             >
               <span className="label-text mb-2">TestCases</span>
               <button
-                onClick={() => appendTestCase({ input: "", output: "" })}
+                onClick={() => addTestcase({ input: "", output: "" })}
                 type="button"
                 className="btn flex items-center gap-2"
               >
@@ -384,7 +372,7 @@ const CreateProblemForm = () => {
             </label>
             <div className="w-full">
               <div className="space-y-6">
-                {testCaseFields.map((field, index) => (
+                {testcaseFields.map((field, index) => (
                   <div key={field.id} className="card bg-base-100 shadow-md">
                     <div className="card-body p-4 md:p-6">
                       <div className="flex justify-between items-center mb-4">
@@ -394,8 +382,8 @@ const CreateProblemForm = () => {
                         <button
                           type="button"
                           className="btn btn-ghost btn-sm text-error"
-                          onClick={() => removeTestCase(index)}
-                          disabled={testCaseFields.length === 1}
+                          onClick={() => removeTestcase(index)}
+                          disabled={testcaseFields.length === 1}
                         >
                           <Trash2 className="w-4 h-4 mr-1" /> Remove
                         </button>
@@ -411,6 +399,7 @@ const CreateProblemForm = () => {
                             className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
                             {...register(`testcases.${index}.input`)}
                             placeholder="Enter input for example"
+                            defaultValue={field.input}
                           />
                           {errors.testcases?.[index]?.input && (
                             <label className="label">
@@ -430,6 +419,7 @@ const CreateProblemForm = () => {
                             className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
                             {...register(`testcases.${index}.output`)}
                             placeholder="Enter output for example"
+                            defaultValue={field.output}
                           />
                           {errors.testcases?.[index]?.output && (
                             <label className="label">
@@ -448,7 +438,7 @@ const CreateProblemForm = () => {
           </div>
 
           {/* CodeSnippets */}
-          <div className="space-y-8">
+          <div className="space-y-8 my-4">
             {["JAVASCRIPT", "PYTHON", "JAVA"].map((language) => (
               <div
                 key={language}
@@ -477,14 +467,6 @@ const CreateProblemForm = () => {
                               theme="vs-dark"
                               value={field.value}
                               onChange={field.onChange}
-                              options={{
-                                minimap: { enabled: false },
-                                fontSize: 14,
-                                lineNumbers: "on",
-                                roundedSelection: false,
-                                scrollBeyondLastLine: false,
-                                automaticLayout: true,
-                              }}
                             />
                           )}
                         />
@@ -517,14 +499,6 @@ const CreateProblemForm = () => {
                               theme="vs-dark"
                               value={field.value}
                               onChange={field.onChange}
-                              options={{
-                                minimap: { enabled: false },
-                                fontSize: 14,
-                                lineNumbers: "on",
-                                roundedSelection: false,
-                                scrollBeyondLastLine: false,
-                                automaticLayout: true,
-                              }}
                             />
                           )}
                         />
@@ -543,8 +517,58 @@ const CreateProblemForm = () => {
             ))}
           </div>
 
-          <div>
-            <button className="btn" type="submit">
+          {/* Comany */}
+          <div className="form-control mb-4">
+            <label htmlFor="company" className="label">
+              <span className="label-text mb-2">Company</span>
+            </label>
+            <div className="w-full">
+              <input
+                {...register("company")}
+                id="company"
+                type="text"
+                name="company"
+                placeholder="Enter company"
+                className="input input-bordered w-full"
+              />
+            </div>
+            {errors.company && (
+              <label className="label">
+                <span className="label-text-alt text-error">
+                  {errors.company.message}
+                </span>
+              </label>
+            )}
+          </div>
+
+          {/* IsDemo */}
+          <div className="form-control mb-4">
+            <label htmlFor="isDemo" className="label">
+              <span className="label-text mb-2">Is this Demo Problem?</span>
+            </label>
+            <div className="w-full">
+              <input
+                {...register("isDemo")}
+                id="isDemo"
+                type="checkbox"
+                name="isDemo"
+                className="toggle"
+              />
+            </div>
+            {errors.isDemo && (
+              <label className="label">
+                <span className="label-text-alt text-error">
+                  {errors.isDemo.message}
+                </span>
+              </label>
+            )}
+          </div>
+
+          <div className="divider"></div>
+
+          <div className="my-8">
+            <button className="btn btn-lg btn-primary" type="submit">
+              <Send />
               Submit
             </button>
           </div>

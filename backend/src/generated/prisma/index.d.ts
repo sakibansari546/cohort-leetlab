@@ -5335,7 +5335,6 @@ export namespace Prisma {
     difficulty: $Enums.Difficulty | null
     userId: string | null
     constraints: string | null
-    hints: string | null
     editorial: string | null
     isDemo: boolean | null
     company: string | null
@@ -5350,7 +5349,6 @@ export namespace Prisma {
     difficulty: $Enums.Difficulty | null
     userId: string | null
     constraints: string | null
-    hints: string | null
     editorial: string | null
     isDemo: boolean | null
     company: string | null
@@ -5387,7 +5385,6 @@ export namespace Prisma {
     difficulty?: true
     userId?: true
     constraints?: true
-    hints?: true
     editorial?: true
     isDemo?: true
     company?: true
@@ -5402,7 +5399,6 @@ export namespace Prisma {
     difficulty?: true
     userId?: true
     constraints?: true
-    hints?: true
     editorial?: true
     isDemo?: true
     company?: true
@@ -5512,7 +5508,7 @@ export namespace Prisma {
     userId: string
     examples: JsonValue
     constraints: string
-    hints: string | null
+    hints: JsonValue | null
     editorial: string | null
     isDemo: boolean
     company: string | null
@@ -5659,7 +5655,7 @@ export namespace Prisma {
       userId: string
       examples: Prisma.JsonValue
       constraints: string
-      hints: string | null
+      hints: Prisma.JsonValue | null
       editorial: string | null
       isDemo: boolean
       company: string | null
@@ -6103,7 +6099,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"Problem", 'String'>
     readonly examples: FieldRef<"Problem", 'Json'>
     readonly constraints: FieldRef<"Problem", 'String'>
-    readonly hints: FieldRef<"Problem", 'String'>
+    readonly hints: FieldRef<"Problem", 'Json'>
     readonly editorial: FieldRef<"Problem", 'String'>
     readonly isDemo: FieldRef<"Problem", 'Boolean'>
     readonly company: FieldRef<"Problem", 'String'>
@@ -12496,6 +12492,14 @@ export namespace Prisma {
   export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -12900,7 +12904,7 @@ export namespace Prisma {
     userId?: StringFilter<"Problem"> | string
     examples?: JsonFilter<"Problem">
     constraints?: StringFilter<"Problem"> | string
-    hints?: StringNullableFilter<"Problem"> | string | null
+    hints?: JsonNullableFilter<"Problem">
     editorial?: StringNullableFilter<"Problem"> | string | null
     isDemo?: BoolFilter<"Problem"> | boolean
     company?: StringNullableFilter<"Problem"> | string | null
@@ -12951,7 +12955,7 @@ export namespace Prisma {
     userId?: StringFilter<"Problem"> | string
     examples?: JsonFilter<"Problem">
     constraints?: StringFilter<"Problem"> | string
-    hints?: StringNullableFilter<"Problem"> | string | null
+    hints?: JsonNullableFilter<"Problem">
     editorial?: StringNullableFilter<"Problem"> | string | null
     isDemo?: BoolFilter<"Problem"> | boolean
     company?: StringNullableFilter<"Problem"> | string | null
@@ -13001,7 +13005,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Problem"> | string
     examples?: JsonWithAggregatesFilter<"Problem">
     constraints?: StringWithAggregatesFilter<"Problem"> | string
-    hints?: StringNullableWithAggregatesFilter<"Problem"> | string | null
+    hints?: JsonNullableWithAggregatesFilter<"Problem">
     editorial?: StringNullableWithAggregatesFilter<"Problem"> | string | null
     isDemo?: BoolWithAggregatesFilter<"Problem"> | boolean
     company?: StringNullableWithAggregatesFilter<"Problem"> | string | null
@@ -13684,7 +13688,7 @@ export namespace Prisma {
     tags?: ProblemCreatetagsInput | string[]
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -13708,7 +13712,7 @@ export namespace Prisma {
     userId: string
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -13730,7 +13734,7 @@ export namespace Prisma {
     tags?: ProblemUpdatetagsInput | string[]
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13754,7 +13758,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13777,7 +13781,7 @@ export namespace Prisma {
     userId: string
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -13796,7 +13800,7 @@ export namespace Prisma {
     tags?: ProblemUpdatetagsInput | string[]
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13816,7 +13820,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14608,6 +14612,29 @@ export namespace Prisma {
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
@@ -14651,7 +14678,6 @@ export namespace Prisma {
     difficulty?: SortOrder
     userId?: SortOrder
     constraints?: SortOrder
-    hints?: SortOrder
     editorial?: SortOrder
     isDemo?: SortOrder
     company?: SortOrder
@@ -14666,7 +14692,6 @@ export namespace Prisma {
     difficulty?: SortOrder
     userId?: SortOrder
     constraints?: SortOrder
-    hints?: SortOrder
     editorial?: SortOrder
     isDemo?: SortOrder
     company?: SortOrder
@@ -14708,6 +14733,32 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedJsonFilter<$PrismaModel>
     _max?: NestedJsonFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type ProblemNullableScalarRelationFilter = {
@@ -15842,6 +15893,29 @@ export namespace Prisma {
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
@@ -16082,7 +16156,7 @@ export namespace Prisma {
     tags?: ProblemCreatetagsInput | string[]
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -16104,7 +16178,7 @@ export namespace Prisma {
     tags?: ProblemCreatetagsInput | string[]
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -16275,7 +16349,7 @@ export namespace Prisma {
     userId?: StringFilter<"Problem"> | string
     examples?: JsonFilter<"Problem">
     constraints?: StringFilter<"Problem"> | string
-    hints?: StringNullableFilter<"Problem"> | string | null
+    hints?: JsonNullableFilter<"Problem">
     editorial?: StringNullableFilter<"Problem"> | string | null
     isDemo?: BoolFilter<"Problem"> | boolean
     company?: StringNullableFilter<"Problem"> | string | null
@@ -16723,7 +16797,7 @@ export namespace Prisma {
     tags?: ProblemCreatetagsInput | string[]
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -16746,7 +16820,7 @@ export namespace Prisma {
     userId: string
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -16880,7 +16954,7 @@ export namespace Prisma {
     tags?: ProblemUpdatetagsInput | string[]
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16903,7 +16977,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17094,7 +17168,7 @@ export namespace Prisma {
     tags?: ProblemCreatetagsInput | string[]
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -17117,7 +17191,7 @@ export namespace Prisma {
     userId: string
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -17211,7 +17285,7 @@ export namespace Prisma {
     tags?: ProblemUpdatetagsInput | string[]
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17234,7 +17308,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17428,7 +17502,7 @@ export namespace Prisma {
     tags?: ProblemCreatetagsInput | string[]
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -17451,7 +17525,7 @@ export namespace Prisma {
     userId: string
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -17519,7 +17593,7 @@ export namespace Prisma {
     tags?: ProblemUpdatetagsInput | string[]
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17542,7 +17616,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17563,7 +17637,7 @@ export namespace Prisma {
     tags?: ProblemCreatetagsInput | string[]
     examples: JsonNullValueInput | InputJsonValue
     constraints: string
-    hints?: string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
     company?: string | null
@@ -17614,7 +17688,7 @@ export namespace Prisma {
     tags?: ProblemUpdatetagsInput | string[]
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17636,7 +17710,7 @@ export namespace Prisma {
     tags?: ProblemUpdatetagsInput | string[]
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17658,7 +17732,7 @@ export namespace Prisma {
     tags?: ProblemUpdatetagsInput | string[]
     examples?: JsonNullValueInput | InputJsonValue
     constraints?: StringFieldUpdateOperationsInput | string
-    hints?: NullableStringFieldUpdateOperationsInput | string | null
+    hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
     company?: NullableStringFieldUpdateOperationsInput | string | null

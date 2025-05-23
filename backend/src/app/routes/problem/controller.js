@@ -37,6 +37,8 @@ class ProblemController {
       testcases,
       codeSnippets,
       referenceSolutions,
+      company,
+      isDemo,
     } = handleZodError(this.validateParseData(createProblemSchema, req.body));
 
     const user = await prisma.user.findUnique({
@@ -103,6 +105,8 @@ class ProblemController {
         codeSnippets,
         referenceSolutions,
         userId: req.userId,
+        company,
+        isDemo,
       },
     });
     if (!newProblem)

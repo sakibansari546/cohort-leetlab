@@ -89,7 +89,7 @@ model Problem {
   userId      String
   examples    Json
   constraints String
-  hints       String?
+  hints       Json?
   editorial   String?
 
   isDemo  Boolean @default(false)
