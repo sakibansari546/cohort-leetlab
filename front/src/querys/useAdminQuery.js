@@ -144,3 +144,18 @@ export const useDeleteSubmissionMutation = () => {
     },
   });
 };
+
+export const createProblem = async (body) => {
+  const res = await axiosClient.post(`/problem/create`, body);
+  return res.data.data;
+};
+
+export const useCreateProblemMutation = () => {
+  return useMutation({
+    mutationFn: createProblem,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: "problems" });
+      toast.success(data.message || "Problem created successfully");
+    },
+  });
+};

@@ -3,13 +3,14 @@ import React, { useEffect } from "react";
 import useTagInput from "../../hooks/useTagInput";
 import { TagField } from "../TagFeild";
 
-import { CheckCircle2, Code2, Plus, Send, Trash2 } from "lucide-react";
+import { CheckCircle2, Code2, Loader2, Plus, Send, Trash2 } from "lucide-react";
 
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createProblemSchema } from "../../utils/zod-schema";
 
 import Editor from "@monaco-editor/react";
+import { useCreateProblemMutation } from "../../querys/useAdminQuery";
 
 const formDefaultValues = {
   title: "",
@@ -46,6 +47,8 @@ const CreateProblemForm = () => {
     defaultValues: formDefaultValues,
   });
 
+  const { mutateAsync, isPending, isError, error } = useCreateProblemMutation();
+
   console.log(errors);
 
   const {
@@ -72,7 +75,12 @@ const CreateProblemForm = () => {
   console.log(tags);
 
   // Handle form submission
-  const handleOnSubmit = (data) => {
+  const handleOnSubmit = async (data) => {
+    await mutateAsync(data, {
+      onSuccess: () => {
+        reset();
+      },
+    });
     console.log(data);
   };
 
@@ -566,10 +574,33 @@ const CreateProblemForm = () => {
 
           <div className="divider"></div>
 
+          {isError && (
+            <label className="label">
+              <span className="label-text-alt text-error">
+                {error?.response?.data?.message || "Something went worng"}
+              </span>
+            </label>
+          )}
+
           <div className="my-8">
-            <button className="btn btn-lg btn-primary" type="submit">
-              <Send />
-              Submit
+            <button
+              disabled={isPending}
+              className="btn btn-lg btn-primary"
+              type="submit"
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Loading
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Send />
+                  Submit
+                </>
+              )}
+              x
             </button>
           </div>
         </form>
