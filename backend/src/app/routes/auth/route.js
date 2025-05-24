@@ -13,6 +13,7 @@ export function register() {
     controller.verifyEmailHandler.bind(controller)
   );
 
+  router.post("/google-auth", controller.googleAuth.bind(controller));
   router.post("/login", controller.loginHandler.bind(controller));
   router.post("/logout", isAuth, controller.logoutHandler.bind(controller));
 

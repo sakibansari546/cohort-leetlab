@@ -3989,6 +3989,7 @@ export namespace Prisma {
     password: string | null
     profileImage: string | null
     role: $Enums.UserRole | null
+    isGoogleAuth: boolean | null
     isEmailVerified: boolean | null
     isActive: boolean | null
     emailVerificationToken: string | null
@@ -4009,6 +4010,7 @@ export namespace Prisma {
     password: string | null
     profileImage: string | null
     role: $Enums.UserRole | null
+    isGoogleAuth: boolean | null
     isEmailVerified: boolean | null
     isActive: boolean | null
     emailVerificationToken: string | null
@@ -4029,6 +4031,7 @@ export namespace Prisma {
     password: number
     profileImage: number
     role: number
+    isGoogleAuth: number
     isEmailVerified: number
     isActive: number
     emailVerificationToken: number
@@ -4051,6 +4054,7 @@ export namespace Prisma {
     password?: true
     profileImage?: true
     role?: true
+    isGoogleAuth?: true
     isEmailVerified?: true
     isActive?: true
     emailVerificationToken?: true
@@ -4071,6 +4075,7 @@ export namespace Prisma {
     password?: true
     profileImage?: true
     role?: true
+    isGoogleAuth?: true
     isEmailVerified?: true
     isActive?: true
     emailVerificationToken?: true
@@ -4091,6 +4096,7 @@ export namespace Prisma {
     password?: true
     profileImage?: true
     role?: true
+    isGoogleAuth?: true
     isEmailVerified?: true
     isActive?: true
     emailVerificationToken?: true
@@ -4181,9 +4187,10 @@ export namespace Prisma {
     fullname: string | null
     email: string
     username: string | null
-    password: string
+    password: string | null
     profileImage: string
     role: $Enums.UserRole
+    isGoogleAuth: boolean
     isEmailVerified: boolean
     isActive: boolean
     emailVerificationToken: string | null
@@ -4221,6 +4228,7 @@ export namespace Prisma {
     password?: boolean
     profileImage?: boolean
     role?: boolean
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: boolean
@@ -4247,6 +4255,7 @@ export namespace Prisma {
     password?: boolean
     profileImage?: boolean
     role?: boolean
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: boolean
@@ -4268,6 +4277,7 @@ export namespace Prisma {
     password?: boolean
     profileImage?: boolean
     role?: boolean
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: boolean
@@ -4289,6 +4299,7 @@ export namespace Prisma {
     password?: boolean
     profileImage?: boolean
     role?: boolean
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: boolean
@@ -4301,7 +4312,7 @@ export namespace Prisma {
     basicInfoId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullname" | "email" | "username" | "password" | "profileImage" | "role" | "isEmailVerified" | "isActive" | "emailVerificationToken" | "emailVerificationExpiry" | "forgotPasswordToken" | "forgotPasswordExpiry" | "refreshToken" | "createdAt" | "updatedAt" | "basicInfoId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullname" | "email" | "username" | "password" | "profileImage" | "role" | "isGoogleAuth" | "isEmailVerified" | "isActive" | "emailVerificationToken" | "emailVerificationExpiry" | "forgotPasswordToken" | "forgotPasswordExpiry" | "refreshToken" | "createdAt" | "updatedAt" | "basicInfoId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     problems?: boolean | User$problemsArgs<ExtArgs>
     submissions?: boolean | User$submissionsArgs<ExtArgs>
@@ -4331,9 +4342,10 @@ export namespace Prisma {
       fullname: string | null
       email: string
       username: string | null
-      password: string
+      password: string | null
       profileImage: string
       role: $Enums.UserRole
+      isGoogleAuth: boolean
       isEmailVerified: boolean
       isActive: boolean
       emailVerificationToken: string | null
@@ -4779,6 +4791,7 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly profileImage: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
+    readonly isGoogleAuth: FieldRef<"User", 'Boolean'>
     readonly isEmailVerified: FieldRef<"User", 'Boolean'>
     readonly isActive: FieldRef<"User", 'Boolean'>
     readonly emailVerificationToken: FieldRef<"User", 'String'>
@@ -12365,6 +12378,7 @@ export namespace Prisma {
     password: 'password',
     profileImage: 'profileImage',
     role: 'role',
+    isGoogleAuth: 'isGoogleAuth',
     isEmailVerified: 'isEmailVerified',
     isActive: 'isActive',
     emailVerificationToken: 'emailVerificationToken',
@@ -12773,9 +12787,10 @@ export namespace Prisma {
     fullname?: StringNullableFilter<"User"> | string | null
     email?: StringFilter<"User"> | string
     username?: StringNullableFilter<"User"> | string | null
-    password?: StringFilter<"User"> | string
+    password?: StringNullableFilter<"User"> | string | null
     profileImage?: StringFilter<"User"> | string
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    isGoogleAuth?: BoolFilter<"User"> | boolean
     isEmailVerified?: BoolFilter<"User"> | boolean
     isActive?: BoolFilter<"User"> | boolean
     emailVerificationToken?: StringNullableFilter<"User"> | string | null
@@ -12798,9 +12813,10 @@ export namespace Prisma {
     fullname?: SortOrderInput | SortOrder
     email?: SortOrder
     username?: SortOrderInput | SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
     profileImage?: SortOrder
     role?: SortOrder
+    isGoogleAuth?: SortOrder
     isEmailVerified?: SortOrder
     isActive?: SortOrder
     emailVerificationToken?: SortOrderInput | SortOrder
@@ -12827,9 +12843,10 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     fullname?: StringNullableFilter<"User"> | string | null
-    password?: StringFilter<"User"> | string
+    password?: StringNullableFilter<"User"> | string | null
     profileImage?: StringFilter<"User"> | string
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    isGoogleAuth?: BoolFilter<"User"> | boolean
     isEmailVerified?: BoolFilter<"User"> | boolean
     isActive?: BoolFilter<"User"> | boolean
     emailVerificationToken?: StringNullableFilter<"User"> | string | null
@@ -12851,9 +12868,10 @@ export namespace Prisma {
     fullname?: SortOrderInput | SortOrder
     email?: SortOrder
     username?: SortOrderInput | SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
     profileImage?: SortOrder
     role?: SortOrder
+    isGoogleAuth?: SortOrder
     isEmailVerified?: SortOrder
     isActive?: SortOrder
     emailVerificationToken?: SortOrderInput | SortOrder
@@ -12877,9 +12895,10 @@ export namespace Prisma {
     fullname?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringWithAggregatesFilter<"User"> | string
     username?: StringNullableWithAggregatesFilter<"User"> | string | null
-    password?: StringWithAggregatesFilter<"User"> | string
+    password?: StringNullableWithAggregatesFilter<"User"> | string | null
     profileImage?: StringWithAggregatesFilter<"User"> | string
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
+    isGoogleAuth?: BoolWithAggregatesFilter<"User"> | boolean
     isEmailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
     emailVerificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -13530,9 +13549,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -13554,9 +13574,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -13578,9 +13599,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13602,9 +13624,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13626,9 +13649,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -13646,9 +13670,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13665,9 +13690,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14491,6 +14517,7 @@ export namespace Prisma {
     password?: SortOrder
     profileImage?: SortOrder
     role?: SortOrder
+    isGoogleAuth?: SortOrder
     isEmailVerified?: SortOrder
     isActive?: SortOrder
     emailVerificationToken?: SortOrder
@@ -14511,6 +14538,7 @@ export namespace Prisma {
     password?: SortOrder
     profileImage?: SortOrder
     role?: SortOrder
+    isGoogleAuth?: SortOrder
     isEmailVerified?: SortOrder
     isActive?: SortOrder
     emailVerificationToken?: SortOrder
@@ -14531,6 +14559,7 @@ export namespace Prisma {
     password?: SortOrder
     profileImage?: SortOrder
     role?: SortOrder
+    isGoogleAuth?: SortOrder
     isEmailVerified?: SortOrder
     isActive?: SortOrder
     emailVerificationToken?: SortOrder
@@ -16018,9 +16047,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -16041,9 +16071,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -16107,9 +16138,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16130,9 +16162,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16484,9 +16517,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -16507,9 +16541,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -16638,9 +16673,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16661,9 +16697,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16743,9 +16780,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -16766,9 +16804,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -16894,9 +16933,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16917,9 +16957,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17114,9 +17155,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -17137,9 +17179,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -17225,9 +17268,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17248,9 +17292,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17350,9 +17395,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -17373,9 +17419,10 @@ export namespace Prisma {
     fullname?: string | null
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     profileImage?: string
     role?: $Enums.UserRole
+    isGoogleAuth?: boolean
     isEmailVerified?: boolean
     isActive?: boolean
     emailVerificationToken?: string | null
@@ -17428,9 +17475,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17451,9 +17499,10 @@ export namespace Prisma {
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     profileImage?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     emailVerificationToken?: NullableStringFieldUpdateOperationsInput | string | null

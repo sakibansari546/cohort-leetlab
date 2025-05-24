@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import axios from "axios";
 
 import { prisma } from "../../../libs/db.js";
 import { logger } from "../../../libs/logger.js";
@@ -23,6 +24,8 @@ import {
   verificationEmailTemplate,
 } from "../../utils/emails/templates.js";
 import { handleZodError } from "../../utils/handle-zod-error.js";
+
+import { oauth2Client } from "../../utils/google.js";
 
 class AuthColtroller {
   validateParseData(schema, body) {
@@ -270,6 +273,10 @@ class AuthColtroller {
       throw new ApiError(404, "User doesn't exist!");
     }
 
+    if (user && user.isGoogleAuth) {
+      throw new ApiError(400, "Please login using Google authentication.");
+    }
+
     if (user && !user.isEmailVerified) {
       throw new ApiError(401, "Email is not verified!");
     }
@@ -307,6 +314,108 @@ class AuthColtroller {
     res.status(200).json(
       new ApiResponse(200, "Login successfully!", {
         user: updatedUser,
+        accessToken,
+        refreshToken,
+      })
+    );
+  });
+
+  googleAuth = AsyncHandler(async (req, res) => {
+    const { code } = req.body;
+    const googleRes = await oauth2Client.getToken(code);
+    console.log(googleRes);
+    oauth2Client.setCredentials(googleRes.tokens);
+
+    const userInfo = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
+    );
+
+    console.log("user info", userInfo);
+    const { email, name: fullname, picture } = userInfo;
+
+    const existUser = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!existUser) {
+      const newUser = await prisma.user.create({
+        data: {
+          fullname,
+          email,
+          isEmailVerified: true,
+          isGoogleAuth: true,
+          profileImage: picture,
+        },
+      });
+      const { accessToken, refreshToken } =
+        this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
+          newUser,
+          res
+        );
+
+      const updateUser = await prisma.user.update({
+        where: {
+          id: newUser.id,
+        },
+        data: {
+          refreshToken: refreshToken,
+        },
+        select: {
+          email: true,
+          fullname: true,
+          profileImage: true,
+          isEmailVerified: true,
+          isGoogleAuth: true,
+        },
+      });
+
+      return res.status(200).json(
+        new ApiResponse(200, "Login successfully", {
+          user: updateUser,
+          accessToken,
+          refreshToken,
+        })
+      );
+    }
+
+    if (existUser && !existUser.isEmailVerified) {
+      throw new ApiError(400, "Email is not verified please verify you email");
+    }
+
+    if (existUser && !existUser.isGoogleAuth) {
+      throw new ApiError(
+        400,
+        "Account exists with this email but is not linked to Google. Please login with your password."
+      );
+    }
+
+    const { accessToken, refreshToken } =
+      this.generateJWTTokens.generateAccessAndRefreshTokenAndSetCookie(
+        existUser,
+        res
+      );
+
+    const updateUser = await prisma.user.update({
+      where: {
+        id: existUser.id,
+      },
+      data: {
+        refreshToken: refreshToken,
+      },
+      select: {
+        email: true,
+        fullname: true,
+        profileImage: true,
+        isEmailVerified: true,
+        isGoogleAuth: true,
+      },
+    });
+
+    res.status(200).json(
+      new ApiResponse(200, "Login successfully", {
+        user: updateUser,
         accessToken,
         refreshToken,
       })

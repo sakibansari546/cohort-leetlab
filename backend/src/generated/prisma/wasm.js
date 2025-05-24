@@ -141,6 +141,7 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   profileImage: 'profileImage',
   role: 'role',
+  isGoogleAuth: 'isGoogleAuth',
   isEmailVerified: 'isEmailVerified',
   isActive: 'isActive',
   emailVerificationToken: 'emailVerificationToken',
