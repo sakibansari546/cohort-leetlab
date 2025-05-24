@@ -102,7 +102,7 @@ class AuthColtroller {
     );
     const { fullname, email, password } = parsedData;
 
-    const existUser = await prisma.user.findUnique({
+    const existUser = await prisma.user.findFirst({
       where: {
         email,
       },
@@ -323,21 +323,23 @@ class AuthColtroller {
   googleAuth = AsyncHandler(async (req, res) => {
     const { code } = req.body;
     const googleRes = await oauth2Client.getToken(code);
-    console.log(googleRes);
+
     oauth2Client.setCredentials(googleRes.tokens);
 
     const userInfo = await axios.get(
       `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
     );
 
-    console.log("user info", userInfo);
-    const { email, name: fullname, picture } = userInfo;
+    const { email, name: fullname, picture } = userInfo.data;
+    console.log("User Info", userInfo.data);
 
-    const existUser = await prisma.user.findUnique({
+    const existUser = await prisma.user.findFirst({
       where: {
         email,
       },
     });
+
+    console.log(existUser);
 
     if (!existUser) {
       const newUser = await prisma.user.create({

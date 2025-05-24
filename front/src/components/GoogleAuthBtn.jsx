@@ -1,11 +1,26 @@
 import React from "react";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleAuthMutation } from "../querys/useUserQuery";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 const GoogleAuthBtn = () => {
+  const navigate = useNavigate();
+  const { mutateAsync, isPending, isError, error } = useGoogleAuthMutation();
   const googleRes = async (authResult) => {
     try {
-      console.log(authResult);
+      if (authResult["code"]) {
+        await mutateAsync(
+          { code: authResult["code"] },
+          {
+            onSuccess: () => {
+              navigate("/");
+            },
+          }
+        );
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(error.message || "Something went wrong");
     }
   };
 
@@ -16,7 +31,13 @@ const GoogleAuthBtn = () => {
   });
   return (
     <div className="w-full">
+      {isError && (
+        <div className="mb-2 text-error px-3 py-2 text-sm">
+          {error?.response?.data?.message || "Something went wrong"}
+        </div>
+      )}
       <button
+        disabled={isPending}
         type="button"
         onClick={handleGoogleAuth}
         className="btn w-full flex items-center gap-5"
@@ -45,7 +66,7 @@ const GoogleAuthBtn = () => {
             d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
           ></path>
         </svg>
-        <span>Login with Google</span>
+        <span>Continue with Google</span>
       </button>
     </div>
   );
