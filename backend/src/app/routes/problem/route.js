@@ -23,7 +23,7 @@ export function register() {
   );
 
   router.delete(
-    "/delete/:id",
+    "/:id/delete",
     isAuth,
     checkAdmin,
     controller.deleteProblemHandler.bind(controller)

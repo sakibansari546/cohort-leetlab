@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { axiosClient } from "../utils/axios";
 import { queryClient } from "../main";
+import { toast } from "react-toastify";
 
 const getProblems = async () => {
   const res = await axiosClient.get(`/problem/problems`);
@@ -35,6 +36,21 @@ export const useGetProblemByIdQuery = (id) => {
     queryKey: ["problem", id],
     queryFn: () => getProblemById(id),
     staleTime: 5 * 60 * 1000,
+  });
+};
+
+const deleteProblem = async ({ problemId }) => {
+  const res = await axiosClient.delete(`/problem/${problemId}/delete`);
+  return res.data.data;
+};
+
+export const useDeleteProblemMutation = () => {
+  return useMutation({
+    mutationFn: deleteProblem,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["problems"] });
+      toast.success(data.message || "Problem deleted successfully");
+    },
   });
 };
 

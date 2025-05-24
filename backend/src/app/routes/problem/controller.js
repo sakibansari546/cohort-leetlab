@@ -239,6 +239,13 @@ class ProblemController {
   getAllProblemsHandler = AsyncHandler(async (req, res) => {
     const problems = await prisma.problem.findMany({
       include: {
+        submissions: {
+          select: {
+            id: true,
+            problemId: true,
+            status: true,
+          },
+        },
         solvedBy: true,
       },
     });

@@ -137,7 +137,7 @@ export default function PlaylistsPage() {
                 </td>
               ) : playlists.lenght === 0 ? (
                 <td className="absolute top-1/2 left-1/2">
-                  <span className="text-lg">No Users found</span>
+                  <span className="text-lg">No Playlits found</span>
                 </td>
               ) : (
                 playlists?.map((playlist) => (

@@ -1,270 +1,57 @@
 "use client";
 import DataTable from "../../components/admin/DataTable";
 import { Link } from "react-router-dom";
-import { FilePlus, Upload, Download } from "lucide-react";
+import {
+  FilePlus,
+  Upload,
+  Download,
+  Trash2,
+  Loader2,
+  Edit,
+  Ellipsis,
+} from "lucide-react";
+import {
+  useDeleteProblemMutation,
+  useGetProblemsQuery,
+} from "../../querys/useProblemQuery";
+import { formateDate } from "../../utils/date-formate";
 
 export default function ProblemsPage() {
-  // Mock problems data
-  const problems = [
-    {
-      id: 1,
-      title: "Two Sum",
-      difficulty: "Easy",
-      category: "Array",
-      tags: ["Array", "Hash Table"],
-      submissions: 12543,
-      acceptance: "78%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-01-15",
-    },
-    {
-      id: 2,
-      title: "Add Two Numbers",
-      difficulty: "Medium",
-      category: "Linked List",
-      tags: ["Linked List", "Math"],
-      submissions: 8752,
-      acceptance: "65%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-01-20",
-    },
-    {
-      id: 3,
-      title: "Longest Substring Without Repeating Characters",
-      difficulty: "Medium",
-      category: "String",
-      tags: ["String", "Sliding Window"],
-      submissions: 9321,
-      acceptance: "54%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-01-25",
-    },
-    {
-      id: 4,
-      title: "Median of Two Sorted Arrays",
-      difficulty: "Hard",
-      category: "Array",
-      tags: ["Array", "Binary Search", "Divide and Conquer"],
-      submissions: 4231,
-      acceptance: "42%",
-      is_premium: true,
-      is_published: true,
-      created_at: "2023-02-01",
-    },
-    {
-      id: 5,
-      title: "Longest Palindromic Substring",
-      difficulty: "Medium",
-      category: "String",
-      tags: ["String", "Dynamic Programming"],
-      submissions: 7654,
-      acceptance: "59%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-02-05",
-    },
-    {
-      id: 6,
-      title: "ZigZag Conversion",
-      difficulty: "Medium",
-      category: "String",
-      tags: ["String"],
-      submissions: 5421,
-      acceptance: "52%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-02-10",
-    },
-    {
-      id: 7,
-      title: "Reverse Integer",
-      difficulty: "Medium",
-      category: "Math",
-      tags: ["Math"],
-      submissions: 8976,
-      acceptance: "48%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-02-15",
-    },
-    {
-      id: 8,
-      title: "String to Integer (atoi)",
-      difficulty: "Medium",
-      category: "String",
-      tags: ["String"],
-      submissions: 7123,
-      acceptance: "43%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-02-20",
-    },
-    {
-      id: 9,
-      title: "Palindrome Number",
-      difficulty: "Easy",
-      category: "Math",
-      tags: ["Math"],
-      submissions: 10234,
-      acceptance: "83%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-02-25",
-    },
-    {
-      id: 10,
-      title: "Regular Expression Matching",
-      difficulty: "Hard",
-      category: "String",
-      tags: ["String", "Dynamic Programming", "Recursion"],
-      submissions: 3456,
-      acceptance: "36%",
-      is_premium: true,
-      is_published: true,
-      created_at: "2023-03-01",
-    },
-    {
-      id: 11,
-      title: "Container With Most Water",
-      difficulty: "Medium",
-      category: "Array",
-      tags: ["Array", "Two Pointers", "Greedy"],
-      submissions: 6789,
-      acceptance: "62%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-03-05",
-    },
-    {
-      id: 12,
-      title: "Integer to Roman",
-      difficulty: "Medium",
-      category: "Math",
-      tags: ["Math", "String"],
-      submissions: 5432,
-      acceptance: "70%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-03-10",
-    },
-    {
-      id: 13,
-      title: "Roman to Integer",
-      difficulty: "Easy",
-      category: "Math",
-      tags: ["Math", "String"],
-      submissions: 11234,
-      acceptance: "79%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-03-15",
-    },
-    {
-      id: 14,
-      title: "Longest Common Prefix",
-      difficulty: "Easy",
-      category: "String",
-      tags: ["String"],
-      submissions: 9876,
-      acceptance: "75%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-03-20",
-    },
-    {
-      id: 15,
-      title: "3Sum",
-      difficulty: "Medium",
-      category: "Array",
-      tags: ["Array", "Two Pointers", "Sorting"],
-      submissions: 7654,
-      acceptance: "53%",
-      is_premium: false,
-      is_published: true,
-      created_at: "2023-03-25",
-    },
-  ];
+  const { data, isPending, isError, error } = useGetProblemsQuery();
+  const problems = data?.problems;
 
-  const columns = [
-    {
-      header: "Title",
-      accessor: "title",
-      render: (problem) => (
-        <div>
-          <Link
-            href={`/admin/problems/${problem.id}`}
-            className="link link-hover link-primary"
-          >
-            {problem.title}
-          </Link>
-          {problem.is_premium && (
-            <span className="badge badge-warning badge-sm ml-2">Premium</span>
-          )}
-          {!problem.is_published && (
-            <span className="badge badge-ghost badge-sm ml-2">Draft</span>
-          )}
-        </div>
-      ),
-    },
-    {
-      header: "Difficulty",
-      accessor: "difficulty",
-      render: (problem) => (
-        <span
-          className={`badge ${
-            problem.difficulty === "Easy"
-              ? "badge-success"
-              : problem.difficulty === "Medium"
-              ? "badge-warning"
-              : "badge-error"
-          }`}
-        >
-          {problem.difficulty}
-        </span>
-      ),
-    },
-    {
-      header: "Category",
-      accessor: "category",
-    },
-    {
-      header: "Tags",
-      accessor: "tags",
-      render: (problem) => (
-        <div className="flex flex-wrap gap-1">
-          {problem.tags.map((tag, index) => (
-            <span key={index} className="badge badge-outline badge-sm">
-              {tag}
-            </span>
-          ))}
-        </div>
-      ),
-    },
-    {
-      header: "Submissions",
-      accessor: "submissions",
-    },
-    {
-      header: "Acceptance",
-      accessor: "acceptance",
-    },
-  ];
+  const {
+    mutateAsync,
+    isPending: deleteIsPending,
+    isError: deleteIsError,
+    error: deleteError,
+  } = useDeleteProblemMutation();
 
-  const handleEditProblem = (problem) => {
-    window.location.href = `/admin/create-problem?id=${problem.id}`;
+  const getAcceptanceRate = (problem) => {
+    const total = problem.submissions?.length || 0;
+    const accepted =
+      problem.submissions?.filter((s) => s.status === "Accepted").length || 0;
+    if (total === 0) return "0%";
+    return `${Math.round((accepted / total) * 100)}%`;
   };
 
-  const handleDeleteProblem = (problem) => {
-    if (
-      confirm(`Are you sure you want to delete problem "${problem.title}"?`)
-    ) {
-      console.log("Delete problem:", problem);
-      // This would call an API to delete the problem
-    }
+  const handleDeleteProblem = async (problemId) => {
+    await mutateAsync({ problemId });
   };
+
+  if (isError) {
+    return (
+      <div class="p-4 sm:ml-64 w-full">
+        <div class="p-4 rounded-lg max-h-[80vh]">
+          <div className="flex items-center py-6">
+            <h1 className="text-2xl font-semibold text-center w-full">
+              {error?.response?.data?.message || "Something went wrong"}
+            </h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div class="p-4 sm:ml-64">
@@ -280,32 +67,35 @@ export default function ProblemsPage() {
           <div className="stats bg-base-100 shadow">
             <div className="stat">
               <div className="stat-title">Total Problems</div>
-              <div className="stat-value">{problems.length}</div>
+              <div className="stat-value">{problems?.length}</div>
               <div className="stat-desc">
-                {problems.filter((p) => p.difficulty === "Easy").length} Easy,{" "}
-                {problems.filter((p) => p.difficulty === "Medium").length}{" "}
-                Medium, {problems.filter((p) => p.difficulty === "Hard").length}{" "}
-                Hard
+                {problems?.filter((p) => p.difficulty === "EASY").length} Easy,{" "}
+                {problems?.filter((p) => p.difficulty === "MEDIUM").length}{" "}
+                Medium,{" "}
+                {problems?.filter((p) => p.difficulty === "HARD").length} Hard
               </div>
             </div>
             <div className="stat">
               <div className="stat-title">Total Submissions</div>
               <div className="stat-value text-secondary">
                 {problems
-                  .reduce((acc, problem) => acc + problem.submissions, 0)
+                  ?.reduce(
+                    (acc, problem) => acc + problem.submissions?.length,
+                    0
+                  )
                   .toLocaleString()}
               </div>
               <div className="stat-desc">All time</div>
             </div>
             <div className="stat">
-              <div className="stat-title">Premium Problems</div>
+              <div className="stat-title">Demo Problems</div>
               <div className="stat-value text-warning">
-                {problems.filter((p) => p.is_premium).length}
+                {problems?.filter((p) => p.isDemo).length}
               </div>
               <div className="stat-desc">
                 {Math.round(
-                  (problems.filter((p) => p.is_premium).length /
-                    problems.length) *
+                  (problems?.filter((p) => p.isDemo).length /
+                    problems?.length) *
                     100
                 )}
                 % of total
@@ -332,13 +122,131 @@ export default function ProblemsPage() {
           </div>
         </div>
 
-        <DataTable
-          columns={columns}
-          data={problems}
-          title="Problems"
-          onEdit={handleEditProblem}
-          onDelete={handleDeleteProblem}
-        />
+        <div>
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Difficulty</th>
+                <th>Company</th>
+                <th>Tags</th>
+                <th>Submissions</th>
+                <th>Acceptance</th>
+                <th>CreatedAt</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isPending ? (
+                <td className="absolute top-1/2 left-1/2">
+                  <span className="loading text-lg"></span>
+                </td>
+              ) : problems?.lenght === 0 ? (
+                <td className="absolute top-1/2 left-1/2">
+                  <span className="text-lg">No Problems found</span>
+                </td>
+              ) : (
+                problems?.map((problem) => (
+                  <tr key={problem.id}>
+                    <td className="font-medium relative">
+                      {problem.isDemo && (
+                        <span className="absolute -top-3 right-5 badge badge-sm badge-primary">
+                          Demo
+                        </span>
+                      )}
+
+                      <Link
+                        to={`/problems/${problem.id}`}
+                        className="hover:underline text-primary"
+                      >
+                        <span className="line-clamp-2 break-words max-w-xs">
+                          {problem.title}
+                        </span>
+                      </Link>
+                    </td>
+
+                    <td>
+                      <span
+                        className={`badge badge-sm ${
+                          problem.difficulty == "EASY"
+                            ? "badge-success"
+                            : problem.difficulty == "HARD"
+                            ? "badge-error"
+                            : "badge-warning"
+                        }`}
+                      >
+                        {problem.difficulty}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="badge badge-">{problem.company}</span>
+                    </td>
+                    <td className="max-w-l">
+                      {problem.tags.map(
+                        (tag, i) =>
+                          i < 2 && <span className="badge badge-">{tag}</span>
+                      )}
+                    </td>
+                    <td>{problem.submissions?.length}</td>
+                    <td>{getAcceptanceRate(problem)}</td>
+                    <td>{formateDate(problem.createdAt).split("-")[0]}</td>
+
+                    <td>
+                      <div className="flex items-center gap-2">
+                        <div className="dropdown dropdown-end">
+                          <button
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-sm"
+                          >
+                            <Ellipsis size="16" />
+                          </button>
+                          <ul
+                            tabIndex={0}
+                            className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                          >
+                            <li>
+                              <button className="flex items-center gap-3">
+                                <Edit size="18" />
+                                Edit
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                disabled={deleteIsPending}
+                                onClick={() => handleDeleteProblem(problem.id)}
+                                className="flex items-center gap-3 text-error"
+                              >
+                                {deleteIsPending ? (
+                                  <>
+                                    {" "}
+                                    <Loader2
+                                      className="animate-spin"
+                                      size="18"
+                                    />
+                                    Loading
+                                  </>
+                                ) : (
+                                  <>
+                                    {" "}
+                                    <Trash2 size="18" />
+                                    Delete
+                                  </>
+                                )}
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+
+              {/* Row 1 */}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
