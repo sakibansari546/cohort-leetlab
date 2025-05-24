@@ -130,7 +130,7 @@ const UserBasicInfoTab = () => {
                     <input
                       {...register("birth")}
                       name="birth"
-                      defaultValue={user?.basicInfo.birth}
+                      defaultValue={user?.basicInfo?.birth}
                       disabled={!isEdit}
                       type="date"
                       className="pl-2"
@@ -178,7 +178,7 @@ const UserBasicInfoTab = () => {
                       type="text"
                       placeholder="https://"
                       defaultValue={
-                        user?.basicInfo?.socials.website || "https://"
+                        user?.basicInfo?.socials?.website || "https://"
                       }
                     />
                   </label>
@@ -199,7 +199,7 @@ const UserBasicInfoTab = () => {
                       type="text"
                       placeholder="https://"
                       defaultValue={
-                        user?.basicInfo?.socials.github || "https://"
+                        user?.basicInfo?.socials?.github || "https://"
                       }
                     />
                   </label>
@@ -220,7 +220,7 @@ const UserBasicInfoTab = () => {
                       type="text"
                       placeholder="https://"
                       defaultValue={
-                        user?.basicInfo?.socials.twitter || "https://"
+                        user?.basicInfo?.socials?.twitter || "https://"
                       }
                     />
                   </label>
@@ -241,7 +241,7 @@ const UserBasicInfoTab = () => {
                       type="text"
                       placeholder="https://"
                       defaultValue={
-                        user?.basicInfo?.socials.linkedIn || "https://"
+                        user?.basicInfo?.socials?.linkedIn || "https://"
                       }
                     />
                   </label>

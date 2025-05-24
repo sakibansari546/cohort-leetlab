@@ -33,6 +33,8 @@ export const THEMES = [
   "sunset",
 ];
 
+export const LANGUAGES = ["JAVA", "JAVASCRIPT", "PYTHON", "C", "C++"];
+
 export const MENU_ITEMS = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },

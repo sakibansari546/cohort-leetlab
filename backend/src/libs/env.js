@@ -8,7 +8,9 @@ const envSchema = z.object({
   NODE_ENV: z.string().optional(),
   FRONTEND_BASE_URL: z.string(),
   BACKEND_BASE_URL: z.string(),
+
   JUDGE0_API_URL: z.string(),
+  JUDGE0_SULU_KEY: z.string(),
 
   ACCESS_TOKEN_SECRET: z.string(),
   ACCESS_TOKEN_EXPIRY: z.string(),

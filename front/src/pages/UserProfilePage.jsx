@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import {
   Camera,
   Github,
+  Globe,
   Info,
   Laptop2,
   Linkedin,
@@ -118,22 +119,25 @@ const UserProfilePage = () => {
               <div className="flex items-center gap-4 pt-3">
                 <a
                   target="_blank"
-                  href={user?.basicInfo?.socials.website || ""}
+                  href={user?.basicInfo?.socials?.website || ""}
                 >
-                  <Laptop2 />
+                <Globe />
                 </a>
-                <a target="_blank" href={user?.basicInfo?.socials.github || ""}>
+                <a
+                  target="_blank"
+                  href={user?.basicInfo?.socials?.github || ""}
+                >
                   <Github />
                 </a>
                 <a
                   target="_blank"
-                  href={user?.basicInfo?.socials.twitter || ""}
+                  href={user?.basicInfo?.socials?.twitter || ""}
                 >
                   <Twitter />
                 </a>
                 <a
                   target="_blank"
-                  href={user?.basicInfo?.socials.linkedIn || ""}
+                  href={user?.basicInfo?.socials?.linkedIn || ""}
                 >
                   <Linkedin />
                 </a>

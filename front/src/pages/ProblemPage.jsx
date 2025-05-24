@@ -25,6 +25,7 @@ import { getJudge0LangaugeId } from "../utils/language";
 import { useGetProblemByIdQuery } from "../querys/useProblemQuery";
 import { useCreateSubmissionMutation } from "../querys/useSubmissionQuery";
 import { useRunCodeMutation } from "../querys/useRunCodeQuery";
+import { LANGUAGES } from "../constants";
 
 const ProblemPage = () => {
   const { problemId } = useParams();
@@ -229,9 +230,11 @@ const ProblemPage = () => {
                                 }}
                                 className="select select-sm bg-base-300 border-none outline-none focus:outline-0 text-base-content cursor-pointer"
                               >
-                                <option>JavaScript</option>
-                                <option>Python</option>
-                                <option>Java</option>
+                                {Object.entries(problem.codeSnippets).map(
+                                  ([lang, _], idx) => (
+                                    <option key={idx}>{lang}</option>
+                                  )
+                                )}
                               </select>
                             </div>
                             <div className="flex items-center gap-2 mr-4">
@@ -267,7 +270,11 @@ const ProblemPage = () => {
                             value={
                               problem?.codeSnippets[language.toUpperCase()]
                             }
-                            language={language.toLowerCase()}
+                            language={
+                              language === "C++"
+                                ? "cpp"
+                                : language.toLowerCase()
+                            }
                             onMount={handleEditorDidMount}
                             onChange={(value) => setSource_code(value)}
                           />

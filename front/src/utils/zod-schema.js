@@ -124,11 +124,9 @@ const createProblemSchema = z.object({
 
   examples: z.array(
     z.object({
-      input: z.string({ message: "Input must be a string" }).nonempty(),
-      output: z.string({ message: "Output must be a string" }).nonempty(),
-      explanation: z
-        .string({ message: "Explanation must be a string" })
-        .nonempty(),
+      input: z.string({ message: "Input must be a string" }),
+      output: z.string({ message: "Output must be a string" }),
+      explanation: z.string({ message: "Explanation must be a string" }),
     })
   ),
 
@@ -137,15 +135,14 @@ const createProblemSchema = z.object({
     .min(5, { message: "Constraints must be at least 5 characters long" })
     .max(100, { message: "Constraints must not exceed 100 characters" }),
 
-  hints: z
-    .array(
-      z
-        .string()
-        .min(5, { message: "Hints must be at least 5 chars" })
-        .max(100, { message: "Hints must not exceed 100 chars" })
-    )
-    .min(1, { message: "At least one hint is required" })
-    .max(10, { message: "Hints must not exceed 100" }),
+  hints: z.optional(
+    z
+      .array(
+        z.string().max(100, { message: "Hints must not exceed 100 chars" })
+      )
+      .min(1, { message: "At least one hint is required" })
+      .max(10, { message: "Hints must not exceed 10" })
+  ),
 
   editorial: z.optional(
     z
@@ -157,12 +154,8 @@ const createProblemSchema = z.object({
   testcases: z
     .array(
       z.object({
-        input: z
-          .string({ message: "testcases input must be string" })
-          .nonempty(),
-        output: z
-          .string({ message: "testcases output must be string" })
-          .nonempty(),
+        input: z.string({ message: "testcases input must be string" }),
+        output: z.string({ message: "testcases output must be string" }),
       })
     )
     .min(1, { message: "At least one testcase is required" }),
@@ -177,6 +170,7 @@ const createProblemSchema = z.object({
     JAVA: z
       .string({ message: "Code must be string" })
       .nonempty({ message: "" }),
+    C: z.string({ message: "Code must be string" }).nonempty({ message: "" }),
   }),
 
   referenceSolutions: z.object({
@@ -187,6 +181,10 @@ const createProblemSchema = z.object({
       .string({ message: "Code must be string" })
       .nonempty({ message: "" }),
     JAVA: z
+      .string({ message: "Code must be string" })
+      .nonempty({ message: "" }),
+    C: z.string({ message: "Code must be string" }).nonempty({ message: "" }),
+    "C++": z
       .string({ message: "Code must be string" })
       .nonempty({ message: "" }),
   }),
