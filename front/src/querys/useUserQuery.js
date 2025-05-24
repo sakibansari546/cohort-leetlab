@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosClient } from "../utils/axios";
 import { queryClient } from "../main";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const getUser = async () => {
   const res = await axiosClient.get(`/user/me`);
@@ -76,8 +77,9 @@ export const updateUserProfileImage = async (body) => {
 export const useUpdateUserProfileImageMutation = () => {
   return useMutation({
     mutationFn: updateUserProfileImage,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
+      toast.success(data.message || "Profile image updated successfully");
     },
   });
 };

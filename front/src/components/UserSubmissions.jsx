@@ -35,7 +35,13 @@ const UserSubmissions = () => {
         {" "}
         <table className="table table-zebra">
           {/* head */}
-
+          <thead>
+            <th></th>
+            <th>Status</th>
+            <th>Languge</th>
+            <th>Runtime</th>
+            <th>Memory</th>
+          </thead>
           <tbody>
             {/* row 1 */}
             {submissions.length == 0 ? (
@@ -45,38 +51,46 @@ const UserSubmissions = () => {
                 </h2>
               </div>
             ) : (
-              submissions?.map((submission, idx) => (
-                <tr key={submission.id}>
-                  <th>{idx + 1}</th>
-                  <td>
-                    <h2
-                      className={`font-semibold ${
-                        submission.status === "Wrong Answer"
-                          ? "text-error"
-                          : "text-success"
-                      }`}
-                    >
-                      {submission.status}
-                    </h2>
-                    <p>{formateDate(submission.createdAt)}</p>
-                  </td>
-                  <td>
-                    <p className="badge">{submission.language}</p>
-                  </td>
-                  <td>
-                    <p className="flex items-center gap-1.5">
-                      <Timer size="18" />
-                      N/A
-                    </p>
-                  </td>
-                  <td>
-                    <p className="flex items-center gap-1.5">
-                      <Cpu size="18" />
-                      N/A
-                    </p>
-                  </td>
-                </tr>
-              ))
+              submissions?.map((submission, idx) => {
+                const totalTime = JSON.parse(submission.time)
+                  .reduce((accu, time) => (accu += parseFloat(time)), 0)
+                  .toFixed(2);
+                const totalMemory = JSON.parse(submission.memory)
+                  .reduce((accu, memory) => (accu += parseFloat(memory)), 0)
+                  .toFixed(2);
+                return (
+                  <tr key={submission.id}>
+                    <th>{idx + 1}</th>
+                    <td>
+                      <h2
+                        className={`font-semibold ${
+                          submission.status === "Wrong Answer"
+                            ? "text-error"
+                            : "text-success"
+                        }`}
+                      >
+                        {submission.status}
+                      </h2>
+                      <p>{formateDate(submission.createdAt)}</p>
+                    </td>
+                    <td>
+                      <p className="badge">{submission.language}</p>
+                    </td>
+                    <td>
+                      <p className="flex items-center gap-1.5">
+                        <Timer size="18" />
+                        {totalTime} s
+                      </p>
+                    </td>
+                    <td>
+                      <p className="flex items-center gap-1.5">
+                        <Cpu size="18" />
+                        {(totalMemory / 1024).toFixed(2)} MB
+                      </p>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

@@ -51,6 +51,9 @@ export const useDeleteProblemMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["problems"] });
       toast.success(data.message || "Problem deleted successfully");
     },
+    onError: (err) => {
+      toast.success(err.response?.data?.message || "Something went wrong");
+    },
   });
 };
 

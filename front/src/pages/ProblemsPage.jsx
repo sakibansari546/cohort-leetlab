@@ -24,7 +24,7 @@ const ProblemsPage = () => {
     () => data?.problems.slice().sort((a, b) => a.createdAt - b.createdAt),
     [data?.problems]
   );
-  
+
   const errorMessage = error?.response.data.message;
 
   const [problemId, setProblemId] = useState([]);
@@ -32,6 +32,14 @@ const ProblemsPage = () => {
   const handleAddProblemInPlaylist = (problemId) => {
     document.getElementById("add_problem_in_playlist_modal").showModal();
     setProblemId([problemId]);
+  };
+
+  const getAcceptanceRate = (problem) => {
+    const total = problem.submissions?.length || 0;
+    const accepted =
+      problem.submissions?.filter((s) => s.status === "Accepted").length || 0;
+    if (total === 0) return "0%";
+    return `${Math.round((accepted / total) * 100)}%`;
   };
 
   useEffect(() => {
@@ -106,9 +114,10 @@ const ProblemsPage = () => {
               <tr>
                 <th>Status</th>
                 <th>Title</th>
-                <th className="text-right">Acceptance</th>
                 <th>Difficulty</th>
-                <th>Progress</th>
+                <th>Company</th>
+                <th>Tags</th>
+                <th className="text-left">Acceptance</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -155,7 +164,12 @@ const ProblemsPage = () => {
                             <Circle size="18" />
                           )}
                         </td>
-                        <td className="font-medium ">
+                        <td className="font-medium relative">
+                          {problem.isDemo && (
+                            <span className="absolute -top-3 right-5 badge badge-sm badge-primary">
+                              Demo
+                            </span>
+                          )}
                           <Link
                             to={`/problems/${problem.id}`}
                             className="hover:underline"
@@ -165,7 +179,6 @@ const ProblemsPage = () => {
                             </span>
                           </Link>
                         </td>
-                        <td className="text-right">55.6%</td>
                         <td
                           className={`capitalize ${
                             problem.difficulty === "EASY".toUpperCase()
@@ -177,14 +190,19 @@ const ProblemsPage = () => {
                         >
                           <span>{problem.difficulty}</span>
                         </td>
+                        <td>{problem.company}</td>
                         <td>
-                          <div className="w-24 bg-base-200 rounded-full h-2">
-                            <div
-                              className="bg-success h-2 rounded-full"
-                              style={{ width: "55%" }}
-                            ></div>
-                          </div>
+                          {problem.tags.map(
+                            (tag, i) =>
+                              i < 2 && (
+                                <span className="badge badge-">{tag}</span>
+                              )
+                          )}
                         </td>
+                        <td className="text-left">
+                          {getAcceptanceRate(problem)}
+                        </td>
+
                         <td>
                           <div className="dropdown dropdown-bottom dropdown-end">
                             <button

@@ -32,6 +32,12 @@ const UserSolvedProblems = () => {
       <div>
         <div className="overflow-x-auto">
           <table className="table table-zebra">
+            <thead>
+              <th></th>
+              <th>Title</th>
+              <th>Difficulty</th>
+              <th>Comapny</th>
+            </thead>
             <tbody>
               {problems?.length == 0 ? (
                 <div>
@@ -59,7 +65,7 @@ const UserSolvedProblems = () => {
                     >
                       {problem.difficulty}
                     </td>
-                    <td>Company</td>
+                    <td>{problem.company}</td>
                   </tr>
                 ))
               )}

@@ -53,7 +53,9 @@ const ProblemDescriptionTabContent = ({ problem }) => {
                 {Object.entries(problem?.examples).map(
                   ([name, content], idx) => (
                     <div key={idx} className="mt-5">
-                      <h2 className="text-md font-bold mb-2">{name} :</h2>
+                      <h2 className="text-md font-bold mb-2">
+                        Example {idx + 1}
+                      </h2>
                       <div className="pl-5">
                         <p>
                           <b>Input :</b>{" "}
@@ -121,45 +123,18 @@ const ProblemDescriptionTabContent = ({ problem }) => {
                 </div>
                 {/* Hints Crousel */}
                 <div id="hints">
-                  <div className="collapse collapse-arrow join-item rounded-none border-base-content/20 border-x-0 border">
-                    <input type="radio" name="my-accordion-4" />
-                    <div className="collapse-title font-semibold">
-                      <p className="flex items-center gap-2 font-semibold">
-                        {" "}
-                        <Lightbulb size="16" /> Hint
-                      </p>
+                  {problem?.hints?.map((hint, idx) => (
+                    <div className="collapse collapse-arrow join-item rounded-none border-base-content/20 border-x-0 border">
+                      <input type="radio" name="my-accordion-4" />
+                      <div className="collapse-title font-semibold">
+                        <p className="flex items-center gap-2 font-semibold">
+                          {" "}
+                          <Lightbulb size="16" /> Hint {idx + 1}
+                        </p>
+                      </div>
+                      <div className="collapse-content text-sm">{hint}</div>
                     </div>
-                    <div className="collapse-content text-sm">
-                      Click on "Forgot Password" on the login page and follow
-                      the instructions sent to your email.
-                    </div>
-                  </div>
-                  <div className="collapse collapse-arrow join-item rounded-none border-base-content/20 border-x-0 border">
-                    <input type="radio" name="my-accordion-4" />
-                    <div className="collapse-title font-semibold">
-                      <p className="flex items-center gap-2 font-semibold">
-                        {" "}
-                        <Lightbulb size="16" /> Hint
-                      </p>
-                    </div>
-                    <div className="collapse-content text-sm">
-                      Click on "Forgot Password" on the login page and follow
-                      the instructions sent to your email.
-                    </div>
-                  </div>
-                  <div className="collapse collapse-arrow join-item rounded-none border-base-content/20 border-x-0 border">
-                    <input type="radio" name="my-accordion-4" />
-                    <div className="collapse-title font-semibold">
-                      <p className="flex items-center gap-2 font-semibold">
-                        {" "}
-                        <Lightbulb size="16" /> Hint
-                      </p>
-                    </div>
-                    <div className="collapse-content text-sm">
-                      Click on "Forgot Password" on the login page and follow
-                      the instructions sent to your email.
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -263,38 +238,49 @@ const ProblemSubmissionsTabContent = ({ problemId }) => {
             </thead>
             <tbody>
               {/* row 1 */}
-              {submissions?.map((submission, idx) => (
-                <tr key={submission.id}>
-                  <th>{idx + 1}</th>
-                  <td>
-                    <h2
-                      className={`font-semibold ${
-                        submission.status === "Wrong Answer"
-                          ? "text-error"
-                          : "text-success"
-                      }`}
-                    >
-                      {submission.status}
-                    </h2>
-                    <p>{formateDate(submission.createdAt)}</p>
-                  </td>
-                  <td>
-                    <p className="badge">{submission.language}</p>
-                  </td>
-                  <td>
-                    <p className="flex items-center gap-1.5">
-                      <Timer size="18" />
-                      N/A
-                    </p>
-                  </td>
-                  <td>
-                    <p className="flex items-center gap-1.5">
-                      <Cpu size="18" />
-                      N/A
-                    </p>
-                  </td>
-                </tr>
-              ))}
+              {submissions?.map((submission, idx) => {
+                const totalMemory = JSON.parse(submission?.memory || "[]")
+                  .map((memory) => parseFloat(memory))
+                  .reduce((pre, curr) => pre + curr, 0)
+                  .toFixed(2);
+
+                const totalTime = JSON.parse(submission?.time || "[]")
+                  .map((time) => parseFloat(time))
+                  .reduce((pre, curr) => pre + curr, 0)
+                  .toFixed(4);
+                return (
+                  <tr key={submission.id}>
+                    <th>{idx + 1}</th>
+                    <td>
+                      <h2
+                        className={`font-semibold ${
+                          submission.status === "Wrong Answer"
+                            ? "text-error"
+                            : "text-success"
+                        }`}
+                      >
+                        {submission.status}
+                      </h2>
+                      <p>{formateDate(submission.createdAt)}</p>
+                    </td>
+                    <td>
+                      <p className="badge">{submission.language}</p>
+                    </td>
+                    <td>
+                      <p className="flex items-center gap-1.5">
+                        <Timer size="18" />
+                        {totalTime} s
+                      </p>
+                    </td>
+                    <td>
+                      <p className="flex items-center gap-1.5">
+                        <Cpu size="18" />
+                        {totalMemory} KB
+                      </p>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

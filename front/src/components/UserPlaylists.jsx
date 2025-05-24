@@ -1,4 +1,4 @@
-import { FileText, ListCheckIcon } from "lucide-react";
+import { Code2, FileText, ListCheckIcon, Timer } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetPlaylistsQuery } from "../querys/usePlaylistQuery";
@@ -39,28 +39,35 @@ const UserPlaylists = () => {
             </h2>
           </div>
         ) : (
-          lists?.playlists?.map((list) => (
-            <div key={list.id} className="flex items-center gap-5">
-              {/* List */}
-              <Link to={`/playlists/${list.id}`} className="w-full bg-base-100">
-                <div className="p-3 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <FileText size="30" />
-                    <div>
-                      <h2 className="text-lg font-semibold">{list.name}</h2>
-                      <p className="text-base-content/60">
-                        {formateDate(list.createdAt).split("-")[0]}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1 btn">
-                    <ListCheckIcon size="24" />
-                    <p className="text-lg font-bold">{list.problems.length}</p>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          ))
+          <table className="table table-zebra">
+            {/* head */}
+            <thead>
+              <th></th>
+              <th>Name</th>
+              <th>CreatedAt</th>
+              <th>Problems</th>
+            </thead>
+            <tbody>
+              {lists?.playlists?.map((list, idx) => (
+                <tr key={list.id}>
+                  <th>{idx + 1}</th>
+                  <td className="hover:underline">
+                    <Link to={`/playlists/${list.id}`}>{list.name}</Link>
+                  </td>
+                  <td>
+                    <p>{formateDate(list.createdAt)}</p>
+                  </td>
+                  <td>
+                    <p className="flex items-center gap-1.5">
+                      <Code2 size="18" />
+                      {list.problems?.length}
+                    </p>
+                  </td>
+                </tr>
+              ))}
+              {/* row 1 */}
+            </tbody>
+          </table>
         )}
       </div>
     </div>

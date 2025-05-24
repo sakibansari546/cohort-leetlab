@@ -76,7 +76,9 @@ const UserProfilePage = () => {
             <div>
               <div className="relative">
                 <img
-                  className="w-50 h-50 object-cover rounded-full"
+                  className={`w-50 h-50 object-cover rounded-full ${
+                    updateIsPending && "animate-pulse"
+                  }`}
                   src={user?.profileImage}
                   alt=""
                 />

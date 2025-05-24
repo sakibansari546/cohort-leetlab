@@ -4,6 +4,7 @@ import {
   CircleCheckBig,
   Dot,
   Edit,
+  EditIcon,
   Ellipsis,
   EllipsisVertical,
   File,
@@ -13,8 +14,10 @@ import {
   Loader2,
   Play,
   Plus,
+  PlusCircle,
   RefreshCcw,
   SortAsc,
+  Trash2,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useGetUserQuery } from "../querys/useUserQuery";
@@ -122,14 +125,14 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                   · {problems?.length || 0} questions
                 </p>
               </div>
-              <div className="flex items-center gap-6 py-3 ">
+              <div className="flex items-center justify-between w-full gap-6 py-3 ">
                 <Link
                   to={`/problems/${problems[0]?.problem?.id || ""}`}
                   className="btn btn-primary"
                 >
                   <Play size="18" /> Practice
                 </Link>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center w-full gap-2">
                   <button
                     onClick={() =>
                       document
@@ -139,9 +142,6 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                     className="btn btn-circle"
                   >
                     <Plus size="18" />
-                  </button>
-                  <button className="btn btn-circle">
-                    <Edit size="18" />
                   </button>
                   <div>
                     <div className="dropdown dropdown-center">
@@ -164,7 +164,8 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                                 .showModal();
                             }}
                           >
-                            Edit playlist
+                            <EditIcon size="16" />
+                            Edit
                           </button>
                         </li>
                         <li>
@@ -172,9 +173,17 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                             disabled={deletePlaylistMutation.isPending}
                             onClick={handleDeletePlaylist}
                           >
-                            {deletePlaylistMutation.isPending
-                              ? "Loading..."
-                              : "Delete Playlist"}
+                            {deletePlaylistMutation.isPending ? (
+                              <>
+                                <Loader2 size="16" className="animate-spin" />{" "}
+                                Leading
+                              </>
+                            ) : (
+                              <>
+                                <Trash2 size="16" className=" text-error" />{" "}
+                                Delete
+                              </>
+                            )}
                           </button>
                         </li>
                       </ul>
@@ -285,6 +294,15 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
             {/* All Problems */}
             <div className="">
               <table className="table">
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>Title</th>
+                    <th>Difficulty</th>
+                    <th>Company</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
                 <tbody>
                   {/* row 1 */}
                   {problems.length === 0 || !problems ? (
@@ -325,7 +343,6 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                               </span>
                             </Link>
                           </td>
-                          <td className="text-right">55.6%</td>
                           <td
                             className={`capitalize ${
                               problem.difficulty === "EASY".toUpperCase()
@@ -337,14 +354,8 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                           >
                             <span>{problem.difficulty}</span>
                           </td>
-                          <td>
-                            <div className="w-24 bg-base-200 rounded-full h-2">
-                              <div
-                                className="bg-success h-2 rounded-full"
-                                style={{ width: "55%" }}
-                              ></div>
-                            </div>
-                          </td>
+                          <td className="text-">{problem.company}</td>
+
                           <td>
                             <div className="dropdown dropdown-bottom dropdown-end">
                               <button
@@ -360,11 +371,12 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                               >
                                 <li>
                                   <button
+                                    className="flex items-center"
                                     onClick={() =>
                                       handleAddProblemInPlaylist(problem.id)
                                     }
                                   >
-                                    Add to playlist
+                                    <PlusCircle size="16" /> Add to playlist
                                   </button>
                                   <button
                                     disabled={removeProblemMutation.isPending}
@@ -380,7 +392,10 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                                         />
                                       </>
                                     ) : (
-                                      "Remove from playlist"
+                                      <>
+                                        <Trash2 className="text-error" size="16" />
+                                        Remove
+                                      </>
                                     )}
                                   </button>
                                 </li>
