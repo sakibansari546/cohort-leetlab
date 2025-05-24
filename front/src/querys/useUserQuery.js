@@ -34,6 +34,21 @@ export const useSignupAndLoginMutation = (type) => {
   });
 };
 
+const googleAuth = async (body) => {
+  const res = await axiosClient.post("/auth/google-auth", body);
+  return res.data.data;
+};
+
+export const useGoogleAuthMutation = () => {
+  return useMutation({
+    mutationFn: googleAuth,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      toast.success(data.message || "Login successfully");
+    },
+  });
+};
+
 const logout = async () => {
   const res = await axiosClient.post(`/auth/logout`);
   return res.data.data;
