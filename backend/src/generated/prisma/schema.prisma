@@ -122,6 +122,8 @@ model Submission {
   memory        String?
   time          String?
 
+  feedback String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -130,7 +132,7 @@ model Submission {
   problemId String?
   problem   Problem? @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
-  testCases Testcase[]
+  testCases Testcase[] // TODO Text small and capital
 }
 
 model Testcase {

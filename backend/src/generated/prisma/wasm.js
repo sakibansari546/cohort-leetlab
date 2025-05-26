@@ -185,6 +185,7 @@ exports.Prisma.SubmissionScalarFieldEnum = {
   status: 'status',
   memory: 'memory',
   time: 'time',
+  feedback: 'feedback',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',

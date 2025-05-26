@@ -12,11 +12,32 @@ import {
   pollBatchResults,
   submitBatch,
 } from "../../utils/judge0.js";
+import { geminiClient } from "../../utils/gemini.js";
 
 class ExecuteCodeController {
   validateParseData(schema, body) {
     return schema.safeParse(body || {});
   }
+
+  async genrateFeedback(result) {
+    // Prepare prompt for GPT to generate feedback based on submission result
+    const prompt = `
+  You are a code feedback provider. Given the following submission result in JSON, provide constructive feedback to the user. 
+  If all test cases passed, congratulate the user and suggest possible improvements or optimizations. 
+  If some test cases failed, point out possible reasons for failure and suggest how to fix them.
+
+  Submission Result JSON:
+  ${JSON.stringify(result, null, 2)}
+  `;
+
+    const response = await geminiClient.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
+    console.log(response.text);
+    return response.text || "feedback not provided";
+  }
+
   submitCode = AsyncHandler(async (req, res) => {
     const { source_code, language_id, stdins, expected_outputs } =
       handleZodError(this.validateParseData(executeCodeSchma, req.body));
@@ -159,19 +180,29 @@ class ExecuteCodeController {
       },
       include: {
         testCases: true,
-        problem: {
-          select: {
-            id: true,
-            title: true,
-            testcases: true,
-          },
-        },
+        problem: true,
+      },
+    });
+
+    const feedback = await this.genrateFeedback(submissionWithTestCases);
+    console.log(feedback);
+
+    const updateSubmssion = await prisma.submission.update({
+      where: {
+        id: submission.id,
+      },
+      data: {
+        feedback: feedback,
+      },
+      include: {
+        testCases: true,
+        problem: true,
       },
     });
 
     res.status(200).json(
       new ApiResponse(200, "Code Executed!!", {
-        submission: submissionWithTestCases,
+        submission: updateSubmssion,
       })
     );
   });

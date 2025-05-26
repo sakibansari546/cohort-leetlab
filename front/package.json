@@ -25,6 +25,7 @@
     "react-dom": "^19.1.0",
     "react-highlight": "^0.15.0",
     "react-hook-form": "^7.56.3",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.6.0",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.6",

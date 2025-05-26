@@ -12,6 +12,8 @@ const envSchema = z.object({
   JUDGE0_API_URL: z.string(),
   JUDGE0_SULU_KEY: z.string(),
 
+  GEMINI_API_KEY: z.string(),
+
   ACCESS_TOKEN_SECRET: z.string(),
   ACCESS_TOKEN_EXPIRY: z.string(),
   REFRESH_TOKEN_SECRET: z.string(),

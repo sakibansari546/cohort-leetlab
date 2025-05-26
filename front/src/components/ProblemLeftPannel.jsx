@@ -18,6 +18,7 @@ import { formateDate } from "../utils/date-formate";
 import Highlight from "react-highlight";
 import "highlight.js/styles/dracula.css";
 import { Link } from "react-router-dom";
+import Markdown from "react-markdown";
 
 const ProblemDescriptionTabContent = ({ problem }) => {
   return (
@@ -476,6 +477,14 @@ const SubmissionResultTabContent = ({ submissionMutation }) => {
                     </>
                   )}
                 </div>
+              </div>
+            </div>
+            <div className="divider"></div>
+            <div className="py-3">
+              <h3 className="text-xl font-semibold py-3 pb-5">Feedback</h3>
+              <div>
+                <Markdown>{submission?.feedback}</Markdown>
+                {/* <p></p> */}
               </div>
             </div>
           </div>
