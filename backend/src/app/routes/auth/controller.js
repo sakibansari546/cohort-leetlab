@@ -49,15 +49,14 @@ class AuthColtroller {
       const refreshToken = this.generateRefreshToken(user);
 
       // Yaha me or optimize kr sakta hu direct refresh token ko db me store kr dakta hu
+      console.log(env.NODE_ENV);
 
       const cookieOptions = {
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: env.NODE_ENV === "production", // true in prod, false in dev
-        sameSite:
-          env.NODE_ENV === "production" // 'none' in prod, 'lax' (default) in dev
-            ? "none"
-            : "lax",
+        secure: env.NODE_ENV === "production",
+        sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+        domain: ".hypecoding.live", // <— note the leading dot
       };
 
       res.cookie("accessToken", accessToken, cookieOptions);
