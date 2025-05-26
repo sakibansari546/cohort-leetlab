@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const ProblemTestcasesResultTab = ({ result }) => {
   const [activeTab, setActiveTab] = useState(0);
+  console.log(result);
 
   const totalMemory = JSON.parse(result?.submission?.memory || "[]")
     .map((memory) => parseFloat(memory))
@@ -12,8 +13,6 @@ const ProblemTestcasesResultTab = ({ result }) => {
     .map((time) => parseFloat(time))
     .reduce((pre, curr) => pre + curr, 0)
     .toFixed(4);
-
-  console.log(result?.submission?.stderr);
 
   const TabContent = () => {
     const testcase = result.submission?.testCases[activeTab];
@@ -36,7 +35,7 @@ const ProblemTestcasesResultTab = ({ result }) => {
         <div>
           <p className="text-base-content/60 font-semibold">Input =</p>
           <p className="bg-base-300 py-3 px-3 rounded-lg">
-            {result?.submission?.stdin.split("\n")[activeTab]}
+            {result?.submission?.problem.testcases[activeTab].input}
           </p>
         </div>
         <div>

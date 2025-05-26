@@ -159,6 +159,13 @@ class ExecuteCodeController {
       },
       include: {
         testCases: true,
+        problem: {
+          select: {
+            id: true,
+            title: true,
+            testcases: true,
+          },
+        },
       },
     });
 
@@ -272,6 +279,7 @@ class ExecuteCodeController {
         ? JSON.stringify(detailedResult.map((res) => res.time))
         : null,
       testCases: testCasesResult,
+      problem: { testcases: problem.testcases },
     };
 
     res.status(200).json(

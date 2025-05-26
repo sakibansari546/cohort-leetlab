@@ -60,6 +60,7 @@ class SubmissionController {
       include: {
         problem: {
           select: {
+            id: true,
             title: true,
             description: true,
             difficulty: true,

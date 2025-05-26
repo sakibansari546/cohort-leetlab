@@ -417,7 +417,11 @@ const SubmissionResultTabContent = ({ submissionMutation }) => {
                             <p className="text-md font-medium">Input: </p>
                             <input
                               className="py-4 px-4 bg-base-300  w-full text-base-content/80 text-lg font-medium"
-                              value={faildTestcase[0]?.input}
+                              value={
+                                submission?.problem?.testcases[
+                                  faildTestcase[0].testcaseNo - 1
+                                ].input
+                              }
                               type="text"
                               disabled
                             />
