@@ -32,7 +32,7 @@ export function createExpressApp() {
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    // allowedHeaders: ["Content-Type", "Authorization"],
   };
 
   // this sets CORS on every route, including OPTIONS

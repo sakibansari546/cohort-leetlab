@@ -48,7 +48,6 @@ class AuthColtroller {
       const accessToken = this.generateAccessToken(user);
       const refreshToken = this.generateRefreshToken(user);
 
-      // Yaha me or optimize kr sakta hu direct refresh token ko db me store kr dakta hu
       console.log(env.NODE_ENV);
 
       const cookieOptions = {
