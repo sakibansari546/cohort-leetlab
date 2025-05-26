@@ -54,9 +54,8 @@ class AuthColtroller {
       const cookieOptions = {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
+        sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
         secure: env.NODE_ENV === "production",
-        sameSite: env.NODE_ENV === "production" ? "none" : "lax",
-        domain: ".hypecoding.live", // <— note the leading dot
       };
 
       res.cookie("accessToken", accessToken, cookieOptions);
