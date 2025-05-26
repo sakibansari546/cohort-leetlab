@@ -13,15 +13,15 @@ export function register() {
     isAuth,
     controller.getAllSubmissions.bind(controller)
   );
-  
+
   router.get(
     "/submissions/:submissionId",
     isAuth,
-    controller.getAllSubmissions.bind(controller)
+    controller.getSubmissionById.bind(controller)
   );
-  
+
   router.get(
-    "/submissions/:problemId",
+    "/submissions/problem/:problemId",
     isAuth,
     controller.getSubmissionForProblem.bind(controller)
   );

@@ -58,6 +58,14 @@ class SubmissionController {
         id: submissionId,
       },
       include: {
+        problem: {
+          select: {
+            title: true,
+            description: true,
+            difficulty: true,
+            testcases: true,
+          },
+        },
         testCases: true,
       },
     });

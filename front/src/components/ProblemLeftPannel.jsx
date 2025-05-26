@@ -17,6 +17,7 @@ import { formateDate } from "../utils/date-formate";
 
 import Highlight from "react-highlight";
 import "highlight.js/styles/dracula.css";
+import { Link } from "react-router-dom";
 
 const ProblemDescriptionTabContent = ({ problem }) => {
   return (
@@ -252,16 +253,21 @@ const ProblemSubmissionsTabContent = ({ problemId }) => {
                   <tr key={submission.id}>
                     <th>{idx + 1}</th>
                     <td>
-                      <h2
-                        className={`font-semibold ${
-                          submission.status === "Wrong Answer"
-                            ? "text-error"
-                            : "text-success"
-                        }`}
+                      <Link
+                        className="hover:underline"
+                        to={`/submissions/${submission.id}`}
                       >
-                        {submission.status}
-                      </h2>
-                      <p>{formateDate(submission.createdAt)}</p>
+                        <h2
+                          className={`font-semibold ${
+                            submission.status === "Wrong Answer"
+                              ? "text-error"
+                              : "text-success"
+                          }`}
+                        >
+                          {submission.status}
+                        </h2>
+                        <p>{formateDate(submission.createdAt)}</p>
+                      </Link>
                     </td>
                     <td>
                       <p className="badge">{submission.language}</p>

@@ -17,6 +17,7 @@ import { useGetUserQuery } from "./querys/useUserQuery";
 
 import UserProfilePage from "./pages/UserProfilePage";
 import UserDashboardPage from "./pages/UserDashboardPage";
+import SubmissionPage from "./pages/SubmissionPage";
 
 import AdminPage from "./pages/admin/AdminPage";
 import AdminSidebar from "./components/admin/Siadebar";
@@ -166,6 +167,11 @@ function App() {
             <Route
               path="/playlists/:playlistId"
               element={user ? <PlaylistsPage /> : <Navigate to="/login" />}
+            />
+
+            <Route
+              path="/submissions/:submissionId"
+              element={user ? <SubmissionPage /> : <Navigate to="/login" />}
             />
 
             <Route path="theme" element={<Theme />} />

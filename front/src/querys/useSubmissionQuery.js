@@ -37,7 +37,9 @@ export const useGetSubmissionsQuery = () => {
 };
 
 const getSubmissionsForProblem = async (problemId) => {
-  const res = await axiosClient.get(`/submission/submissions/${problemId}`);
+  const res = await axiosClient.get(
+    `/submission/submissions/problem/${problemId}`
+  );
   return res.data.data;
 };
 
@@ -71,5 +73,17 @@ export const useCreateSubmissionMutation = (problemId) => {
       queryClient.invalidateQueries({ queryKey: ["submissions", problemId] });
       queryClient.invalidateQueries({ queryKey: ["problems"] });
     },
+  });
+};
+
+const getSubmissionById = async (submissionId) => {
+  const res = await axiosClient.get(`/submission/submissions/${submissionId}`);
+  return res.data.data;
+};
+
+export const useGetSubmissionById = (id) => {
+  return useQuery({
+    queryKey: ["submissions", id],
+    queryFn: () => getSubmissionById(id),
   });
 };

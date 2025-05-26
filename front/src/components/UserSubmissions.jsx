@@ -2,6 +2,7 @@ import { Cpu, Plus, Timer } from "lucide-react";
 import React from "react";
 import { useGetSubmissionsQuery } from "../querys/useSubmissionQuery";
 import { formateDate } from "../utils/date-formate";
+import { Link } from "react-router-dom";
 
 const UserSubmissions = () => {
   const { data, isPending, isError, error } = useGetSubmissionsQuery();
@@ -62,16 +63,21 @@ const UserSubmissions = () => {
                   <tr key={submission.id}>
                     <th>{idx + 1}</th>
                     <td>
-                      <h2
-                        className={`font-semibold ${
-                          submission.status === "Wrong Answer"
-                            ? "text-error"
-                            : "text-success"
-                        }`}
+                      <Link
+                        className="hover:underline"
+                        to={`/submissions/${submission.id}`}
                       >
-                        {submission.status}
-                      </h2>
-                      <p>{formateDate(submission.createdAt)}</p>
+                        <h2
+                          className={`font-semibold ${
+                            submission.status === "Wrong Answer"
+                              ? "text-error"
+                              : "text-success"
+                          }`}
+                        >
+                          {submission.status}
+                        </h2>
+                        <p>{formateDate(submission.createdAt)}</p>
+                      </Link>
                     </td>
                     <td>
                       <p className="badge">{submission.language}</p>
