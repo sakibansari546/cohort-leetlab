@@ -28,6 +28,7 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.6.0",
     "react-toastify": "^11.0.5",
+    "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.1.6",
     "zod": "^3.24.4",
     "zustand": "^5.0.4"

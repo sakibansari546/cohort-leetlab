@@ -5,6 +5,7 @@ import Highlight from "react-highlight";
 import { useGetSubmissionById } from "../querys/useSubmissionQuery";
 import { formateDate } from "../utils/date-formate";
 import { Cpu, Loader2, Timer } from "lucide-react";
+import Markdown from "react-markdown";
 
 const SubmissionPage = () => {
   const { submissionId } = useParams();
@@ -207,6 +208,12 @@ const SubmissionPage = () => {
                       </Highlight>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className="py-3 px-3">
+                <h3 className="text-xl font-semibold py-3 pb-5">Feedback</h3>
+                <div>
+                  <Markdown>{submission?.feedback}</Markdown>
                 </div>
               </div>
             </div>
