@@ -20,10 +20,12 @@ import ApiResponse from "./utils/api-response.js";
 export function createExpressApp() {
   const app = express();
 
+  app.set("trust proxy", 1);
+
   // Middlewares
   app.use(
     cors({
-      origin: ["*", env.FRONTEND_BASE_URL],
+      origin: [env.FRONTEND_BASE_URL],
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     })

@@ -51,10 +51,18 @@ class AuthColtroller {
       // Yaha me or optimize kr sakta hu direct refresh token ko db me store kr dakta hu
 
       const cookieOptions = {
-        maxAge: 7 * 24 * 60 * 60 * 1000, // for 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         httpOnly: true,
-        secure: env.NODE_ENV !== "development",
-        sameSite: "strict",
+        secure: env.NODE_ENV === "production", // true in prod, false in dev
+        sameSite:
+          env.NODE_ENV === "production" // 'none' in prod, 'lax' (default) in dev
+            ? "none"
+            : "lax",
+        domain:
+          env.NODE_ENV === "production"
+            ? ".myapp.com" // or whatever your apex domain is
+            : undefined,
+        path: "/",
       };
 
       res.cookie("accessToken", accessToken, cookieOptions);
