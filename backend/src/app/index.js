@@ -24,7 +24,12 @@ export function createExpressApp() {
 
   // Middlewares
   const corsOptions = {
-    origin: [env.FRONTEND_BASE_URL, "https://hypecoding-b.onrender.com"],
+    origin: [
+      env.FRONTEND_BASE_URL,
+      "https://hypecoding-f.vercel.app",
+      "https://www.hypecoding.live",
+      "https://hypecoding.live",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
