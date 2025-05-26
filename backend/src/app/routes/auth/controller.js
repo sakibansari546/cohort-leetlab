@@ -58,11 +58,6 @@ class AuthColtroller {
           env.NODE_ENV === "production" // 'none' in prod, 'lax' (default) in dev
             ? "none"
             : "lax",
-        domain:
-          env.NODE_ENV === "production"
-            ? ".myapp.com" // or whatever your apex domain is
-            : undefined,
-        path: "/",
       };
 
       res.cookie("accessToken", accessToken, cookieOptions);
