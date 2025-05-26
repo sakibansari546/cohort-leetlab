@@ -12,7 +12,7 @@ export async function isAuth(req, res, next) {
     req.cookies.accessToken ||
     req.header("authorization")?.replace("Bearer ", "");
 
-  if (!token) {
+  if (!accessToken) {
     throw new ApiError(401, "Unauthorized - No token provided!");
   }
 
