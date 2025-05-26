@@ -54,7 +54,7 @@ class AuthColtroller {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         sameSite: "strict",
-        secure: true,
+        secure: env.NODE_ENV === "production",
       };
 
       res.cookie("accessToken", accessToken, cookieOptions);

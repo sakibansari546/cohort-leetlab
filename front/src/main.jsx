@@ -10,7 +10,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 10 * 1000,
+      retry: 1,
+      retryDelay: (attemptIndex) => Math.min(1000 * attemptIndex, 3000),
+      staleTime: 10000,
       refetchOnWindowFocus: false,
     },
   },

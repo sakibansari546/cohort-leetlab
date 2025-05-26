@@ -49,6 +49,28 @@ class SubmissionController {
       .json(new ApiResponse(200, "Submissions fetched!", { submissions }));
   });
 
+  getSubmissionById = AsyncHandler(async (req, res) => {
+    const { submissionId } = req.params;
+    const userId = req.userId;
+
+    const submission = await prisma.submission.findUnique({
+      where: {
+        id: submissionId,
+      },
+      include: {
+        testCases: true,
+      },
+    });
+
+    if (!submission) {
+      throw new ApiError(404, "Submission not found");
+    }
+
+    res
+      .status(200)
+      .json(new ApiResponse(200, "Submission fetched!", { submission }));
+  });
+
   getAllSubmissionCountForProblem = AsyncHandler(async (req, res) => {
     const { problemId } = req.params;
     if (!problemId) throw new ApiError(400, "ProblemId is required");
