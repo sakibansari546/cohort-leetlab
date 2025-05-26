@@ -18,10 +18,12 @@ class UserController {
   }
 
   getUserHandler = AsyncHandler(async (req, res) => {
+    console.log(req.userId);
+
     const user = await prisma.user.findUnique({
       where: {
         id: req.userId,
-        isEmailVerified: true,
+        // isEmailVerified: true,
       },
       omit: {
         password: true,

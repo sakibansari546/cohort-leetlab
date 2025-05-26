@@ -230,11 +230,9 @@ const ProblemPage = () => {
                                 }}
                                 className="select select-sm bg-base-300 border-none outline-none focus:outline-0 text-base-content cursor-pointer"
                               >
-                                {Object.entries(problem.codeSnippets).map(
-                                  ([lang, _], idx) => (
-                                    <option key={idx}>{lang}</option>
-                                  )
-                                )}
+                                {LANGUAGES.map((lang, idx) => (
+                                  <option key={idx}>{lang}</option>
+                                ))}
                               </select>
                             </div>
                             <div className="flex items-center gap-2 mr-4">

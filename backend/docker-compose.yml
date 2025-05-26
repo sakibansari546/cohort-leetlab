@@ -1,4 +1,17 @@
 services:
+  backend:
+    image: hypecoding-backend:1
+    build:
+      context: ./
+    ports: 
+        - "3000:3000"
+
+  judgeZero:
+    image: judge0/judge0:1.13.1
+    container_name: judge0-v1131
+    ports:
+      - "2358:2358"
+
   postgres:
     image: postgres
     container_name: leetlab-postgres

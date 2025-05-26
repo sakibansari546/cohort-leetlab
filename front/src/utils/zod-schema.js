@@ -171,6 +171,9 @@ const createProblemSchema = z.object({
       .string({ message: "Code must be string" })
       .nonempty({ message: "" }),
     C: z.string({ message: "Code must be string" }).nonempty({ message: "" }),
+    "C++": z
+      .string({ message: "Code must be string" })
+      .nonempty({ message: "" }),
   }),
 
   referenceSolutions: z.object({

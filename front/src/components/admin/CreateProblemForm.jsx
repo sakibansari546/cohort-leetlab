@@ -11,28 +11,119 @@ import { createProblemSchema } from "../../utils/zod-schema";
 
 import Editor from "@monaco-editor/react";
 import { useCreateProblemMutation } from "../../querys/useAdminQuery";
+import { LANGUAGES } from "../../constants";
 
+// const formDefaultValues = {
+//   title: "Add Two Numbers",
+//   description:
+//     "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.\n\nYou may assume the two numbers do not contain any leading zero, except the number 0 itself.",
+//   difficulty: "MEDIUM",
+//   tags: ["linked-list", "math"],
+//   company: "Amazon",
+//   constraints:
+//     "The number of nodes in each linked list is in the range [1, 100]. 0 <= Node.val <= 9. The result list should not have leading zeros except for the number 0 itself.",
+//   hints: [
+//     "Simulate the elementar y addition digit by digit, keeping track of carry.",
+//     "Both lists may have different lengths—treat missing nodes as 0.",
+//     "After processing all nodes, if carry > 0, append a new node with carry.",
+//   ],
+
+//   examples: [
+//     {
+//       input: "l1 = [2,4,3], l2 = [5,6,4]",
+//       output: "[7,0,8]",
+//       explanation: "342 + 465 = 807, stored in reverse as [7,0,8]",
+//     },
+//     {
+//       input: "l1 = [0], l2 = [0]",
+//       output: "[0]",
+//       explanation: "0 + 0 = 0",
+//     },
+//     {
+//       input: "l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]",
+//       output: "[8,9,9,9,0,0,0,1]",
+//       explanation: "9999999 + 9999 = 10009998, reversed -> [8,9,9,9,0,0,0,1]",
+//     },
+//   ],
+//   testcases: [
+//     { input: "[1,2,3], [4,5,6]", output: "[5,7,9]" },
+//     { input: "[9,9,1], [1]", output: "[0,0,2]" },
+//     { input: "[0], [7,3]", output: "[7,3]" },
+//     { input: "[5], [5]", output: "[0,1]" },
+//     { input: "[2,4,9], [5,6,4,9]", output: "[7,0,4,0,1]" },
+//   ],
+//   codeSnippets: {
+//     JAVASCRIPT:
+//       "// Definition for singly-linked list.\nfunction ListNode(val, next = null) {\n  this.val = val;\n  this.next = next;\n}\n\nfunction addTwoNumbers(l1, l2) {\n  // Your code here\n}",
+//     PYTHON:
+//       "# Definition for singly-linked list.\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef addTwoNumbers(l1, l2):\n    # Your code here\n    pass",
+//     JAVA: "// Definition for singly-linked list.\npublic class ListNode {\n    int val;\n    ListNode next;\n    ListNode() {}\n    ListNode(int val) { this.val = val; }\n    ListNode(int val, ListNode next) { this.val = val; this.next = next; }\n}\n\nclass Solution {\n    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {\n        // Your code here\n        return null;\n    }\n}",
+//     C: "// Definition for singly-linked list.\nstruct ListNode {\n    int val;\n    struct ListNode *next;\n};\n\nstruct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {\n    // Your code here\n    return NULL;\n}",
+//     "C++":
+//       "// Definition for singly-linked list.\nstruct ListNode {\n    int val;\n    ListNode *next;\n    ListNode(int x) : val(x), next(nullptr) {}\n};\n\nListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {\n    // Your code here\n    return nullptr;\n}",
+//   },
+//   referenceSolutions: {
+//     JAVASCRIPT:
+//       "// Definition for singly-linked list.\n// function ListNode(val, next = null) {\n//   this.val = val;\n//   this.next = next;\n// }\nfunction addTwoNumbers(l1, l2) {\n  let carry = 0;\n  const dummy = new ListNode(0);\n  let p = dummy;\n  while (l1 || l2 || carry) {\n    const x = l1 ? l1.val : 0;\n    const y = l2 ? l2.val : 0;\n    const sum = x + y + carry;\n    carry = Math.floor(sum / 10);\n    p.next = new ListNode(sum % 10);\n    p = p.next;\n    if (l1) l1 = l1.next;\n    if (l2) l2 = l2.next;\n  }\n  return dummy.next;\n}",
+//     PYTHON:
+//       "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\n\ndef addTwoNumbers(l1, l2):\n    carry = 0\n    dummy = ListNode(0)\n    p = dummy\n    while l1 or l2 or carry:\n        x = l1.val if l1 else 0\n        y = l2.val if l2 else 0\n        total = x + y + carry\n        carry = total // 10\n        p.next = ListNode(total % 10)\n        p = p.next\n        if l1: l1 = l1.next\n        if l2: l2 = l2.next\n    return dummy.next",
+//     JAVA: "// Definition for singly-linked list.\n// public class ListNode { int val; ListNode next; ListNode(int x) { val = x; } }\npublic ListNode addTwoNumbers(ListNode l1, ListNode l2) {\n    ListNode dummy = new ListNode(0);\n    ListNode p = dummy;\n    int carry = 0;\n    while (l1 != null || l2 != null || carry != 0) {\n        int x = (l1 != null) ? l1.val : 0;\n        int y = (l2 != null) ? l2.val : 0;\n        int sum = x + y + carry;\n        carry = sum / 10;\n        p.next = new ListNode(sum % 10);\n        p = p.next;\n        if (l1 != null) l1 = l1.next;\n        if (l2 != null) l2 = l2.next;\n    }\n    return dummy.next;\n}",
+//     C: "/* Definition for singly-linked list.\n   struct ListNode { int val; struct ListNode *next; };\n*/\nstruct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {\n    int carry = 0;\n    struct ListNode dummy = {0, NULL};\n    struct ListNode *p = &dummy;\n    while (l1 || l2 || carry) {\n        int x = l1 ? l1->val : 0;\n        int y = l2 ? l2->val : 0;\n        int sum = x + y + carry;\n        carry = sum / 10;\n        struct ListNode* node = malloc(sizeof(struct ListNode));\n        node->val = sum % 10;\n        node->next = NULL;\n        p->next = node;\n        p = p->next;\n        if (l1) l1 = l1->next;\n        if (l2) l2 = l2->next;\n    }\n    return dummy.next;\n}",
+//     "C++":
+//       "// Definition for singly-linked list.\n// struct ListNode { int val; ListNode *next; ListNode(int x) : val(x), next(NULL) {} };\nListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {\n    int carry = 0;\n    ListNode dummy(0), *p = &dummy;\n    while (l1 || l2 || carry) {\n        int x = l1 ? l1->val : 0;\n        int y = l2 ? l2->val : 0;\n        int sum = x + y + carry;\n        carry = sum / 10;\n        p->next = new ListNode(sum % 10);\n        p = p->next;\n        if (l1) l1 = l1->next;\n        if (l2) l2 = l2->next;\n    }\n    return dummy.next;\n}",
+//   },
+//   isDemo: false,
+// };
 const formDefaultValues = {
-  title: "",
-  description: "",
-  isDemo: false,
-  examples: [{ input: "", output: "", explanation: "" }],
-  testcases: [{ input: "", output: "" }],
-  hints: [""],
-  company: "",
-  tags: [""],
-  constraints: "",
-  codeSnippets: {
-    JAVASCRIPT: "function solution() {\n  // Write your code here\n}",
-    PYTHON: "def solution():\n    # Write your code here\n    pass",
-    JAVA: "public class Solution {\n    public static void main(String[] args) {\n        // Write your code here\n    }\n}",
+  "title": "Valid Palindrome",
+  "description": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers. Given a string s, return true if it is a palindrome, or false otherwise.",
+  "difficulty": "EASY",
+  "tags": ["String", "Two Pointers"],
+  "examples": {
+    "example1": {
+      "input": "A man, a plan, a canal: Panama",
+      "output": "true",
+      "explanation": "\"amanaplanacanalpanama\" is a palindrome."
+    },
+    "example2": {
+      "input": "race a car",
+      "output": "false",
+      "explanation": "\"raceacar\" is not a palindrome."
+    },
+    "example3": {
+      "input": " ",
+      "output": "true",
+      "explanation": "Empty string is a palindrome."
+    }
   },
-  referenceSolutions: {
-    JAVASCRIPT: "// Add your reference solution here",
-    PYTHON: "# Add your reference solution here",
-    JAVA: "// Add your reference solution here",
+  "constraints": "1 <= s.length <= 2 * 10^5\ns consists only of printable ASCII characters.",
+  "hints": [
+    "Consider using two pointers, one from the start and one from the end, moving towards the center."
+  ],
+  
+  "testcases": [
+    { "input": "A man, a plan, a canal: Panama", "output": "true" },
+    { "input": "race a car", "output": "false" },
+    { "input": " ", "output": "true" }
+  ],
+  "codeSnippets": {
+    "JAVASCRIPT": "/**\n * @param {string} s\n * @return {boolean}\n */\nfunction isPalindrome(s) {\n  // Write your code here\n}\n\n// Input parsing & execution\nconst readline = require('readline');\nconst rl = readline.createInterface({ input: process.stdin, output: process.stdout, terminal: false });\nrl.on('line', line => {\n  console.log(isPalindrome(line) ? \"true\" : \"false\");\n  rl.close();\n});",
+    "PYTHON": "class Solution:\n    def isPalindrome(self, s: str) -> bool:\n        # Write your code here\n        pass\n\nif __name__ == \"__main__\":\n    import sys\n    s = sys.stdin.readline().rstrip(\"\\n\")\n    result = Solution().isPalindrome(s)\n    print(str(result).lower())",
+    "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static String preprocess(String s) {\n        return s.replaceAll(\"[^a-zA-Z0-9]\", \"\").toLowerCase();\n    }\n\n    public static boolean isPalindrome(String s) {\n        // Write your code here\n        return false;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String input = sc.nextLine();\n        System.out.println(isPalindrome(input) ? \"true\" : \"false\");\n        sc.close();\n    }\n}",
+    "C": "/* Definition not needed */\n#include <stdio.h>\n#include <ctype.h>\n#include <string.h>\n\nint isPalindrome(const char *s) {\n    // Write your code here\n    return 0;\n}\n\nint main() {\n    char buf[200005];\n    if (!fgets(buf, sizeof(buf), stdin)) return 0;\n    printf(isPalindrome(buf) ? \"true\" : \"false\");\n    return 0;\n}",
+    "C++": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool isPalindrome(const string &s) {\n    // Write your code here\n    return false;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    string s;\n    getline(cin, s);\n    cout << (isPalindrome(s) ? \"true\" : \"false\");\n    return 0;\n}"
   },
-};
+  "referenceSolutions": {
+    "JAVASCRIPT": "/**\n * @param {string} s\n * @return {boolean}\n */\nfunction isPalindrome(s) {\n  s = s.toLowerCase().replace(/[^a-z0-9]/g, '');\n  let i = 0, j = s.length - 1;\n  while (i < j) {\n    if (s[i++] !== s[j--]) return false;\n  }\n  return true;\n}",
+    "PYTHON": "class Solution:\n    def isPalindrome(self, s: str) -> bool:\n        filtered = [c.lower() for c in s if c.isalnum()]\n        return filtered == filtered[::-1]",
+    "JAVA": "public static boolean isPalindrome(String s) {\n    s = preprocess(s);\n    int i = 0, j = s.length() - 1;\n    while (i < j) if (s.charAt(i++) != s.charAt(j--)) return false;\n    return true;\n}",
+    "C": "#include <ctype.h>\n#include <string.h>\n\nint isPalindrome(const char *s) {\n    int i = 0, j = strlen(s) - 1;\n    while (i < j) {\n        while (i < j && !isalnum((unsigned char)s[i])) i++;\n        while (i < j && !isalnum((unsigned char)s[j])) j--;\n        if (tolower(s[i++]) != tolower(s[j--])) return 0;\n    }\n    return 1;\n}",
+    "C++": "#include <cctype>\n#include <string>\nusing namespace std;\n\nbool isPalindrome(const string &s) {\n    int i = 0, j = s.size() - 1;\n    while (i < j) {\n        while (i < j && !isalnum(s[i])) i++;\n        while (i < j && !isalnum(s[j])) j--;\n        if (tolower(s[i++]) != tolower(s[j--])) return false;\n    }\n    return true;\n}"
+  },
+  "company": "LeetCode",
+  "isDemo": false
+}
+
 
 const CreateProblemForm = () => {
   const {
@@ -72,16 +163,15 @@ const CreateProblemForm = () => {
   const MAX_TAGS = 10;
   //Retrieve all the returned items from the hook
   const { tags, handleAddTag, handleRemoveTag } = useTagInput(MAX_TAGS); // pass the maximum tags
-  console.log(tags);
 
   // Handle form submission
   const handleOnSubmit = async (data) => {
+    console.log(data);
     await mutateAsync(data, {
       onSuccess: () => {
         reset();
       },
     });
-    console.log(data);
   };
 
   useEffect(() => {
@@ -447,7 +537,7 @@ const CreateProblemForm = () => {
 
           {/* CodeSnippets */}
           <div className="space-y-8 my-4">
-            {["JAVASCRIPT", "PYTHON", "JAVA"].map((language) => (
+            {LANGUAGES.map((language) => (
               <div
                 key={language}
                 className="card bg-base-2 p-4 md:p-6 shadow-md"
@@ -471,7 +561,11 @@ const CreateProblemForm = () => {
                           render={({ field }) => (
                             <Editor
                               height="300px"
-                              language={language.toLowerCase()}
+                              language={
+                                language === "C++"
+                                  ? "cpp"
+                                  : language.toLowerCase()
+                              }
                               theme="vs-dark"
                               value={field.value}
                               onChange={field.onChange}
@@ -503,7 +597,11 @@ const CreateProblemForm = () => {
                           render={({ field }) => (
                             <Editor
                               height="300px"
-                              language={language.toLowerCase()}
+                              language={
+                                language === "C++"
+                                  ? "cpp"
+                                  : language.toLowerCase()
+                              }
                               theme="vs-dark"
                               value={field.value}
                               onChange={field.onChange}

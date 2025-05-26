@@ -41,6 +41,8 @@ class ProblemController {
       isDemo,
     } = handleZodError(this.validateParseData(createProblemSchema, req.body));
 
+    console.log(req.body);
+
     const user = await prisma.user.findUnique({
       where: {
         id: req.userId,

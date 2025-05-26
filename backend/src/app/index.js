@@ -23,7 +23,7 @@ export function createExpressApp() {
   // Middlewares
   app.use(
     cors({
-      origin: [env.FRONTEND_BASE_URL],
+      origin: ["*", env.FRONTEND_BASE_URL],
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     })
