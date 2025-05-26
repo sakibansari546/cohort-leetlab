@@ -23,13 +23,19 @@ export function createExpressApp() {
   app.set("trust proxy", 1);
 
   // Middlewares
-  app.use(
-    cors({
-      origin: [env.FRONTEND_BASE_URL],
-      credentials: true,
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    })
-  );
+  const corsOptions = {
+    origin: [env.FRONTEND_BASE_URL, "https://hypecoding-b.onrender.com"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  };
+
+  // this sets CORS on every route, including OPTIONS
+  app.use(cors(corsOptions));
+
+  // then explicitly answer all OPTIONS preflights
+  // app.options("*", cors(corsOptions));
+
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());

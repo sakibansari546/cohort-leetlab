@@ -12,9 +12,10 @@ export async function isAuth(req, res, next) {
     req.cookies.accessToken ||
     req.header("authorization")?.replace("Bearer ", "");
 
-  if (!accessToken) {
-    throw new ApiError(404, "Unauthorized - No token provided!");
+  if (!token) {
+    throw new ApiError(401, "Unauthorized - No token provided!");
   }
+
   let decoded;
   try {
     decoded = jwt.verify(accessToken, env.ACCESS_TOKEN_SECRET);
