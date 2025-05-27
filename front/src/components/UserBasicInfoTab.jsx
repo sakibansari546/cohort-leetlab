@@ -19,7 +19,7 @@ const UserBasicInfoTab = () => {
     mutateAsync,
     isPending,
     isError: updateIsError,
-    updateError,
+    error: updateError,
   } = useUpdateUserBasicInfoMutation();
 
   const {
@@ -75,6 +75,12 @@ const UserBasicInfoTab = () => {
                     />
                   </label>
                 </fieldset>
+
+                <div className="py-3">
+                  <p className="text-error">
+                    {errors.fullname && errors.fullname?.message}
+                  </p>
+                </div>
               </div>
               {/* Username */}
               <div className="w-full">
@@ -95,6 +101,11 @@ const UserBasicInfoTab = () => {
                     />
                   </label>
                 </fieldset>
+                <div className="py-3">
+                  <p className="text-error">
+                    {errors.username && errors.username?.message}
+                  </p>
+                </div>
               </div>
 
               {/* Gender */}
@@ -118,6 +129,11 @@ const UserBasicInfoTab = () => {
                     </select>
                   </label>
                 </fieldset>
+                <div className="py-3">
+                  <p className="text-error">
+                    {errors.gender && errors.gender?.message}
+                  </p>
+                </div>
               </div>
               {/* Date of birth */}
               <div className="w-full">
@@ -138,6 +154,11 @@ const UserBasicInfoTab = () => {
                     />
                   </label>
                 </fieldset>
+                <div className="py-3">
+                  <p className="text-error">
+                    {errors.birth && errors.birth?.message}
+                  </p>
+                </div>
               </div>
               {/* Bio */}
               <div className="w-full">
@@ -155,6 +176,11 @@ const UserBasicInfoTab = () => {
                   ></textarea>
                   {/* </label> */}
                 </fieldset>
+                <div className="py-3">
+                  <p className="text-error">
+                    {errors.bio && errors.bio?.message}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -183,6 +209,12 @@ const UserBasicInfoTab = () => {
                     />
                   </label>
                 </fieldset>
+                <div className="py-3">
+                  <p className="text-error">
+                    {errors.socials?.website &&
+                      errors.socials?.website?.message}
+                  </p>
+                </div>
               </div>
               {/* Github */}
               <div className="w-full">
@@ -204,6 +236,11 @@ const UserBasicInfoTab = () => {
                     />
                   </label>
                 </fieldset>
+                <div className="py-3">
+                  <p className="text-error">
+                    {errors.socials?.github && errors.socials?.github?.message}
+                  </p>
+                </div>
               </div>
               {/* Twitter */}
               <div className="w-full">
@@ -225,6 +262,12 @@ const UserBasicInfoTab = () => {
                     />
                   </label>
                 </fieldset>
+                <div className="py-3">
+                  <p className="text-error">
+                    {errors.socials?.twitter &&
+                      errors.socials?.twitter?.message}
+                  </p>
+                </div>
               </div>
               {/* LinkdeIn */}
               <div className="w-full">
@@ -246,13 +289,22 @@ const UserBasicInfoTab = () => {
                     />
                   </label>
                 </fieldset>
+                <div className="py-3">
+                  <p className="text-error">
+                    {errors.socials?.linkedIn &&
+                      errors.socials?.linkedIn?.message}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="py-3">
             <p className="text-error">
-              {updateIsError && updateError?.response?.data?.message}
+              {updateIsError &&
+                (updateError?.response?.data?.message ||
+                  updateError.message ||
+                  "Something went wrong")}
             </p>
           </div>
 

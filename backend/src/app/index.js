@@ -62,39 +62,27 @@ export function createExpressApp() {
   app.use("/api/v1/admin", registerAdminRoutes());
 
   app.use((err, req, res, next) => {
-    if (err.code == "P2002" && err.meta.target[0] === "email") {
-      return res
-        .status(400)
-        .json(new ApiResponse(400, "Email is already exist", { error: err }));
+    if (err.code === "P2002") {
+      const field = err.meta.target[0];
+      return res.status(400).json({
+        status: "error",
+        message: `${field.charAt(0).toUpperCase() + field.slice(1)} already exists.`,
+      });
     }
-    if (
-      err.code == "P2002" &&
-      err.meta.target[0] === "username" &&
-      err.meta.modelName === "User"
-    ) {
-      return res
-        .status(400)
-        .json(
-          new ApiResponse(400, "Username is already exist", { error: err })
-        );
+
+    // Other known errors
+    if (err.isCustomApiError) {
+      return res.status(err.statusCode).json({
+        status: "error",
+        message: err.message,
+      });
     }
-    if (
-      err.code == "P2002" &&
-      err.meta.target[0] === "name" &&
-      err.meta.target[1] === "userId" &&
-      err.meta.modelName === "Playlist"
-    ) {
-      return res
-        .status(400)
-        .json(
-          new ApiResponse(400, "Playlist name should be unique", { error: err })
-        );
-    }
-    res
-      .status(err.statusCode || 500)
-      .json(
-        new ApiResponse(err.statusCode || 500, err.message, { error: err })
-      );
+
+    res.status(err.statusCode || 500).json(
+      new ApiResponse(err.statusCode || 500, err.message, {
+        error: { message: err.message || "Internal server error" },
+      })
+    );
   });
 
   return app;
