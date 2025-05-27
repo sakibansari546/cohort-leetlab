@@ -69,6 +69,17 @@ export function createExpressApp() {
     }
     if (
       err.code == "P2002" &&
+      err.meta.target[0] === "username" &&
+      err.meta.modelName === "User"
+    ) {
+      return res
+        .status(400)
+        .json(
+          new ApiResponse(400, "Username is already exist", { error: err })
+        );
+    }
+    if (
+      err.code == "P2002" &&
       err.meta.target[0] === "name" &&
       err.meta.target[1] === "userId" &&
       err.meta.modelName === "Playlist"
