@@ -14,6 +14,7 @@ import { register as registerAdminRoutes } from "./routes/admin/route.js";
 
 import { prisma } from "../libs/db.js";
 import { env } from "../libs/env.js";
+import { logger } from "../libs/logger.js";
 
 import ApiResponse from "./utils/api-response.js";
 
@@ -78,6 +79,7 @@ export function createExpressApp() {
       });
     }
 
+    logger.error(err);
     res.status(err.statusCode || 500).json(
       new ApiResponse(err.statusCode || 500, err.message, {
         error: { message: err.message || "Internal server error" },

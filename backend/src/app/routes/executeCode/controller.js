@@ -24,7 +24,7 @@ class ExecuteCodeController {
     const prompt = `
   You are a code feedback provider. Given the following submission result in JSON, provide constructive feedback to the user. 
   If all test cases passed, congratulate the user and suggest possible improvements or optimizations. 
-  If some test cases failed, point out possible reasons for failure and suggest how to fix them. 
+  If some test cases failed, point out possible reasons for failure and suggest how to fix them. give feedback in text not json 
 
   Submission Result JSON:
   ${JSON.stringify(result, null, 2)}
@@ -34,7 +34,7 @@ class ExecuteCodeController {
       model: "gemini-2.0-flash",
       contents: prompt,
     });
-    return response.text || "feedback not provided";
+    return response.text.trim() || "No feedback.";
   }
 
   submitCode = AsyncHandler(async (req, res) => {
