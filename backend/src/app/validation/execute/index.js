@@ -5,14 +5,11 @@ const executeCodeSchma = z
   .object({
     source_code: z
       .string({ message: "source code must be string" })
-      .nonempty({ message: "source code is required" })
-      .min(30, { message: "source code must be at least 30 characters long" })
-      .max(1000, { message: "source code must not exceed 1000 characters" }),
+      .nonempty({ message: "source code is required" }),
 
     language_id: z
       .string({ message: "languageId must be string" })
-      .nonempty({ message: "languageId is required" })
-      .max(3, { message: "languageId must be at least 3 digits long" }),
+      .nonempty({ message: "languageId is required" }),
 
     stdins: z
       .array(z.string({ message: "each stdin must be a string" }))

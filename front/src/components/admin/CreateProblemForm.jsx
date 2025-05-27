@@ -54,8 +54,6 @@ const CreateProblemForm = () => {
 
   const { mutateAsync, isPending, isError, error } = useCreateProblemMutation();
 
-  console.log(errors);
-
   const {
     fields: exampleFields,
     append: addExample,

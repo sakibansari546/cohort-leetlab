@@ -47,7 +47,7 @@ const ProblemDescriptionTabContent = ({ problem }) => {
             </div>
             {/* Problem Description */}
             <div>
-              <p className="text-base-content">{problem?.description}</p>
+              <Markdown>{problem?.description}</Markdown>
             </div>
             {/* Problem Examples */}
             <div>

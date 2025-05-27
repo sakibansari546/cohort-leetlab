@@ -7,13 +7,13 @@ const createProblemSchema = z.object({
     .string({ message: "Title must be string" })
     .nonempty({ message: "Title is required" })
     .min(6, { message: "Title must be at least 6 characters long" })
-    .max(40, { message: "Title must not exceed 40 characters" }),
+    .max(100, { message: "Title must not exceed 100 characters" }),
 
   description: z
     .string({ message: "Description must be string" })
     .nonempty({ message: "Description is required" })
     .min(10, { message: "Description must be at least 10 characters long" })
-    .max(300, { message: "Description must not exceed 300 characters" }),
+    .max(1000, { message: "Description must not exceed 1000 characters" }),
 
   difficulty: z.enum(["EASY", "MEDIUM", "HARD"], {
     message: "Difficulty must be one of EASY, MEDIUM, HARD",
@@ -34,12 +34,12 @@ const createProblemSchema = z.object({
   constraints: z
     .string({ message: "Constraints must be string" })
     .min(5, { message: "Constraints must be at least 5 characters long" })
-    .max(100, { message: "Constraints must not exceed 100 characters" }),
+    .max(300, { message: "Constraints must not exceed 300 characters" }),
 
   hints: z.optional(
     z
       .array(
-        z.string().max(100, { message: "Hints must not exceed 100 chars" })
+        z.string().max(200, { message: "Hints must not exceed 200 chars" })
       )
       .min(1, { message: "At least one hint is required" })
       .max(10, { message: "Hints must not exceed 10" })
@@ -49,7 +49,7 @@ const createProblemSchema = z.object({
     z
       .string({ message: "editorial must be string" })
       .min(5, { message: "editorial must be at least 5 characters long" })
-      .max(100, { message: "editorial must not exceed 100 characters" })
+      .max(600, { message: "editorial must not exceed 100 characters" })
   ),
 
   testcases: z
