@@ -2,6 +2,7 @@ import { env } from "../../../libs/env.js";
 import nodemailer from "nodemailer";
 import Mailgen from "mailgen";
 import { logger } from "../../../libs/logger.js";
+import { resend } from "../resend.js";
 
 const transport = nodemailer.createTransport({
   host: env.MAILTRAP_SMTP_HOST,
@@ -16,7 +17,7 @@ export async function sendMail(options) {
   const mailGenerator = new Mailgen({
     theme: "default",
     product: {
-      name: "LeetLab",
+      name: "Hype Coding",
       link: env.FRONTEND_BASE_URL,
     },
   });
@@ -27,7 +28,7 @@ export async function sendMail(options) {
   const emailText = mailGenerator.generatePlaintext(options.mailgenContent);
 
   const mailOptions = {
-    from: "leetlab.com", // sender address
+    from: "sender@hypecoding.live", // sender address
     to: options.email, // list of receivers
     subject: options.subject, // Subject line
     text: emailText, // plain text body
@@ -36,7 +37,7 @@ export async function sendMail(options) {
 
   try {
     // send mail with defined transport object
-    const info = await transport.sendMail(mailOptions);
+    const info = await resend.emails.send(mailOptions);
     logger.info(`Email sned ${info.messageId}`);
   } catch (error) {
     logger.error(`Error Sending Email ${error}`);

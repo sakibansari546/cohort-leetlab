@@ -149,7 +149,7 @@ class AuthColtroller {
       subject: "Verify your email!",
       mailgenContent: verificationEmailTemplate(
         fullname,
-        `${env.BACKEND_BASE_URL}/api/v1/auth/verify-email/${unHashedToken}`
+        `${env.BACKEND_BASE_URL}/auth/verify-email/${unHashedToken}`
       ),
     });
 
