@@ -17,6 +17,7 @@ import { env } from "../libs/env.js";
 import { logger } from "../libs/logger.js";
 
 import ApiResponse from "./utils/api-response.js";
+import ApiError from "./utils/api-error.js";
 
 export function createExpressApp() {
   const app = express();
@@ -72,7 +73,7 @@ export function createExpressApp() {
     }
 
     // Other known errors
-    if (err.isCustomApiError) {
+    if (err instanceof ApiError) {
       return res.status(err.statusCode).json({
         status: "error",
         message: err.message,
@@ -80,6 +81,7 @@ export function createExpressApp() {
     }
 
     logger.error(err);
+    logger.error(err.isCustomApiError);
     res.status(err.statusCode || 500).json(
       new ApiResponse(err.statusCode || 500, err.message, {
         error: { message: err.message || "Internal server error" },
