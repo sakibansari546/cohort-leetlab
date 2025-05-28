@@ -19,7 +19,7 @@ export default function CTA() {
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
-            href="/signup"
+            to="/problems"
             className="btn btn-md btn-primary transition-all"
           >
             Start Coding Free

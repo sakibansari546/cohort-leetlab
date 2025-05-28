@@ -10,9 +10,8 @@ const UserSolvedProblems = () => {
   if (isPending) {
     return (
       <div>
-        <h2 className="text-lg font-bold text-center py-4">
-          <span className="loading"></span>
-          <span> Loading...</span>
+        <h2 className="text-lg font-bold text-center py-6">
+          <span className="loading text-2xl"></span>
         </h2>
       </div>
     );
@@ -21,12 +20,13 @@ const UserSolvedProblems = () => {
   if (isError) {
     return (
       <div>
-        <h2 className="text-lg font-bold text-center py-4 text-error">
+        <h2 className="text-lg font-bold text-center py-4">
           {error?.response?.data?.message || "Something went wrong"}
         </h2>
       </div>
     );
   }
+
   return (
     <div className="bg-base-100 border-base-300 my-6">
       <div>

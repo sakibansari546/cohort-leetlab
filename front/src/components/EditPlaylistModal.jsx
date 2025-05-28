@@ -89,7 +89,7 @@ const EditPlaylistModal = ({ playlist }) => {
             >
               {mutation.isPending ? (
                 <>
-                  <Loader2 size="18" /> <span>Loading...</span>
+                  <Loader2 size="18" /> <span>Loading</span>
                 </>
               ) : (
                 "Update"

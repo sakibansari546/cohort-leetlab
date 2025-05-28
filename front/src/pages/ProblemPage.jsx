@@ -98,12 +98,7 @@ const ProblemPage = () => {
           <>
             {runCodeMutation.isPending ? (
               <>
-                <div className="flex flex-col items-center justify-center h-[40vh]">
-                  <Loader2 className="animate-spin text-primary" size={48} />
-                  <span className="mt-4 text-base-content">
-                    Running your code...
-                  </span>
-                </div>
+                <div className="skeleton border-base-300 bg-base-200 h-[40vh] py-4 px-3 overflow-y-auto"></div>
               </>
             ) : runCodeMutation.isError ? (
               <div className="w-full bg-base-300 h-[40vh] z-50 rounded-lg border border-base-content/30 overflow-y-auto flex flex-col items-center justify-center">

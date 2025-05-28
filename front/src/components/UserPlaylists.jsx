@@ -7,22 +7,21 @@ import { formateDate } from "../utils/date-formate";
 const UserPlaylists = () => {
   const { data: lists, isPending, isError, error } = useGetPlaylistsQuery();
 
-  if (isError) {
+  if (isPending) {
     return (
       <div>
-        <h2 className="text-lg font-bold text-center py-4 text-error">
-          {error?.response?.data?.message || "Something went wrong"}
+        <h2 className="text-lg font-bold text-center py-6">
+          <span className="loading text-2xl"></span>
         </h2>
       </div>
     );
   }
 
-  if (isPending) {
+  if (isError) {
     return (
       <div>
         <h2 className="text-lg font-bold text-center py-4">
-          <span className="loading"></span>
-          <span> Loading...</span>
+          {error?.response?.data?.message || "Something went wrong"}
         </h2>
       </div>
     );
@@ -34,7 +33,7 @@ const UserPlaylists = () => {
         {/* All Lists */}
         {lists?.playlists?.length === 0 ? (
           <div>
-            <h2 className="text-lg font-bold text-center">
+            <h2 className="text-lg font-bold text-center py-4">
               No Playlists to show
             </h2>
           </div>

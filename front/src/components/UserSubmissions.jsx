@@ -22,9 +22,8 @@ const UserSubmissions = () => {
   if (isPending) {
     return (
       <div>
-        <h2 className="text-lg font-bold text-center py-4">
-          <span className="loading"></span>
-          <span> Loading...</span>
+        <h2 className="text-lg font-bold text-center py-6">
+          <span className="loading text-2xl"></span>
         </h2>
       </div>
     );

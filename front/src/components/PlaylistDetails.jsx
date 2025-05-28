@@ -291,28 +291,37 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
             </div>
           </div>
           <div className="flex flex-col gap-5 min-h-[80vh]">
-            {/* All Problems */}
-            <div className="">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Status</th>
-                    <th>Title</th>
-                    <th>Difficulty</th>
-                    <th>Company</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* row 1 */}
-                  {problems.length === 0 || !problems ? (
-                    <tr className="bg-base-200 text-center w-full">
-                      <td className="text-lg font-semibold">
-                        No Ptoblem to show
-                      </td>
+            {problems.length === 0 || !problems ? (
+              <div className="bg-base-200 text-center w-full py-4 space-y-3">
+                <h1 className="text-lg font-semibold">No Ptoblem to show</h1>
+                <button
+                  className="btn btn-md btn-accent"
+                  onClick={() =>
+                    document
+                      .getElementById("add_problems_in_playlist")
+                      .showModal()
+                  }
+                >
+                  <Plus size="18" />
+                  Add Problems
+                </button>
+              </div>
+            ) : (
+              <div className="">
+                {/* All Problems */}
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Status</th>
+                      <th>Title</th>
+                      <th>Difficulty</th>
+                      <th>Company</th>
+                      <th>Actions</th>
                     </tr>
-                  ) : (
-                    problems?.map(({ problem }, idx) => {
+                  </thead>
+                  <tbody>
+                    {/* row 1 */}
+                    {problems?.map(({ problem }, idx) => {
                       const isSolved = problem.solvedBy?.some(
                         (userP) => userP.userId == user?.user?.id
                       );
@@ -393,7 +402,10 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                                       </>
                                     ) : (
                                       <>
-                                        <Trash2 className="text-error" size="16" />
+                                        <Trash2
+                                          className="text-error"
+                                          size="16"
+                                        />
                                         Remove
                                       </>
                                     )}
@@ -404,11 +416,11 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                           </td>
                         </tr>
                       );
-                    })
-                  )}
-                </tbody>
-              </table>
-            </div>
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </div>
