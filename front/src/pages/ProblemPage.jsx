@@ -39,7 +39,7 @@ const ProblemPage = () => {
   const problem = data?.problem;
   const errorMessage = error?.response?.data.message || "Internal server error";
 
-  const [language, setLanguage] = useState("javascript");
+  const [language, setLanguage] = useState(LANGUAGES[0] || "javascript");
   const [source_code, setSource_code] = useState("");
 
   const mutation = useCreateSubmissionMutation(problemId);
