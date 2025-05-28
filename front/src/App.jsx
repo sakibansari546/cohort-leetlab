@@ -26,13 +26,13 @@ import UsersPage from "./pages/admin/UsersPage";
 import SubmissionsPage from "./pages/admin/SubmissionsPage";
 import AdminPlaylistsPage from "./pages/admin/PlaylistsPage";
 import AdminProblemsPage from "./pages/admin/ProblemsPage";
+import AboutPage from "./pages/AboutPage";
 
 function App() {
   const { theme } = useThemeStore();
   const { data, isLoading, isError, error } = useGetUserQuery({
     onError: (err) => {
       console.log(err);
-
       if (err.response?.status === 401) {
         window.location.href = "/login";
       }
@@ -74,7 +74,8 @@ function App() {
             path="/"
             element={user ? <Navbar /> : <Navigate to="/login" />}
           >
-            <Route index element={user ? <Home /> : <Navigate to="/login" />} />
+            <Route index element={<Home />} />
+            <Route path="/about" element={<AboutPage />} />
 
             {/* Admin */}
             <Route
