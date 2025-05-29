@@ -3,9 +3,13 @@ import { Link } from "react-router-dom";
 import { useGetProblemsQuery } from "../querys/useProblemQuery";
 import { useAddProblemInPlaylistMutation } from "../querys/usePlaylistQuery";
 import { Loader2 } from "lucide-react";
+import { useFilterStore } from "../store/filterStore";
 
 const AddProblemsInPlaylistModal = ({ playlist }) => {
-  const { data, isPending, isError, error } = useGetProblemsQuery();
+  const { problemsFilter } = useFilterStore();
+  
+  const { data, isPending, isError, error } =
+    useGetProblemsQuery(problemsFilter);
   const problems = data?.problems;
 
   const [problemIds, setProblemIds] = useState([]);
@@ -32,6 +36,8 @@ const AddProblemsInPlaylistModal = ({ playlist }) => {
       setProblemIds([]);
     }
   }, [mutation.isSuccess]);
+
+  console.log(error);
 
   if (isError) {
     return (
