@@ -31,6 +31,7 @@ const ProblemPage = () => {
   const { problemId } = useParams();
   const editorRef = useRef(null);
   const testcaseResultTabInputRef = useRef(null);
+  const [coolDown, setCoolDown] = useState(0);
 
   const [activeTeastcasesOrResultTab, setActiveTestcasesOrResultTab] =
     useState("testcases");
@@ -68,6 +69,37 @@ const ProblemPage = () => {
     };
     runCodeMutation.mutate(data);
   };
+
+  const throttledWithCooldown = (fn, delaySeconds) => {
+    let myId = null;
+    return (...arg) => {
+      if (myId !== null) return;
+
+      fn(...arg);
+
+      if (runCodeMutation.isPending === false) {
+        setCoolDown(delaySeconds);
+
+        const intervalId = setInterval(() => {
+          setCoolDown((prev) => {
+            if (prev <= 1) {
+              clearInterval(intervalId);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
+
+      myId = setTimeout(() => {
+        myId = null;
+      }, delaySeconds * 1000);
+    };
+  };
+
+  const throttledRun = throttledWithCooldown(handleRunCode, 20);
+  const throttledSubmit = throttledWithCooldown(handleSubmitCode, 20);
+
   useEffect(() => {
     if (runCodeMutation.isPending && testcaseResultTabInputRef.current) {
       testcaseResultTabInputRef.current.checked = true;
@@ -134,9 +166,13 @@ const ProblemPage = () => {
               </div>
               <div className="space-x-2">
                 <button
-                  onClick={handleRunCode}
+                  onClick={throttledRun}
                   className="btn btn-sm md:btn-md"
-                  disabled={mutation.isPending || runCodeMutation.isPending}
+                  disabled={
+                    mutation.isPending ||
+                    runCodeMutation.isPending ||
+                    coolDown > 0
+                  }
                 >
                   {runCodeMutation.isPending ? (
                     <>
@@ -145,15 +181,26 @@ const ProblemPage = () => {
                     </>
                   ) : (
                     <>
-                      <LucidePlay size="18" />
-                      Run
+                      {coolDown > 0 ? (
+                        `Wait ${coolDown}s`
+                      ) : (
+                        <>
+                          {" "}
+                          <LucidePlay size="18" />
+                          Run
+                        </>
+                      )}
                     </>
                   )}
                 </button>
                 <button
-                  onClick={handleSubmitCode}
+                  onClick={throttledSubmit}
                   className="btn btn-accent btn-sm md:btn-md"
-                  disabled={mutation.isPending || runCodeMutation.isPending}
+                  disabled={
+                    mutation.isPending ||
+                    runCodeMutation.isPending ||
+                    coolDown > 0
+                  }
                 >
                   {mutation.isPending ? (
                     <>
@@ -162,8 +209,16 @@ const ProblemPage = () => {
                     </>
                   ) : (
                     <>
-                      <CloudUploadIcon size="18" />
-                      Submit
+                      {" "}
+                      {coolDown > 0 ? (
+                        `Wait ${coolDown}s`
+                      ) : (
+                        <>
+                          {" "}
+                          <CloudUploadIcon size="18" />
+                          Submit
+                        </>
+                      )}
                     </>
                   )}
                 </button>
