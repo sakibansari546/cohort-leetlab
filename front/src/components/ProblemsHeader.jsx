@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { RefreshCcw, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useFilterStore } from "../store/filterStore";
@@ -18,18 +18,14 @@ const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
 
   const { setProblemsFilter } = useFilterStore();
 
-  // On mount, initialize from URL (or blank if empty)
-  useEffect(() => {
-    setSearch(queryParams.get("search") || "");
-    setTags(queryParams.get("tags") || "");
-    setDifficulty(queryParams.get("difficulty") || "");
-    setCompanies(queryParams.get("companies") || "");
-  }, [queryParams]);
-
-  useEffect(() => {
-    setQueryParams({ search, tags, difficulty, companies });
-    setProblemsFilter({ search, tags, difficulty, companies });
-  }, [search, tags, difficulty, companies, setQueryParams, setProblemsFilter]);
+  const handleResetQuery = () => {
+    setSearch("");
+    setTags("");
+    setDifficulty("");
+    setCompanies("");
+    setQueryParams({ search: "", tags: "", difficulty: "", companies: "" });
+    setProblemsFilter({ search: "", tags: "", difficulty: "", companies: "" });
+  };
 
   // On mount, initialize from URL (or blank if empty)
   useEffect(() => {
@@ -43,6 +39,21 @@ const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
     setQueryParams({ search, tags, difficulty, companies });
     setProblemsFilter({ search, tags, difficulty, companies });
   }, [search, tags, difficulty, companies, setQueryParams, setProblemsFilter]);
+
+  // On mount, initialize from URL (or blank if empty)
+  useEffect(() => {
+    setSearch(queryParams.get("search") || "");
+    setTags(queryParams.get("tags") || "");
+    setDifficulty(queryParams.get("difficulty") || "");
+    setCompanies(queryParams.get("companies") || "");
+  }, [queryParams]);
+
+  useEffect(() => {
+    setQueryParams({ search, tags, difficulty, companies });
+    setProblemsFilter({ search, tags, difficulty, companies });
+  }, [search, tags, difficulty, companies, setQueryParams, setProblemsFilter]);
+
+  const hasParams = [tags, difficulty, companies].some((val) => val);
 
   return (
     <div>
@@ -62,12 +73,21 @@ const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
             </label>
           </div>
           <div className="flex items-center md:gap-4">
+            {hasParams && (
+              <div>
+                <button
+                  onClick={handleResetQuery}
+                  className="btn btn-md btn-circle"
+                >
+                  <RefreshCcw size="18" />
+                </button>
+              </div>
+            )}
             <div>
               <select
                 onChange={(e) => setCompanies(e.target.value)}
-                id="countries"
                 className="select select-bordered select-sm rounded-full "
-                defaultValue={""}
+                value={companies}
               >
                 <option value={""} className="font-semibold">
                   Companies
@@ -84,7 +104,7 @@ const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
                 onChange={(e) => setTags(e.target.value)}
                 id="countries"
                 className="select select-bordered select-sm rounded-full "
-                defaultValue={""}
+                value={tags}
               >
                 <option value={""} className="font-semibold">
                   Tags
@@ -98,7 +118,7 @@ const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
             </div>
             <div>
               <select
-                defaultValue={""}
+                value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
                 className="select select-bordered select-sm rounded-full "
               >
