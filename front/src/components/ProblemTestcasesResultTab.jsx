@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 const ProblemTestcasesResultTab = ({ result }) => {
   const [activeTab, setActiveTab] = useState(0);
-  console.log(result);
 
   const totalMemory = JSON.parse(result?.submission?.memory || "[]")
     .map((memory) => parseFloat(memory))
