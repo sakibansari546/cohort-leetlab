@@ -14,30 +14,92 @@ import { useCreateProblemMutation } from "../../querys/useAdminQuery";
 import { LANGUAGES } from "../../constants";
 
 const formDefaultValues = {
-  title: "",
-  description: "",
-  tags: [],
-  company: "",
-  constraints: "",
-  hints: [""],
-  examples: [{ input: "", output: "", explanation: "" }],
-  testcases: [{ input: "", output: "" }],
+  title: "Merge Two Sorted Lists",
+  description:
+    "You are given the heads of two sorted linked lists `list1` and `list2`. Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists. Return the head of the merged linked list.",
+  difficulty: "EASY",
+  tags: ["Linked List", "Recursion"],
+  constraints:
+    "The number of nodes in both lists is in the range [0, 50].\n-100 ≤ Node.val ≤ 100\nBoth list1 and list2 are sorted in non-decreasing order.",
+  hints: [
+    "Use a dummy node to simplify the merging process.",
+    "Compare the values of the current nodes from both lists.",
+    "Always choose the smaller value and advance that list's pointer.",
+  ],
+  testcases: [
+    { input: "[1,2,4],[1,3,4]", output: "[1,1,2,3,4,4]" },
+    { input: "[], []", output: "[]" },
+    { input: "[], [0]", output: "[0]" },
+    { input: "[1,2,3], [4,5,6]", output: "[1,2,3,4,5,6]" },
+    { input: "[2], [1]", output: "[1,2]" },
+  ],
+  examples: [
+    {
+      input: "list1 = [1,2,4], list2 = [1,3,4]",
+      output: "[1,1,2,3,4,4]",
+      explanation:
+        "The merged list combines both sorted lists in ascending order.",
+    },
+    {
+      input: "list1 = [], list2 = []",
+      output: "[]",
+      explanation: "Both lists are empty, so the merged list is also empty.",
+    },
+    {
+      input: "list1 = [], list2 = [0]",
+      output: "[0]",
+      explanation: "One list is empty, so return the other list.",
+    },
+  ],
   codeSnippets: {
-    JAVASCRIPT: "// Enter starter code here...",
-    PYTHON: "# Enter starter code here...",
-    JAVA: "// Enter starter code here...",
-    C: "// Enter starter code here...",
-    "C++": "// Enter starter code here...",
+    JAVASCRIPT:
+      "/**\n * Definition for singly-linked list.\n */\nfunction ListNode(val, next) {\n    this.val = (val===undefined ? 0 : val)\n    this.next = (next===undefined ? null : next)\n}\n\n/**\n * @param {ListNode} list1\n * @param {ListNode} list2\n * @return {ListNode}\n */\nfunction mergeTwoLists(list1, list2) {\n    // Write your code here\n}\n\n// I/O Helper\nfunction buildList(arr) {\n    if (!arr.length) return null;\n    const head = new ListNode(arr[0]);\n    let current = head;\n    for (let i = 1; i < arr.length; i++) {\n        current.next = new ListNode(arr[i]);\n        current = current.next;\n    }\n    return head;\n}\n\nfunction listToArray(head) {\n    const result = [];\n    while (head) {\n        result.push(head.val);\n        head = head.next;\n    }\n    return result;\n}\n\nconst fs = require('fs');\nconst input = JSON.parse(fs.readFileSync(0, 'utf-8').trim());\nconst list1 = buildList(input[0]);\nconst list2 = buildList(input[1]);\nconst merged = mergeTwoLists(list1, list2);\nconsole.log(JSON.stringify(listToArray(merged)));",
+    PYTHON:
+      "from typing import Optional\n\n# Definition for singly-linked list.\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:\n        # Write your code here\n        pass\n\nif __name__ == '__main__':\n    import sys\n    import json\n    \n    def build_list(arr):\n        if not arr:\n            return None\n        head = ListNode(arr[0])\n        current = head\n        for i in range(1, len(arr)):\n            current.next = ListNode(arr[i])\n            current = current.next\n        return head\n    \n    def list_to_array(head):\n        result = []\n        while head:\n            result.append(head.val)\n            head = head.next\n        return result\n    \n    input_data = json.loads(sys.stdin.readline().strip())\n    list1 = build_list(input_data[0])\n    list2 = build_list(input_data[1])\n    merged = Solution().mergeTwoLists(list1, list2)\n    print(json.dumps(list_to_array(merged)))",
+    JAVA: "import java.util.*;\n\nclass ListNode {\n    int val;\n    ListNode next;\n    ListNode() {}\n    ListNode(int val) { this.val = val; }\n    ListNode(int val, ListNode next) { this.val = val; this.next = next; }\n}\n\npublic class Main {\n    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {\n        // Write your code here\n        return null;\n    }\n    \n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String input = sc.nextLine().trim();\n        // Parse input and build lists\n        ListNode list1 = null, list2 = null;\n        ListNode merged = new Main().mergeTwoLists(list1, list2);\n        printList(merged);\n        sc.close();\n    }\n    \n    static void printList(ListNode head) {\n        List<Integer> result = new ArrayList<>();\n        while (head != null) {\n            result.add(head.val);\n            head = head.next;\n        }\n        System.out.println(result);\n    }\n}",
+    C: "#include <stdio.h>\n#include <stdlib.h>\n\nstruct ListNode {\n    int val;\n    struct ListNode *next;\n};\n\nstruct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {\n    // Write your code here\n    return NULL;\n}\n\nint main() {\n    struct ListNode* list1 = NULL;\n    struct ListNode* list2 = NULL;\n    struct ListNode* merged = mergeTwoLists(list1, list2);\n    return 0;\n}",
+    "C++":
+      "#include <bits/stdc++.h>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode *next;\n    ListNode() : val(0), next(nullptr) {}\n    ListNode(int x) : val(x), next(nullptr) {}\n    ListNode(int x, ListNode *next) : val(x), next(next) {}\n};\n\nListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {\n    // Write your code here\n    return nullptr;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    ListNode* list1 = nullptr;\n    ListNode* list2 = nullptr;\n    ListNode* merged = mergeTwoLists(list1, list2);\n    return 0;\n}",
   },
   referenceSolutions: {
-    JAVASCRIPT: "// Enter reference solution here...",
-    PYTHON: "# Enter reference solution here...",
-    JAVA: "// Enter reference solution here...",
-    C: "// Enter reference solution here...",
-    "C++": "// Enter reference solution here...",
+    JAVASCRIPT:
+      "function mergeTwoLists(list1, list2) {\n    const dummy = new ListNode(0);\n    let current = dummy;\n    \n    while (list1 && list2) {\n        if (list1.val <= list2.val) {\n            current.next = list1;\n            list1 = list1.next;\n        } else {\n            current.next = list2;\n            list2 = list2.next;\n        }\n        current = current.next;\n    }\n    \n    current.next = list1 || list2;\n    return dummy.next;\n}",
+    PYTHON:
+      "class Solution:\n    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:\n        dummy = ListNode(0)\n        current = dummy\n        \n        while list1 and list2:\n            if list1.val <= list2.val:\n                current.next = list1\n                list1 = list1.next\n            else:\n                current.next = list2\n                list2 = list2.next\n            current = current.next\n        \n        current.next = list1 or list2\n        return dummy.next",
+    JAVA: "public ListNode mergeTwoLists(ListNode list1, ListNode list2) {\n    ListNode dummy = new ListNode(0);\n    ListNode current = dummy;\n    \n    while (list1 != null && list2 != null) {\n        if (list1.val <= list2.val) {\n            current.next = list1;\n            list1 = list1.next;\n        } else {\n            current.next = list2;\n            list2 = list2.next;\n        }\n        current = current.next;\n    }\n    \n    current.next = (list1 != null) ? list1 : list2;\n    return dummy.next;\n}",
+    C: "struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {\n    struct ListNode dummy;\n    struct ListNode* current = &dummy;\n    \n    while (list1 && list2) {\n        if (list1->val <= list2->val) {\n            current->next = list1;\n            list1 = list1->next;\n        } else {\n            current->next = list2;\n            list2 = list2->next;\n        }\n        current = current->next;\n    }\n    \n    current->next = list1 ? list1 : list2;\n    return dummy.next;\n}",
+    "C++":
+      "ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {\n    ListNode dummy(0);\n    ListNode* current = &dummy;\n    \n    while (list1 && list2) {\n        if (list1->val <= list2->val) {\n            current->next = list1;\n            list1 = list1->next;\n        } else {\n            current->next = list2;\n            list2 = list2->next;\n        }\n        current = current->next;\n    }\n    \n    current->next = list1 ? list1 : list2;\n    return dummy.next;\n}",
   },
+  company: ["Amazon", "Google", "Microsoft", "Apple"],
   isDemo: false,
 };
+
+// const formDefaultValues = {
+//   title: "",
+//   description: "",
+//   tags: [""],
+//   constraints: "",
+//   hints: [""],
+//   examples: [{ input: "", output: "", explanation: "" }],
+//   testcases: [{ input: "", output: "" }],
+//   codeSnippets: {
+//     JAVASCRIPT: "// Enter starter code here...",
+//     PYTHON: "# Enter starter code here...",
+//     JAVA: "// Enter starter code here...",
+//     C: "// Enter starter code here...",
+//     "C++": "// Enter starter code here...",
+//   },
+//   referenceSolutions: {
+//     JAVASCRIPT: "// Enter reference solution here...",
+//     PYTHON: "# Enter reference solution here...",
+//     JAVA: "// Enter reference solution here...",
+//     C: "// Enter reference solution here...",
+//     "C++": "// Enter reference solution here...",
+//   },
+//   company: [""],
+//   isDemo: false,
+// };
 
 const CreateProblemForm = () => {
   const {
@@ -71,6 +133,11 @@ const CreateProblemForm = () => {
     append: addHint,
     remove: removeHint,
   } = useFieldArray({ control, name: "hints" });
+  const {
+    fields: companyFields,
+    append: addCompany,
+    remove: removeCompany,
+  } = useFieldArray({ control, name: "company" });
 
   const MAX_TAGS = 10;
   //Retrieve all the returned items from the hook
@@ -535,28 +602,57 @@ const CreateProblemForm = () => {
             ))}
           </div>
 
-          {/* Comany */}
+          {/* /Company */}
           <div className="form-control mb-4">
-            <label htmlFor="company" className="label">
+            <label
+              htmlFor="constraints"
+              className="label flex items-center justify-between gap-2 py-4"
+            >
               <span className="label-text mb-2">Company</span>
+              <button
+                type="button"
+                className="btn"
+                onClick={() => addCompany("")}
+              >
+                <Plus className="w-4 h-4 mr-1" /> Add Company
+              </button>
             </label>
             <div className="w-full">
-              <input
-                {...register("company")}
-                id="company"
-                type="text"
-                name="company"
-                placeholder="Enter company"
-                className="input input-bordered w-full"
-              />
+              <div className="">
+                {companyFields.map((field, index) => (
+                  <div key={field.id}>
+                    <div className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        {...register(`company.${index}`)}
+                        defaultValue={field}
+                        className="input input-bordered w-full my-3"
+                        placeholder={`Company #${index + 1}`}
+                      />
+
+                      <button
+                        type="button"
+                        className="btn btn-ghost btn-square btn-sm"
+                        onClick={() => removeCompany(index)}
+                        disabled={companyFields.length === 1}
+                      >
+                        <Trash2 className="w-4 h-4 text-error" />
+                      </button>
+                    </div>
+
+                    <div>
+                      {errors.company?.[index] && (
+                        <label className="label">
+                          <span className="label-text-alt text-error">
+                            {errors.company?.[index].message}
+                          </span>
+                        </label>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            {errors.company && (
-              <label className="label">
-                <span className="label-text-alt text-error">
-                  {errors.company.message}
-                </span>
-              </label>
-            )}
           </div>
 
           {/* IsDemo */}

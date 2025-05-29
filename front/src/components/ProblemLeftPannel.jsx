@@ -379,7 +379,8 @@ const SubmissionResultTabContent = ({ submissionMutation }) => {
                     >
                       {allTestCasesPassed
                         ? submission?.status
-                        : submission.stderr !== null
+                        : submission?.stderr !== null ||
+                          submission?.compileOutput !== null
                         ? "An Error Accured"
                         : "Worng Answer"}
                     </h1>
@@ -400,7 +401,8 @@ const SubmissionResultTabContent = ({ submissionMutation }) => {
                   </div>
                 </div>
                 <div>
-                  {submission?.stderr === null ? (
+                  {submission?.stderr === null &&
+                  submission?.compileOutput === null ? (
                     <>
                       {allTestCasesPassed ? (
                         <div className="my-4 flex items-center gap-6 text-center">
@@ -474,7 +476,13 @@ const SubmissionResultTabContent = ({ submissionMutation }) => {
                     <>
                       <div className="py-3 px-6 bg-[#282a36] mt-6">
                         <p className="text-lg text-error font-medium">
-                          {JSON.parse(submission?.stderr || "[]")[0]}
+                          {
+                            JSON.parse(
+                              submission?.stderr ||
+                                submission?.compileOutput ||
+                                "[]"
+                            )[0]
+                          }
                         </p>
                       </div>
                     </>

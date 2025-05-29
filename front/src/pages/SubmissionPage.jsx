@@ -73,7 +73,8 @@ const SubmissionPage = () => {
                       : "text-error "
                   }`}
                 >
-                  {submission?.stderr !== null
+                  {submission?.stderr !== null ||
+                  submission?.compileOutput !== null
                     ? "Error"
                     : submission?.status == "Accepted"
                     ? "Accepted"
@@ -108,10 +109,21 @@ const SubmissionPage = () => {
                 </div>
               </div>
 
-              {submission?.stderr !== null ? (
+              {submission?.stderr !== null ||
+              submission?.compileOutput !== null ? (
                 <div className="p-3 bg-base-300">
                   <p className="text-lg text-error">
-                    {JSON.parse(submission?.stderr || "[]")[0]}
+                    <Markdown
+                    // className={`${submission?.language.toLowerCase()} text-error`}
+                    >
+                      {
+                        JSON.parse(
+                          submission?.stderr ||
+                            submission?.compileOutput ||
+                            "[]"
+                        )[0]
+                      }
+                    </Markdown>
                   </p>
                 </div>
               ) : (

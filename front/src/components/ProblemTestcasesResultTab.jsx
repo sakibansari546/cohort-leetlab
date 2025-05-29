@@ -15,13 +15,22 @@ const ProblemTestcasesResultTab = ({ result }) => {
 
   const TabContent = () => {
     const testcase = result.submission?.testCases[activeTab];
-    if (result?.submission?.stderr !== null) {
+    if (
+      result?.submission?.stderr !== null ||
+      result?.submission?.compileOutput !== null
+    ) {
       return (
         <>
           <div className="bg-base-200 border-base-100 py-4 px-3">
             <div className="bg-base-300">
               <p className="p-4 text-lg text-error font-medium">
-                {JSON.parse(result?.submission?.stderr || "[]")[0]}
+                {
+                  JSON.parse(
+                    result?.submission?.stderr ||
+                      result?.submission?.compileOutput ||
+                      "[]"
+                  )[0]
+                }
               </p>
             </div>
           </div>
@@ -80,7 +89,8 @@ const ProblemTestcasesResultTab = ({ result }) => {
                     : "text-error"
                 }`}
               >
-                {result.submission?.stderr !== null
+                {result.submission?.stderr !== null ||
+                result?.submission?.compileOutput !== null
                   ? "An Error Accourd"
                   : result?.submission.status}
               </h2>
@@ -88,29 +98,30 @@ const ProblemTestcasesResultTab = ({ result }) => {
               <p className="text-base-content/80">Memory: {totalMemory} KB</p>
             </div>
           </div>
-          {result?.submission?.stderr === null && (
-            <div className="tabs tabs-box bg-base-200 space-x-2 z-20">
-              {result?.submission?.testCases.map((testcase, idx) => (
-                <label
-                  className={`tab bg-base-300 ${
-                    testcase.passed === false ? "text-error" : "text-success"
-                  }`}
-                  key={idx}
-                >
-                  <li>
-                    <input
-                      type="radio"
-                      name="testcase_result_tab"
-                      className="tab bg-base-300"
-                      defaultChecked={idx === 0}
-                      onChange={() => setActiveTab(idx)}
-                    />
-                    <span>Case {idx + 1}</span>
-                  </li>
-                </label>
-              ))}
-            </div>
-          )}
+          {result?.submission?.stderr === null &&
+            result?.submission?.compileOutput === null && (
+              <div className="tabs tabs-box bg-base-200 space-x-2 z-20">
+                {result?.submission?.testCases.map((testcase, idx) => (
+                  <label
+                    className={`tab bg-base-300 ${
+                      testcase.passed === false ? "text-error" : "text-success"
+                    }`}
+                    key={idx}
+                  >
+                    <li>
+                      <input
+                        type="radio"
+                        name="testcase_result_tab"
+                        className="tab bg-base-300"
+                        defaultChecked={idx === 0}
+                        onChange={() => setActiveTab(idx)}
+                      />
+                      <span>Case {idx + 1}</span>
+                    </li>
+                  </label>
+                ))}
+              </div>
+            )}
 
           <TabContent />
         </div>
