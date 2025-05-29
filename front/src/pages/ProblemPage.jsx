@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 
@@ -107,45 +107,61 @@ const ProblemPage = () => {
     }
   }, [runCodeMutation.isPending]);
 
-  const TestcasesOrResultTabContent = () => {
-    switch (activeTeastcasesOrResultTab) {
-      case "testcases":
-        return (
-          <>
-            {isPending ? (
-              <div className="skeleton bg-base-300 w-full h-[40vh] rounded-lg overflow-y-auto border border-base-content/30"></div>
-            ) : isError ? (
-              <div className="w-full bg-base-300 h-[40vh z-50 rounded-lg border border-base-content/30 overflow-y-auto flex justify-center">
-                <h3 className="text-xl font-extrabold text-error my-6">
-                  {errorMessage}
-                </h3>
-              </div>
-            ) : (
-              <ProblemTestcasesPannel testcases={problem?.testcases} />
-            )}
-          </>
-        );
-      case "result":
-        return (
-          <>
-            {runCodeMutation.isPending ? (
-              <>
-                <div className="skeleton border-base-300 bg-base-200 h-[40vh] py-4 px-3 overflow-y-auto"></div>
-              </>
-            ) : runCodeMutation.isError ? (
-              <div className="w-full bg-base-300 h-[40vh] z-50 rounded-lg border border-base-content/30 overflow-y-auto flex flex-col items-center justify-center">
-                <h3 className="text-xl font-extrabold text-error my-6">
-                  {runCodeMutation.error?.response?.data?.message ||
-                    "An error occurred while running your code."}
-                </h3>
-              </div>
-            ) : (
-              <ProblemTestcasesResultTab result={runCodeMutation.data} />
-            )}
-          </>
-        );
-    }
-  };
+  // Memoized panel to prevent re-renders
+
+  const TestcasesOrResultTabContent = useMemo(() => {
+    return () => {
+      switch (activeTeastcasesOrResultTab) {
+        case "testcases":
+          return (
+            <>
+              {isPending ? (
+                <div className="skeleton bg-base-300 w-full h-[40vh] rounded-lg overflow-y-auto border border-base-content/30"></div>
+              ) : isError ? (
+                <div className="w-full bg-base-300 h-[40vh z-50 rounded-lg border border-base-content/30 overflow-y-auto flex justify-center">
+                  <h3 className="text-xl font-extrabold text-error my-6">
+                    {errorMessage}
+                  </h3>
+                </div>
+              ) : (
+                <ProblemTestcasesPannel testcases={problem?.testcases} />
+              )}
+            </>
+          );
+        case "result":
+          return (
+            <>
+              {runCodeMutation.isPending ? (
+                <>
+                  <div className="skeleton border-base-300 bg-base-200 h-[40vh] py-4 px-3 overflow-y-auto"></div>
+                </>
+              ) : runCodeMutation.isError ? (
+                <div className="w-full bg-base-300 h-[40vh] z-50 rounded-lg border border-base-content/30 overflow-y-auto flex flex-col items-center justify-center">
+                  <h3 className="text-xl font-extrabold text-error my-6">
+                    {runCodeMutation.error?.response?.data?.message ||
+                      "An error occurred while running your code."}
+                  </h3>
+                </div>
+              ) : (
+                <ProblemTestcasesResultTab result={runCodeMutation.data} />
+              )}
+            </>
+          );
+        default:
+          return null;
+      }
+    };
+  }, [
+    activeTeastcasesOrResultTab,
+    isPending,
+    isError,
+    errorMessage,
+    problem,
+    runCodeMutation.isPending,
+    runCodeMutation.isError,
+    runCodeMutation.error,
+    runCodeMutation.data,
+  ]);
 
   return (
     <>

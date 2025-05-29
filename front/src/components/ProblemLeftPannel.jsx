@@ -126,7 +126,10 @@ const ProblemDescriptionTabContent = ({ problem }) => {
                 {/* Hints Crousel */}
                 <div id="hints">
                   {problem?.hints?.map((hint, idx) => (
-                    <div className="collapse collapse-arrow join-item rounded-none border-base-content/20 border-x-0 border">
+                    <div
+                      key={idx}
+                      className="collapse collapse-arrow join-item rounded-none border-base-content/20 border-x-0 border"
+                    >
                       <input type="radio" name="my-accordion-4" />
                       <div className="collapse-title font-semibold">
                         <p className="flex items-center gap-2 font-semibold">
