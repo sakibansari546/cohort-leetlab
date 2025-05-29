@@ -51,10 +51,10 @@ const UserSubmissions = () => {
               </div>
             ) : (
               submissions?.map((submission, idx) => {
-                const totalTime = JSON.parse(submission.time)
+                const totalTime = JSON.parse(submission?.time || "[]")
                   .reduce((accu, time) => (accu += parseFloat(time)), 0)
                   .toFixed(2);
-                const totalMemory = JSON.parse(submission.memory)
+                const totalMemory = JSON.parse(submission.memory || "[]")
                   .reduce((accu, memory) => (accu += parseFloat(memory)), 0)
                   .toFixed(2);
                 return (
