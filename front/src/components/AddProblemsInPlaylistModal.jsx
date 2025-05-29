@@ -7,7 +7,7 @@ import { useFilterStore } from "../store/filterStore";
 
 const AddProblemsInPlaylistModal = ({ playlist }) => {
   const { problemsFilter } = useFilterStore();
-  
+
   const { data, isPending, isError, error } =
     useGetProblemsQuery(problemsFilter);
   const problems = data?.problems;
@@ -52,7 +52,7 @@ const AddProblemsInPlaylistModal = ({ playlist }) => {
   return (
     <div>
       <dialog id="add_problems_in_playlist" className="modal">
-        <div className="modal-box w-11/12 max-w-5xl h-[70vh]">
+        <div className="modal-box w-11/12 max-w-5xl h-[75vh]">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-lg mb-4">Add problems in playlist</h3>
             <button
