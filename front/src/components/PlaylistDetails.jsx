@@ -47,7 +47,6 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
     const isSolved = problem.problem.solvedBy?.some(
       (s) => s.userId === data?.user?.id
     );
-    console.log(problem.problem);
 
     return isSolved ? count + 1 : count;
   }, 0);

@@ -16,11 +16,12 @@ import { useFilterStore } from "../store/filterStore";
 
 const ProblemsPage = () => {
   const [tags, setTags] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const { problemsFilter } = useFilterStore();
 
   const { data, isFetching, isError, error } =
     useGetProblemsQuery(problemsFilter);
-    
+
   const { data: user } = useGetUserQuery();
   // const problems = data?.problems;
 
@@ -48,7 +49,10 @@ const ProblemsPage = () => {
 
   useEffect(() => {
     if (problems) {
-      setTags([...new Set(problems.flatMap((problem) => problem.tags || []))]);
+      setTags([...new Set(problems?.flatMap((problem) => problem.tags || []))]);
+      setCompanies([
+        ...new Set(problems?.flatMap((problem) => problem.company || [])),
+      ]);
     }
   }, [problems]);
 
@@ -109,7 +113,7 @@ const ProblemsPage = () => {
         </div>
 
         {/* Search sbar */}
-        <ProblemsHeader tags={tags} />
+        <ProblemsHeader companies={companies} tags={tags} />
 
         {/* Problems List */}
         <div className="overflow-x-auto">
@@ -195,7 +199,7 @@ const ProblemsPage = () => {
                           >
                             <span>{problem.difficulty}</span>
                           </td>
-                          <td>{problem.company}</td>
+                          <td>{problem.company[0]}</td>
                           <td>
                             {problem.tags.map(
                               (tag, i) =>
