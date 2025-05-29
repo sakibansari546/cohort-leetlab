@@ -1,10 +1,32 @@
 import { Search } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useFilterStore } from "../store/filterStore";
 
 const ProblemsHeader = ({ tags: uniqueTags }) => {
+  const [queryParams, setQueryParams] = useSearchParams({
+    search: "",
+    tags: "",
+    difficulty: "",
+  });
+
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState("");
   const [difficulty, setDifficulty] = useState("");
+
+  const { setProblemsFilter } = useFilterStore();
+
+  // On mount, initialize from URL (or blank if empty)
+  useEffect(() => {
+    setSearch(queryParams.get("search") || "");
+    setTags(queryParams.get("tags") || "");
+    setDifficulty(queryParams.get("difficulty") || "");
+  }, [queryParams]);
+
+  useEffect(() => {
+    setQueryParams({ search, tags, difficulty });
+    setProblemsFilter({ search, tags, difficulty });
+  }, [search, tags, difficulty, setQueryParams, setProblemsFilter]);
 
   return (
     <div>
@@ -14,6 +36,7 @@ const ProblemsHeader = ({ tags: uniqueTags }) => {
             <label className="input input-bordered flex items-center gap-2 md:h-8 h-8 rounded-full md:w-60">
               <Search className="w-4 h-4 opacity-50" />
               <input
+                value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 type="search"
                 required
@@ -28,8 +51,9 @@ const ProblemsHeader = ({ tags: uniqueTags }) => {
                 onChange={(e) => setTags(e.target.value)}
                 id="countries"
                 className="select select-bordered select-sm rounded-full "
+                defaultValue={""}
               >
-                <option defaultValue className="font-semibold">
+                <option value={""} className="font-semibold">
                   Tags
                 </option>
                 {uniqueTags.map((tag, idx) => (
@@ -41,10 +65,11 @@ const ProblemsHeader = ({ tags: uniqueTags }) => {
             </div>
             <div>
               <select
+                defaultValue={""}
                 onChange={(e) => setDifficulty(e.target.value)}
                 className="select select-bordered select-sm rounded-full "
               >
-                <option defaultValue>Difficulty</option>
+                <option value={""}>Difficulty</option>
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>

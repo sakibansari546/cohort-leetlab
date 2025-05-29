@@ -239,7 +239,22 @@ class ProblemController {
   });
 
   getAllProblemsHandler = AsyncHandler(async (req, res) => {
+    const { search, tags, difficulty } = req.query;
+
+    const where = {};
+
+    if (search) {
+      where.title = { contains: search, mode: "insensitive" };
+    }
+    if (tags) {
+      where.tags = { has: tags };
+    }
+    if (difficulty) {
+      where.difficulty = { equals: difficulty.toUpperCase() };
+    }
+
     const problems = await prisma.problem.findMany({
+      where,
       include: {
         submissions: {
           select: {
