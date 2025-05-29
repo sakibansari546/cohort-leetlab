@@ -12544,6 +12544,42 @@ export namespace Prisma {
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
+  export const SocialOrderByRelevanceFieldEnum: {
+    id: 'id',
+    website: 'website',
+    twitter: 'twitter',
+    github: 'github',
+    linkedIn: 'linkedIn'
+  };
+
+  export type SocialOrderByRelevanceFieldEnum = (typeof SocialOrderByRelevanceFieldEnum)[keyof typeof SocialOrderByRelevanceFieldEnum]
+
+
+  export const BasicInfoOrderByRelevanceFieldEnum: {
+    id: 'id',
+    bio: 'bio',
+    socialId: 'socialId'
+  };
+
+  export type BasicInfoOrderByRelevanceFieldEnum = (typeof BasicInfoOrderByRelevanceFieldEnum)[keyof typeof BasicInfoOrderByRelevanceFieldEnum]
+
+
+  export const UserOrderByRelevanceFieldEnum: {
+    id: 'id',
+    fullname: 'fullname',
+    email: 'email',
+    username: 'username',
+    password: 'password',
+    profileImage: 'profileImage',
+    emailVerificationToken: 'emailVerificationToken',
+    forgotPasswordToken: 'forgotPasswordToken',
+    refreshToken: 'refreshToken',
+    basicInfoId: 'basicInfoId'
+  };
+
+  export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
+
+
   export const JsonNullValueFilter: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull,
@@ -12551,6 +12587,81 @@ export namespace Prisma {
   };
 
   export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+  export const ProblemOrderByRelevanceFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    tags: 'tags',
+    userId: 'userId',
+    constraints: 'constraints',
+    editorial: 'editorial',
+    company: 'company'
+  };
+
+  export type ProblemOrderByRelevanceFieldEnum = (typeof ProblemOrderByRelevanceFieldEnum)[keyof typeof ProblemOrderByRelevanceFieldEnum]
+
+
+  export const SubmissionOrderByRelevanceFieldEnum: {
+    id: 'id',
+    language: 'language',
+    stdin: 'stdin',
+    stdout: 'stdout',
+    stderr: 'stderr',
+    compileOutput: 'compileOutput',
+    status: 'status',
+    memory: 'memory',
+    time: 'time',
+    feedback: 'feedback',
+    userId: 'userId',
+    problemId: 'problemId'
+  };
+
+  export type SubmissionOrderByRelevanceFieldEnum = (typeof SubmissionOrderByRelevanceFieldEnum)[keyof typeof SubmissionOrderByRelevanceFieldEnum]
+
+
+  export const TestcaseOrderByRelevanceFieldEnum: {
+    id: 'id',
+    stdout: 'stdout',
+    stderr: 'stderr',
+    expected: 'expected',
+    compileOutput: 'compileOutput',
+    status: 'status',
+    memory: 'memory',
+    time: 'time',
+    submissionId: 'submissionId'
+  };
+
+  export type TestcaseOrderByRelevanceFieldEnum = (typeof TestcaseOrderByRelevanceFieldEnum)[keyof typeof TestcaseOrderByRelevanceFieldEnum]
+
+
+  export const SolvedProblemOrderByRelevanceFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    problemId: 'problemId'
+  };
+
+  export type SolvedProblemOrderByRelevanceFieldEnum = (typeof SolvedProblemOrderByRelevanceFieldEnum)[keyof typeof SolvedProblemOrderByRelevanceFieldEnum]
+
+
+  export const PlaylistOrderByRelevanceFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    userId: 'userId'
+  };
+
+  export type PlaylistOrderByRelevanceFieldEnum = (typeof PlaylistOrderByRelevanceFieldEnum)[keyof typeof PlaylistOrderByRelevanceFieldEnum]
+
+
+  export const ProblemInPlaylistOrderByRelevanceFieldEnum: {
+    id: 'id',
+    playlistId: 'playlistId',
+    problemId: 'problemId'
+  };
+
+  export type ProblemInPlaylistOrderByRelevanceFieldEnum = (typeof ProblemInPlaylistOrderByRelevanceFieldEnum)[keyof typeof ProblemInPlaylistOrderByRelevanceFieldEnum]
 
 
   /**
@@ -12699,6 +12810,7 @@ export namespace Prisma {
     github?: SortOrderInput | SortOrder
     linkedIn?: SortOrderInput | SortOrder
     BasicInfo?: BasicInfoOrderByWithRelationInput
+    _relevance?: SocialOrderByRelevanceInput
   }
 
   export type SocialWhereUniqueInput = Prisma.AtLeast<{
@@ -12756,6 +12868,7 @@ export namespace Prisma {
     socialId?: SortOrderInput | SortOrder
     socials?: SocialOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
+    _relevance?: BasicInfoOrderByRelevanceInput
   }
 
   export type BasicInfoWhereUniqueInput = Prisma.AtLeast<{
@@ -12846,6 +12959,7 @@ export namespace Prisma {
     solvedProblems?: SolvedProblemOrderByRelationAggregateInput
     playlists?: PlaylistOrderByRelationAggregateInput
     basicInfo?: BasicInfoOrderByWithRelationInput
+    _relevance?: UserOrderByRelevanceInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -12974,6 +13088,7 @@ export namespace Prisma {
     submissions?: SubmissionOrderByRelationAggregateInput
     solvedBy?: SolvedProblemOrderByRelationAggregateInput
     problemInPlaylist?: ProblemInPlaylistOrderByRelationAggregateInput
+    _relevance?: ProblemOrderByRelevanceInput
   }
 
   export type ProblemWhereUniqueInput = Prisma.AtLeast<{
@@ -13092,6 +13207,7 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     problem?: ProblemOrderByWithRelationInput
     testCases?: TestcaseOrderByRelationAggregateInput
+    _relevance?: SubmissionOrderByRelevanceInput
   }
 
   export type SubmissionWhereUniqueInput = Prisma.AtLeast<{
@@ -13195,6 +13311,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     submissionId?: SortOrderInput | SortOrder
     submission?: SubmissionOrderByWithRelationInput
+    _relevance?: TestcaseOrderByRelevanceInput
   }
 
   export type TestcaseWhereUniqueInput = Prisma.AtLeast<{
@@ -13278,6 +13395,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     problem?: ProblemOrderByWithRelationInput
+    _relevance?: SolvedProblemOrderByRelevanceInput
   }
 
   export type SolvedProblemWhereUniqueInput = Prisma.AtLeast<{
@@ -13341,6 +13459,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     problems?: ProblemInPlaylistOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
+    _relevance?: PlaylistOrderByRelevanceInput
   }
 
   export type PlaylistWhereUniqueInput = Prisma.AtLeast<{
@@ -13406,6 +13525,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     playlist?: PlaylistOrderByWithRelationInput
     problem?: ProblemOrderByWithRelationInput
+    _relevance?: ProblemInPlaylistOrderByRelevanceInput
   }
 
   export type ProblemInPlaylistWhereUniqueInput = Prisma.AtLeast<{
@@ -14307,6 +14427,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
     mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
   }
@@ -14322,6 +14443,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
@@ -14334,6 +14456,12 @@ export namespace Prisma {
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type SocialOrderByRelevanceInput = {
+    fields: SocialOrderByRelevanceFieldEnum | SocialOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
   }
 
   export type SocialCountOrderByAggregateInput = {
@@ -14371,6 +14499,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
     mode?: QueryMode
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
@@ -14389,6 +14518,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
     mode?: QueryMode
     not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
@@ -14422,6 +14552,12 @@ export namespace Prisma {
   export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
+  }
+
+  export type BasicInfoOrderByRelevanceInput = {
+    fields: BasicInfoOrderByRelevanceFieldEnum | BasicInfoOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
   }
 
   export type BasicInfoCountOrderByAggregateInput = {
@@ -14533,6 +14669,12 @@ export namespace Prisma {
 
   export type PlaylistOrderByRelationAggregateInput = {
     _count?: SortOrder
+  }
+
+  export type UserOrderByRelevanceInput = {
+    fields: UserOrderByRelevanceFieldEnum | UserOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -14706,6 +14848,12 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type ProblemOrderByRelevanceInput = {
+    fields: ProblemOrderByRelevanceFieldEnum | ProblemOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
   export type ProblemCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -14831,6 +14979,12 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type SubmissionOrderByRelevanceInput = {
+    fields: SubmissionOrderByRelevanceFieldEnum | SubmissionOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
   export type SubmissionCountOrderByAggregateInput = {
     id?: SortOrder
     source_code?: SortOrder
@@ -14897,6 +15051,12 @@ export namespace Prisma {
   export type SubmissionNullableScalarRelationFilter = {
     is?: SubmissionWhereInput | null
     isNot?: SubmissionWhereInput | null
+  }
+
+  export type TestcaseOrderByRelevanceInput = {
+    fields: TestcaseOrderByRelevanceFieldEnum | TestcaseOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
   }
 
   export type TestcaseCountOrderByAggregateInput = {
@@ -14971,6 +15131,12 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type SolvedProblemOrderByRelevanceInput = {
+    fields: SolvedProblemOrderByRelevanceFieldEnum | SolvedProblemOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
   export type SolvedProblemUserIdProblemIdCompoundUniqueInput = {
     userId: string
     problemId: string
@@ -14998,6 +15164,12 @@ export namespace Prisma {
     problemId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PlaylistOrderByRelevanceInput = {
+    fields: PlaylistOrderByRelevanceFieldEnum | PlaylistOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
   }
 
   export type PlaylistNameUserIdCompoundUniqueInput = {
@@ -15043,6 +15215,12 @@ export namespace Prisma {
   export type ProblemScalarRelationFilter = {
     is?: ProblemWhereInput
     isNot?: ProblemWhereInput
+  }
+
+  export type ProblemInPlaylistOrderByRelevanceInput = {
+    fields: ProblemInPlaylistOrderByRelevanceFieldEnum | ProblemInPlaylistOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
   }
 
   export type ProblemInPlaylistPlaylistIdProblemIdCompoundUniqueInput = {
@@ -15742,6 +15920,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
@@ -15756,6 +15935,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
@@ -15770,6 +15950,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
@@ -15798,6 +15979,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
     not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>

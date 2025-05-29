@@ -258,10 +258,94 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.SocialOrderByRelevanceFieldEnum = {
+  id: 'id',
+  website: 'website',
+  twitter: 'twitter',
+  github: 'github',
+  linkedIn: 'linkedIn'
+};
+
+exports.Prisma.BasicInfoOrderByRelevanceFieldEnum = {
+  id: 'id',
+  bio: 'bio',
+  socialId: 'socialId'
+};
+
+exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  id: 'id',
+  fullname: 'fullname',
+  email: 'email',
+  username: 'username',
+  password: 'password',
+  profileImage: 'profileImage',
+  emailVerificationToken: 'emailVerificationToken',
+  forgotPasswordToken: 'forgotPasswordToken',
+  refreshToken: 'refreshToken',
+  basicInfoId: 'basicInfoId'
+};
+
 exports.Prisma.JsonNullValueFilter = {
   DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.ProblemOrderByRelevanceFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  tags: 'tags',
+  userId: 'userId',
+  constraints: 'constraints',
+  editorial: 'editorial',
+  company: 'company'
+};
+
+exports.Prisma.SubmissionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  language: 'language',
+  stdin: 'stdin',
+  stdout: 'stdout',
+  stderr: 'stderr',
+  compileOutput: 'compileOutput',
+  status: 'status',
+  memory: 'memory',
+  time: 'time',
+  feedback: 'feedback',
+  userId: 'userId',
+  problemId: 'problemId'
+};
+
+exports.Prisma.TestcaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  stdout: 'stdout',
+  stderr: 'stderr',
+  expected: 'expected',
+  compileOutput: 'compileOutput',
+  status: 'status',
+  memory: 'memory',
+  time: 'time',
+  submissionId: 'submissionId'
+};
+
+exports.Prisma.SolvedProblemOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  problemId: 'problemId'
+};
+
+exports.Prisma.PlaylistOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  userId: 'userId'
+};
+
+exports.Prisma.ProblemInPlaylistOrderByRelevanceFieldEnum = {
+  id: 'id',
+  playlistId: 'playlistId',
+  problemId: 'problemId'
 };
 exports.Gender = exports.$Enums.Gender = {
   MALE: 'MALE',

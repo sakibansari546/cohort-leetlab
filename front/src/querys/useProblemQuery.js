@@ -4,15 +4,17 @@ import { axiosClient } from "../utils/axios";
 import { queryClient } from "../main";
 import { toast } from "react-toastify";
 
-const getProblems = async () => {
-  const res = await axiosClient.get(`/problem/problems`);
+const getProblems = async (filters) => {
+  const res = await axiosClient.get(
+    `/problem/problems?search=${filters.search}&tags=${filters.tags}&difficulty=${filters.difficulty}`
+  );
   return res.data.data;
 };
 
-export const useGetProblemsQuery = () => {
+export const useGetProblemsQuery = (filters) => {
   return useQuery({
-    queryKey: ["problems"],
-    queryFn: getProblems,
+    queryKey: ["problems", filters],
+    queryFn: () => getProblems(filters),
     staleTime: 5 * 60 * 1000,
     select: (data) => ({
       ...data,

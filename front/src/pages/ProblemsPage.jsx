@@ -12,11 +12,15 @@ import { useGetUserQuery } from "../querys/useUserQuery";
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import AddToPlaylistProblemModal from "../components/AddToPlaylistProblemModal";
+import { useFilterStore } from "../store/filterStore";
 
 const ProblemsPage = () => {
   const [tags, setTags] = useState([]);
+  const { problemsFilter } = useFilterStore();
 
-  const { data, isFetching, isError, error } = useGetProblemsQuery();
+  const { data, isFetching, isError, error } =
+    useGetProblemsQuery(problemsFilter);
+    
   const { data: user } = useGetUserQuery();
   // const problems = data?.problems;
 
@@ -196,7 +200,9 @@ const ProblemsPage = () => {
                             {problem.tags.map(
                               (tag, i) =>
                                 i < 2 && (
-                                  <span className="badge badge-">{tag}</span>
+                                  <span key={i} className="badge badge-">
+                                    {tag}
+                                  </span>
                                 )
                             )}
                           </td>
