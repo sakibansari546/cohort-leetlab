@@ -3,16 +3,35 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useFilterStore } from "../store/filterStore";
 
-const ProblemsHeader = ({ tags: uniqueTags }) => {
+
+const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
   const [queryParams, setQueryParams] = useSearchParams({
     search: "",
     tags: "",
     difficulty: "",
+    companies: "",
   });
+
 
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState("");
   const [difficulty, setDifficulty] = useState("");
+  const [companies, setCompanies] = useState("");
+
+  const { setProblemsFilter } = useFilterStore();
+
+  // On mount, initialize from URL (or blank if empty)
+  useEffect(() => {
+    setSearch(queryParams.get("search") || "");
+    setTags(queryParams.get("tags") || "");
+    setDifficulty(queryParams.get("difficulty") || "");
+    setCompanies(queryParams.get("companies") || "");
+  }, [queryParams]);
+
+  useEffect(() => {
+    setQueryParams({ search, tags, difficulty, companies });
+    setProblemsFilter({ search, tags, difficulty, companies });
+  }, [search, tags, difficulty, companies, setQueryParams, setProblemsFilter]);
 
   const { setProblemsFilter } = useFilterStore();
 
@@ -46,6 +65,23 @@ const ProblemsHeader = ({ tags: uniqueTags }) => {
             </label>
           </div>
           <div className="flex items-center md:gap-4">
+            <div>
+              <select
+                onChange={(e) => setCompanies(e.target.value)}
+                id="countries"
+                className="select select-bordered select-sm rounded-full "
+                defaultValue={""}
+              >
+                <option value={""} className="font-semibold">
+                  Companies
+                </option>
+                {uniqueCompanies.map((company, idx) => (
+                  <option className="capitalize" key={idx} value={company}>
+                    {company}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div>
               <select
                 onChange={(e) => setTags(e.target.value)}

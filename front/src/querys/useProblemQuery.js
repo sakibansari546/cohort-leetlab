@@ -5,8 +5,7 @@ import { queryClient } from "../main";
 import { toast } from "react-toastify";
 
 const getProblems = async (filters) => {
-  const res = await axiosClient.get(
-    `/problem/problems?search=${filters.search}&tags=${filters.tags}&difficulty=${filters.difficulty}`
+    `/problem/problems?search=${filters.search}&tags=${filters.tags}&difficulty=${filters.difficulty}&company=${filters.companies}`
   );
   return res.data.data;
 };

@@ -239,7 +239,7 @@ class ProblemController {
   });
 
   getAllProblemsHandler = AsyncHandler(async (req, res) => {
-    const { search, tags, difficulty } = req.query;
+    const { search, tags, difficulty, company } = req.query;
 
     const where = {};
 
@@ -249,6 +249,11 @@ class ProblemController {
     if (tags) {
       where.tags = { has: tags };
     }
+
+    if (company) {
+      where.company = { has: company };
+    }
+
     if (difficulty) {
       where.difficulty = { equals: difficulty.toUpperCase() };
     }

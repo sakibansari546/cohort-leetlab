@@ -17,8 +17,6 @@ const AddToPlaylistProblemModal = ({ problemId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ playlistId: selectedPlaylistId, problemIds: problemId });
-
     mutation.mutate({ playlistId: selectedPlaylistId, problemIds: problemId });
   };
 

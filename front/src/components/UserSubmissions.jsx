@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 const UserSubmissions = () => {
   const { data, isPending, isError, error } = useGetSubmissionsQuery();
   const submissions = data?.submissions;
-  console.log(submissions);
 
   if (isError) {
     return (
