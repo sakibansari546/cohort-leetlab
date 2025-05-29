@@ -36,12 +36,13 @@ const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
     setSearch(queryParams.get("search") || "");
     setTags(queryParams.get("tags") || "");
     setDifficulty(queryParams.get("difficulty") || "");
+    setCompanies(queryParams.get("companies") || "");
   }, [queryParams]);
 
   useEffect(() => {
-    setQueryParams({ search, tags, difficulty });
-    setProblemsFilter({ search, tags, difficulty });
-  }, [search, tags, difficulty, setQueryParams, setProblemsFilter]);
+    setQueryParams({ search, tags, difficulty, companies });
+    setProblemsFilter({ search, tags, difficulty, companies });
+  }, [search, tags, difficulty, companies, setQueryParams, setProblemsFilter]);
 
   return (
     <div>
