@@ -42,7 +42,7 @@ export default function FAQ() {
             Frequently Asked Questions
           </h2>
           <p className="text-lg opacity-80 max-w-2xl mx-auto">
-            Find answers to common questions about {" "}
+            Find answers to common questions about{" "}
             <span className="logo text-primary">HYPE</span>
             <span className="logo">Coding</span>.
           </p>

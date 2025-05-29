@@ -8,7 +8,7 @@ const VerifyEmail = () => {
         <div className="container flex items-center min-h-screen px-6 py-12 mx-auto">
           <div className="flex flex-col items-center max-w-sm mx-auto text-center">
             <p className="p-3 text-sm font-medium text-primary rounded-full bg-primary-content border-2 border-base-200">
-              <Mail  />
+              <Mail />
             </p>
             <h1 className="mt-3 text-2xl font-semibold md:text-3xl">
               Verify your Email

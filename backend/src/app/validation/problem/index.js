@@ -93,7 +93,12 @@ const createProblemSchema = z.object({
       .nonempty({ message: "" }),
   }),
 
-  company: z.string({ message: "Campany must be string" }),
+  company: z
+    .array(z.string({ message: "Each Company must be a string" }))
+    .min(1, { message: "At least one tag is required" })
+    .refine((arr) => Array.isArray(arr) && new Set(arr).size === arr.length, {
+      message: "Each company must be unique",
+    }),
   isDemo: z.boolean().default(false),
 });
 

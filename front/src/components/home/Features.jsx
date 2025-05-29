@@ -2,7 +2,8 @@ export default function Features() {
   const features = [
     {
       title: "Solve Coding Problems",
-      description: "Access a vast library of coding challenges ranging from easy to hard difficulty levels.",
+      description:
+        "Access a vast library of coding challenges ranging from easy to hard difficulty levels.",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +23,8 @@ export default function Features() {
     },
     {
       title: "Run & Submit Code",
-      description: "Write, test, and submit your solutions in multiple programming languages with real-time feedback.",
+      description:
+        "Write, test, and submit your solutions in multiple programming languages with real-time feedback.",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -37,13 +39,19 @@ export default function Features() {
             strokeWidth={2}
             d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
           />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
         </svg>
       ),
     },
     {
       title: "Reference Solutions",
-      description: "Learn from optimal solutions in various programming languages for each problem.",
+      description:
+        "Learn from optimal solutions in various programming languages for each problem.",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +71,8 @@ export default function Features() {
     },
     {
       title: "Custom Problem Playlists",
-      description: "Create, edit, and share custom problem sets to focus on specific topics or interview preparation.",
+      description:
+        "Create, edit, and share custom problem sets to focus on specific topics or interview preparation.",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +92,8 @@ export default function Features() {
     },
     {
       title: "Progress Tracking",
-      description: "Monitor your progress with detailed statistics and visualizations of your problem-solving journey.",
+      description:
+        "Monitor your progress with detailed statistics and visualizations of your problem-solving journey.",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +113,8 @@ export default function Features() {
     },
     {
       title: "Comprehensive Profile",
-      description: "Showcase your achievements, submission history, and problem-solving skills to potential employers.",
+      description:
+        "Showcase your achievements, submission history, and problem-solving skills to potential employers.",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -121,15 +132,18 @@ export default function Features() {
         </svg>
       ),
     },
-  ]
+  ];
 
   return (
     <section id="features" className="py-20 bg-base-100">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Powerful Features</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Powerful Features
+          </h2>
           <p className="text-lg opacity-80 max-w-2xl mx-auto">
-            Everything you need to master coding interviews and improve your problem-solving skills.
+            Everything you need to master coding interviews and improve your
+            problem-solving skills.
           </p>
         </div>
 
@@ -141,7 +155,9 @@ export default function Features() {
             >
               <div className="card-body">
                 <div className="mb-4">{feature.icon}</div>
-                <h3 className="card-title text-xl font-bold">{feature.title}</h3>
+                <h3 className="card-title text-xl font-bold">
+                  {feature.title}
+                </h3>
                 <p className="opacity-80">{feature.description}</p>
               </div>
             </div>
@@ -149,5 +165,5 @@ export default function Features() {
         </div>
       </div>
     </section>
-  )
+  );
 }

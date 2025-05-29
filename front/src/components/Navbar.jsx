@@ -15,7 +15,6 @@ import {
   UserLockIcon,
 } from "lucide-react";
 
-
 import { useGetUserQuery, useLogoutMutation } from "../querys/useUserQuery";
 
 const Navbar = () => {

@@ -37,7 +37,6 @@ const AddProblemsInPlaylistModal = ({ playlist }) => {
     }
   }, [mutation.isSuccess]);
 
-  console.log(error);
 
   if (isError) {
     return (

@@ -15,10 +15,15 @@ import {
   useGetProblemsQuery,
 } from "../../querys/useProblemQuery";
 import { formateDate } from "../../utils/date-formate";
+import { useFilterStore } from "../../store/filterStore";
 
 export default function ProblemsPage() {
-  const { data, isPending, isError, error } = useGetProblemsQuery();
+  const { problemsFilter } = useFilterStore();
+  const { data, isPending, isError, error } =
+    useGetProblemsQuery(problemsFilter);
   const problems = data?.problems;
+
+  console.log(error);
 
   const {
     mutateAsync,
@@ -159,7 +164,7 @@ export default function ProblemsPage() {
                         to={`/problems/${problem.id}`}
                         className="hover:underline text-primary"
                       >
-                        <span className="line-clamp-2 break-words max-w-xs">
+                        <span className="line-clamp-2 break-words max-w-xs text-primary-content">
                           {problem.title}
                         </span>
                       </Link>
@@ -179,12 +184,16 @@ export default function ProblemsPage() {
                       </span>
                     </td>
                     <td>
-                      <span className="badge badge-">{problem.company}</span>
+                      <span className="badge badge-">{problem.company[0]}</span>
                     </td>
                     <td className="max-w-l">
                       {problem.tags.map(
                         (tag, i) =>
-                          i < 2 && <span className="badge badge-">{tag}</span>
+                          i < 2 && (
+                            <span key={i} className="badge badge-">
+                              {tag}
+                            </span>
+                          )
                       )}
                     </td>
                     <td>{problem.submissions?.length}</td>

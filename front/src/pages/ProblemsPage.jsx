@@ -175,7 +175,7 @@ const ProblemsPage = () => {
                           </td>
                           <td className="font-medium relative">
                             {problem.isDemo && (
-                              <span className="absolute top-2 right-1/2 badge badge-sm badge-primary">
+                              <span className="absolute top-1 -left-3 badge badge-sm badge-primary">
                                 Demo
                               </span>
                             )}
