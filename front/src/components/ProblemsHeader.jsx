@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useFilterStore } from "../store/filterStore";
 
+
 const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
   const [queryParams, setQueryParams] = useSearchParams({
     search: "",
@@ -10,6 +11,7 @@ const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
     difficulty: "",
     companies: "",
   });
+
 
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState("");
@@ -30,6 +32,20 @@ const ProblemsHeader = ({ tags: uniqueTags, companies: uniqueCompanies }) => {
     setQueryParams({ search, tags, difficulty, companies });
     setProblemsFilter({ search, tags, difficulty, companies });
   }, [search, tags, difficulty, companies, setQueryParams, setProblemsFilter]);
+
+  const { setProblemsFilter } = useFilterStore();
+
+  // On mount, initialize from URL (or blank if empty)
+  useEffect(() => {
+    setSearch(queryParams.get("search") || "");
+    setTags(queryParams.get("tags") || "");
+    setDifficulty(queryParams.get("difficulty") || "");
+  }, [queryParams]);
+
+  useEffect(() => {
+    setQueryParams({ search, tags, difficulty });
+    setProblemsFilter({ search, tags, difficulty });
+  }, [search, tags, difficulty, setQueryParams, setProblemsFilter]);
 
   return (
     <div>

@@ -16,12 +16,12 @@ import { useFilterStore } from "../store/filterStore";
 
 const ProblemsPage = () => {
   const [tags, setTags] = useState([]);
+
   const [companies, setCompanies] = useState([]);
   const { problemsFilter } = useFilterStore();
 
   const { data, isFetching, isError, error } =
     useGetProblemsQuery(problemsFilter);
-
   const { data: user } = useGetUserQuery();
   // const problems = data?.problems;
 

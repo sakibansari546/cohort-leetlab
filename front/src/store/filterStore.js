@@ -8,6 +8,7 @@ export const useFilterStore = create((set) => ({
     companies: "",
   },
 
+
   setProblemsFilter: (filter = {}) => {
     set({ problemsFilter: filter });
   },

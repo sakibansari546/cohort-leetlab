@@ -249,9 +249,11 @@ class ProblemController {
     if (tags) {
       where.tags = { has: tags };
     }
+
     if (company) {
       where.company = { has: company };
     }
+
     if (difficulty) {
       where.difficulty = { equals: difficulty.toUpperCase() };
     }
