@@ -108,8 +108,8 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
       <EditPlaylistModal playlist={playlist} />
       <AddProblemsInPlaylistModal playlist={playlist} />
 
-      <div className="w-full  py-8 px-14 flex gap-16">
-        <div className="w-[400px] max-h-[600px] bg-base-200 py-3 px-4 rounded-lg">
+      <div className="w-full  py-3 px-14 flex gap-16">
+        <div className="w-[400px] -[600px] bg-base-200 py-3 px-4 rounded-lg">
           <div>
             <div>
               <FileText size="100" />
@@ -190,8 +190,10 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                   </div>
                 </div>
               </div>
-              <div>
-                <p className="text-base-content/80">{playlist?.description}</p>
+              <div className="w-full">
+                <p className="text-base-content/80 break-words overflow-hidden text-ellipsis max-h-32">
+                  {playlist?.description}
+                </p>
               </div>
             </div>
           </div>
@@ -362,7 +364,10 @@ const PlaylistDetails = ({ playlist, isPending, isError, error }) => {
                           >
                             <span>{problem.difficulty}</span>
                           </td>
-                          <td className="text-">{problem.company}</td>
+                          <td className="text-">
+                            {problem.company[0]}{" "}
+                            {problem.company.length > 1 && "+"}
+                          </td>
 
                           <td>
                             <div className="dropdown dropdown-bottom dropdown-end">
