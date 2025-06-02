@@ -78,6 +78,10 @@ model User {
   solvedProblems SolvedProblem[]
   playlists      Playlist[]
 
+  // Jo nayi models hain unse relations
+  purchases        Purchase[]
+  sheetAssignments SheetProblem[] // user ne jin sheets me problems solve kiye / jin sheets ke problems se interact kiya
+
   basicInfoId String?    @unique
   basicInfo   BasicInfo? @relation(fields: [basicInfoId], references: [id], onDelete: Cascade)
 }
@@ -107,6 +111,9 @@ model Problem {
 
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   submissions Submission[]
+
+  // **Naya Relation**: ek Problem kai Sheets me ho sakta hai
+  sheetAssignments SheetProblem[]
 
   solvedBy          SolvedProblem[]
   problemInPlaylist ProblemInPlaylist[]
@@ -201,6 +208,60 @@ model ProblemInPlaylist {
   problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([playlistId, problemId])
+}
+
+model Sheet {
+  id          String   @id @default(uuid())
+  title       String // Sheet ka nishchit title/title
+  description String? // Optional description
+  language    String[] // Kaunsi language ke problems is Sheet me hone chahiye
+  price       Float // Kitne paise/rupees (ya dollars) me sell kar rahe
+  isPremium   Boolean  @default(false) // agar free hona ho to false, warna true
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relation: kaunse users ne is sheet ko purchase kiya
+  purchases        Purchase[]
+  // Relation: kaunse problems is sheet ke andar hain
+  sheetAssignments SheetProblem[]
+}
+
+/// Ye model join table ki tarah kaam karega "Sheet ⇄ Problem" ke beech
+model SheetProblem {
+  id         String @id @default(uuid())
+  sheetId    String
+  problemId  String
+  // Agar tumhe sheet ke andhar problem ka ordering/order number chahiye:
+  orderIndex Int? // optional: sheet me har problem ka sequence number (0,1,2…)
+
+  // Agar user ne is sheet ka koi specific problem solve kiya, to track karne ke liye:
+  // userId ho sakta hai, par zaruri nahi. Aap agar sheet-based tracking chahte ho:
+  // userId String?  
+  // user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Timestamps:
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sheet   Sheet   @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  User    User?   @relation(fields: [userId], references: [id])
+  userId  String?
+
+  @@unique([sheetId, problemId]) // ek problem ek sheet me sirf ek baar hi ja sakta
+}
+
+/// Agar aap chahen to Purchase ko thoda aur extend kar sakte ho—yahaan ek basic version hai:
+model Purchase {
+  id       String   @id @default(uuid())
+  userId   String
+  sheetId  String
+  boughtAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sheetId]) // ek user ek sheet sirf ek baar kharid sake
 }
 
 // backend 

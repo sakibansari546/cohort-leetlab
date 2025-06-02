@@ -235,6 +235,34 @@ exports.Prisma.ProblemInPlaylistScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SheetScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  language: 'language',
+  price: 'price',
+  isPremium: 'isPremium',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SheetProblemScalarFieldEnum = {
+  id: 'id',
+  sheetId: 'sheetId',
+  problemId: 'problemId',
+  orderIndex: 'orderIndex',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.PurchaseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sheetId: 'sheetId',
+  boughtAt: 'boughtAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -348,6 +376,26 @@ exports.Prisma.ProblemInPlaylistOrderByRelevanceFieldEnum = {
   playlistId: 'playlistId',
   problemId: 'problemId'
 };
+
+exports.Prisma.SheetOrderByRelevanceFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  language: 'language'
+};
+
+exports.Prisma.SheetProblemOrderByRelevanceFieldEnum = {
+  id: 'id',
+  sheetId: 'sheetId',
+  problemId: 'problemId',
+  userId: 'userId'
+};
+
+exports.Prisma.PurchaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sheetId: 'sheetId'
+};
 exports.Gender = exports.$Enums.Gender = {
   MALE: 'MALE',
   FEMALE: 'FEMALE',
@@ -374,7 +422,10 @@ exports.Prisma.ModelName = {
   Testcase: 'Testcase',
   SolvedProblem: 'SolvedProblem',
   Playlist: 'Playlist',
-  ProblemInPlaylist: 'ProblemInPlaylist'
+  ProblemInPlaylist: 'ProblemInPlaylist',
+  Sheet: 'Sheet',
+  SheetProblem: 'SheetProblem',
+  Purchase: 'Purchase'
 };
 
 /**

@@ -9,6 +9,7 @@ import { register as registerProblemRoutes } from "./routes/problem/route.js";
 import { register as registerExecuteCodeRoutes } from "./routes/executeCode/route.js";
 import { register as registerSubmissionRoutes } from "./routes/submission/route.js";
 import { register as registerPlaylistRoutes } from "./routes/playlist/route.js";
+import { register as registerSheetRoutes } from "./routes/sheet/route.js";
 
 import { register as registerAdminRoutes } from "./routes/admin/route.js";
 
@@ -60,6 +61,7 @@ export function createExpressApp() {
   app.use("/api/v1/code/", registerExecuteCodeRoutes());
   app.use("/api/v1/submission", registerSubmissionRoutes());
   app.use("/api/v1/playlist", registerPlaylistRoutes());
+  app.use("/api/v1/sheet", registerSheetRoutes());
 
   app.use("/api/v1/admin", registerAdminRoutes());
 
@@ -81,7 +83,7 @@ export function createExpressApp() {
     }
 
     logger.error(err);
-    logger.error(err.isCustomApiError);
+    logger.error(err.ApiError);
     res.status(err.statusCode || 500).json(
       new ApiResponse(err.statusCode || 500, err.message, {
         error: { message: err.message || "Internal server error" },
