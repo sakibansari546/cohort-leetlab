@@ -72,77 +72,104 @@ const UserProfilePage = () => {
   return (
     <div className="">
       <div className="w-[60%] mx-auto bg-base-00 min-h-screen space-y-6 py-6">
-        <div className="p-8 bg-base-200">
-          <div className="flex items-center gap-15 justify-center w-[40vw] mx-auto">
-            <div>
-              <div className="relative">
-                <img
-                  className={`w-50 h-50 object-cover rounded-full ${
-                    updateIsPending && "animate-pulse"
-                  }`}
-                  src={user?.profileImage}
-                  alt=""
-                />
-                <input
-                  onChange={handleChange}
-                  type="file"
-                  hidden
-                  ref={fileInputRef}
-                />
-                <button
-                  disabled={updateIsPending}
-                  onClick={handleClick}
-                  className="btn btn-lg btn-circle btn-accent absolute bottom-[5%] right-2"
-                >
-                  {updateIsPending ? (
-                    <span className="loading-spinner loading"></span>
-                  ) : (
-                    <Camera />
-                  )}
-                </button>
-              </div>
-              {updateIsError && (
-                <p className="text-error mt-4">
-                  {updateError?.response?.data?.message}
-                </p>
-              )}
-            </div>
+        <div>
+          <div className="hero bg-base-200 py-12">
+            {isPending ? (
+              <></>
+            ) : (
+              <div className="hero-content flex-col lg:flex-row gap-8 max-w-4xl">
+                {/* Profile Image */}
+                <div className="flex-shrink-0">
+                  <div className="avatar">
+                    <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4">
+                      <img
+                        src={user?.profileImage || "/default-avatar.png"}
+                        alt={user?.fullname || "User"}
+                        className="object-cover"
+                      />
+                      <input
+                        onChange={handleChange}
+                        type="file"
+                        hidden
+                        ref={fileInputRef}
+                      />
+                      <button
+                        disabled={updateIsPending}
+                        onClick={handleClick}
+                        className="btn btn-lg btn-circle btn-accent absolute bottom-[7%] right-0"
+                      >
+                        {updateIsPending ? (
+                          <span className="loading-spinner loading"></span>
+                        ) : (
+                          <Camera />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-            <div className="space-y-1.5">
-              <h2 className="text-2xl font-extrabold">{user?.fullname}</h2>
-              <h3 className="text-xl font-semibold">
-                @{user?.username || "@username"}
-              </h3>
-              <p className="text-sm text-base-content/80">
-                {user?.basicInfo?.bio || "bio."}
-              </p>
-              <div className="flex items-center gap-4 pt-3">
-                <a
-                  target="_blank"
-                  href={user?.basicInfo?.socials?.website || ""}
-                >
-                <Globe />
-                </a>
-                <a
-                  target="_blank"
-                  href={user?.basicInfo?.socials?.github || ""}
-                >
-                  <Github />
-                </a>
-                <a
-                  target="_blank"
-                  href={user?.basicInfo?.socials?.twitter || ""}
-                >
-                  <Twitter />
-                </a>
-                <a
-                  target="_blank"
-                  href={user?.basicInfo?.socials?.linkedIn || ""}
-                >
-                  <Linkedin />
-                </a>
+                {/* Profile Info */}
+                <div className="text-center lg:text-left space-y-4 flex-1">
+                  <div>
+                    <h1 className="text-3xl lg:text-4xl font-bold text-base-content">
+                      {user?.fullname || "Full Name"}
+                    </h1>
+                    <p className="text-xl text-primary font-semibold">
+                      @{user?.username || "username"}
+                    </p>
+                  </div>
+
+                  <p className="text-base-content/80 max-w-md">
+                    {user?.basicInfo?.bio ||
+                      "Welcome to my coding journey! Passionate about solving problems and building amazing things."}
+                  </p>
+
+                  {/* Social Links */}
+                  <div className="flex justify-center lg:justify-start gap-4">
+                    {user?.basicInfo?.socials?.website && (
+                      <a
+                        href={user?.basicInfo?.socials?.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-circle btn-outline btn-sm hover:btn-primary"
+                      >
+                        <Globe size={16} />
+                      </a>
+                    )}
+                    {user?.basicInfo?.socials?.github && (
+                      <a
+                        href={user?.basicInfo?.socials?.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-circle btn-outline btn-sm hover:btn-primary"
+                      >
+                        <Github size={16} />
+                      </a>
+                    )}
+                    {user?.basicInfo?.socials?.twitter && (
+                      <a
+                        href={user.basicInfo.socials.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-circle btn-outline btn-sm hover:btn-primary"
+                      >
+                        <Twitter size={16} />
+                      </a>
+                    )}
+                    {user?.basicInfo?.socials?.linkedIn && (
+                      <a
+                        href={user.basicInfo.socials.linkedIn}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-circle btn-outline btn-sm hover:btn-primary"
+                      >
+                        <Linkedin size={16} />
+                      </a>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="bg-base-200 w-full p-8">
