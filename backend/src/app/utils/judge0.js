@@ -14,6 +14,7 @@ export function getJudge0LangaugeId(language) {
     PYTHON: 71,
     JAVA: 62,
     JAVASCRIPT: 63,
+    TYPESCRIPT: 74,
     C: 50,
     "C++": 54,
   };
@@ -25,6 +26,7 @@ export function getLanguageName(languageId) {
   const languageMap = {
     62: "JAVA",
     63: "JAVASCRIPT",
+    74: "TYPESCRIPT",
     71: "PYTHON",
     50: "C",
     54: "C++",
