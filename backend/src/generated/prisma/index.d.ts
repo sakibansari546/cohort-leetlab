@@ -12824,7 +12824,7 @@ export namespace Prisma {
     id: number
     title: number
     description: number
-    language: number
+    languages: number
     price: number
     isPremium: number
     createdAt: number
@@ -12865,7 +12865,7 @@ export namespace Prisma {
     id?: true
     title?: true
     description?: true
-    language?: true
+    languages?: true
     price?: true
     isPremium?: true
     createdAt?: true
@@ -12963,7 +12963,7 @@ export namespace Prisma {
     id: string
     title: string
     description: string | null
-    language: string[]
+    languages: string[]
     price: number
     isPremium: boolean
     createdAt: Date
@@ -12993,7 +12993,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    language?: boolean
+    languages?: boolean
     price?: boolean
     isPremium?: boolean
     createdAt?: boolean
@@ -13007,7 +13007,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    language?: boolean
+    languages?: boolean
     price?: boolean
     isPremium?: boolean
     createdAt?: boolean
@@ -13018,7 +13018,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    language?: boolean
+    languages?: boolean
     price?: boolean
     isPremium?: boolean
     createdAt?: boolean
@@ -13029,14 +13029,14 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    language?: boolean
+    languages?: boolean
     price?: boolean
     isPremium?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SheetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "language" | "price" | "isPremium" | "createdAt" | "updatedAt", ExtArgs["result"]["sheet"]>
+  export type SheetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "languages" | "price" | "isPremium" | "createdAt" | "updatedAt", ExtArgs["result"]["sheet"]>
   export type SheetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     purchases?: boolean | Sheet$purchasesArgs<ExtArgs>
     sheetAssignments?: boolean | Sheet$sheetAssignmentsArgs<ExtArgs>
@@ -13055,7 +13055,7 @@ export namespace Prisma {
       id: string
       title: string
       description: string | null
-      language: string[]
+      languages: string[]
       price: number
       isPremium: boolean
       createdAt: Date
@@ -13488,7 +13488,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Sheet", 'String'>
     readonly title: FieldRef<"Sheet", 'String'>
     readonly description: FieldRef<"Sheet", 'String'>
-    readonly language: FieldRef<"Sheet", 'String[]'>
+    readonly languages: FieldRef<"Sheet", 'String[]'>
     readonly price: FieldRef<"Sheet", 'Float'>
     readonly isPremium: FieldRef<"Sheet", 'Boolean'>
     readonly createdAt: FieldRef<"Sheet", 'DateTime'>
@@ -16316,7 +16316,7 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     description: 'description',
-    language: 'language',
+    languages: 'languages',
     price: 'price',
     isPremium: 'isPremium',
     createdAt: 'createdAt',
@@ -16512,7 +16512,7 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     description: 'description',
-    language: 'language'
+    languages: 'languages'
   };
 
   export type SheetOrderByRelevanceFieldEnum = (typeof SheetOrderByRelevanceFieldEnum)[keyof typeof SheetOrderByRelevanceFieldEnum]
@@ -17458,7 +17458,7 @@ export namespace Prisma {
     id?: StringFilter<"Sheet"> | string
     title?: StringFilter<"Sheet"> | string
     description?: StringNullableFilter<"Sheet"> | string | null
-    language?: StringNullableListFilter<"Sheet">
+    languages?: StringNullableListFilter<"Sheet">
     price?: FloatFilter<"Sheet"> | number
     isPremium?: BoolFilter<"Sheet"> | boolean
     createdAt?: DateTimeFilter<"Sheet"> | Date | string
@@ -17471,7 +17471,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
-    language?: SortOrder
+    languages?: SortOrder
     price?: SortOrder
     isPremium?: SortOrder
     createdAt?: SortOrder
@@ -17488,7 +17488,7 @@ export namespace Prisma {
     NOT?: SheetWhereInput | SheetWhereInput[]
     title?: StringFilter<"Sheet"> | string
     description?: StringNullableFilter<"Sheet"> | string | null
-    language?: StringNullableListFilter<"Sheet">
+    languages?: StringNullableListFilter<"Sheet">
     price?: FloatFilter<"Sheet"> | number
     isPremium?: BoolFilter<"Sheet"> | boolean
     createdAt?: DateTimeFilter<"Sheet"> | Date | string
@@ -17501,7 +17501,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
-    language?: SortOrder
+    languages?: SortOrder
     price?: SortOrder
     isPremium?: SortOrder
     createdAt?: SortOrder
@@ -17520,7 +17520,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Sheet"> | string
     title?: StringWithAggregatesFilter<"Sheet"> | string
     description?: StringNullableWithAggregatesFilter<"Sheet"> | string | null
-    language?: StringNullableListFilter<"Sheet">
+    languages?: StringNullableListFilter<"Sheet">
     price?: FloatWithAggregatesFilter<"Sheet"> | number
     isPremium?: BoolWithAggregatesFilter<"Sheet"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Sheet"> | Date | string
@@ -18532,7 +18532,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    language?: SheetCreatelanguageInput | string[]
+    languages?: SheetCreatelanguagesInput | string[]
     price: number
     isPremium?: boolean
     createdAt?: Date | string
@@ -18545,7 +18545,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    language?: SheetCreatelanguageInput | string[]
+    languages?: SheetCreatelanguagesInput | string[]
     price: number
     isPremium?: boolean
     createdAt?: Date | string
@@ -18558,7 +18558,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: SheetUpdatelanguageInput | string[]
+    languages?: SheetUpdatelanguagesInput | string[]
     price?: FloatFieldUpdateOperationsInput | number
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18571,7 +18571,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: SheetUpdatelanguageInput | string[]
+    languages?: SheetUpdatelanguagesInput | string[]
     price?: FloatFieldUpdateOperationsInput | number
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18584,7 +18584,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    language?: SheetCreatelanguageInput | string[]
+    languages?: SheetCreatelanguagesInput | string[]
     price: number
     isPremium?: boolean
     createdAt?: Date | string
@@ -18595,7 +18595,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: SheetUpdatelanguageInput | string[]
+    languages?: SheetUpdatelanguagesInput | string[]
     price?: FloatFieldUpdateOperationsInput | number
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18606,7 +18606,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: SheetUpdatelanguageInput | string[]
+    languages?: SheetUpdatelanguagesInput | string[]
     price?: FloatFieldUpdateOperationsInput | number
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19605,7 +19605,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    language?: SortOrder
+    languages?: SortOrder
     price?: SortOrder
     isPremium?: SortOrder
     createdAt?: SortOrder
@@ -20561,7 +20561,7 @@ export namespace Prisma {
     update?: XOR<XOR<ProblemUpdateToOneWithWhereWithoutProblemInPlaylistInput, ProblemUpdateWithoutProblemInPlaylistInput>, ProblemUncheckedUpdateWithoutProblemInPlaylistInput>
   }
 
-  export type SheetCreatelanguageInput = {
+  export type SheetCreatelanguagesInput = {
     set: string[]
   }
 
@@ -20593,7 +20593,7 @@ export namespace Prisma {
     connect?: SheetProblemWhereUniqueInput | SheetProblemWhereUniqueInput[]
   }
 
-  export type SheetUpdatelanguageInput = {
+  export type SheetUpdatelanguagesInput = {
     set?: string[]
     push?: string | string[]
   }
@@ -23078,7 +23078,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    language?: SheetCreatelanguageInput | string[]
+    languages?: SheetCreatelanguagesInput | string[]
     price: number
     isPremium?: boolean
     createdAt?: Date | string
@@ -23090,7 +23090,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    language?: SheetCreatelanguageInput | string[]
+    languages?: SheetCreatelanguagesInput | string[]
     price: number
     isPremium?: boolean
     createdAt?: Date | string
@@ -23228,7 +23228,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: SheetUpdatelanguageInput | string[]
+    languages?: SheetUpdatelanguagesInput | string[]
     price?: FloatFieldUpdateOperationsInput | number
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23240,7 +23240,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: SheetUpdatelanguageInput | string[]
+    languages?: SheetUpdatelanguagesInput | string[]
     price?: FloatFieldUpdateOperationsInput | number
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23431,7 +23431,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    language?: SheetCreatelanguageInput | string[]
+    languages?: SheetCreatelanguagesInput | string[]
     price: number
     isPremium?: boolean
     createdAt?: Date | string
@@ -23443,7 +23443,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    language?: SheetCreatelanguageInput | string[]
+    languages?: SheetCreatelanguagesInput | string[]
     price: number
     isPremium?: boolean
     createdAt?: Date | string
@@ -23534,7 +23534,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: SheetUpdatelanguageInput | string[]
+    languages?: SheetUpdatelanguagesInput | string[]
     price?: FloatFieldUpdateOperationsInput | number
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23546,7 +23546,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: SheetUpdatelanguageInput | string[]
+    languages?: SheetUpdatelanguagesInput | string[]
     price?: FloatFieldUpdateOperationsInput | number
     isPremium?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

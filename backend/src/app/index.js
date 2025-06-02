@@ -74,6 +74,14 @@ export function createExpressApp() {
       });
     }
 
+    // Handle record not found error for delete operations
+    if (err.code === "P2025") {
+      return res.status(404).json({
+        status: "error",
+        message: "Record to delete does not exist.",
+      });
+    }
+    
     // Other known errors
     if (err instanceof ApiError) {
       return res.status(err.statusCode).json({

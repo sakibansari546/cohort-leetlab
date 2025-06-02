@@ -14,12 +14,28 @@ export function register() {
     checkAdmin,
     controller.createSheetHandler.bind(controller)
   );
-  router.get(
-    "/all",
+  router.delete(
+    "/:sheetId/delete",
     checkAdmin,
-    controller.createSheetHandler.bind(controller)
+    controller.deleteSheetHandler.bind(controller)
+  );
+  router.put(
+    "/:sheetId/edit",
+    checkAdmin,
+    controller.editSheetHandler.bind(controller)
   );
 
+  router.post(
+    "/:sheetId/problems/add",
+    controller.addProblemsInSheetHandler.bind(controller)
+  );
+  router.delete(
+    "/:sheetId/problem/remove",
+    controller.removeProblemInSheetHandler.bind(controller)
+  );
+
+  router.get("/all", controller.getAllSheetsHandler.bind(controller));
+  router.get("/:sheetId", controller.getSheetByIdHandler.bind(controller));
 
   return router;
 }

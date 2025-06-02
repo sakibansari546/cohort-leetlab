@@ -214,7 +214,7 @@ model Sheet {
   id          String   @id @default(uuid())
   title       String // Sheet ka nishchit title/title
   description String? // Optional description
-  language    String[] // Kaunsi language ke problems is Sheet me hone chahiye
+  languages   String[] // Kaunsi language ke problems is Sheet me hone chahiye
   price       Float // Kitne paise/rupees (ya dollars) me sell kar rahe
   isPremium   Boolean  @default(false) // agar free hona ho to false, warna true
   createdAt   DateTime @default(now())

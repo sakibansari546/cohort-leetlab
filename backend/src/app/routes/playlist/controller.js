@@ -157,27 +157,28 @@ class PlaylistController {
       throw new ApiError(404, "No valid problems found with the provided IDs");
     }
 
-    const problemInPlaylistExist = await prisma.problemInPlaylist.findMany({
-      where: {
-        playlistId: playlistId,
-        problemId: {
-          in: problemIds,
-        },
-      },
-    });
+    // const problemInPlaylistExist = await prisma.problemInPlaylist.findMany({
+    //   where: {
+    //     playlistId: playlistId,
+    //     problemId: {
+    //       in: problemIds,
+    //     },
+    //   },
+    // });
 
-    if (problemInPlaylistExist && problemInPlaylistExist.length) {
-      throw new ApiError(
-        400,
-        "Some problems are already present in the playlist"
-      );
-    }
+    // if (problemInPlaylistExist && problemInPlaylistExist.length) {
+    //   throw new ApiError(
+    //     400,
+    //     "Some problems are already present in the playlist"
+    //   );
+    // }
 
     const problemsInPlaylist = await prisma.problemInPlaylist.createMany({
       data: problemIds.map((id) => ({
         playlistId,
         problemId: id,
       })),
+      skipDuplicates: true,
     });
 
     if (!problemsInPlaylist) {
