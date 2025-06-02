@@ -40,7 +40,10 @@ const ProblemPage = () => {
   const problem = data?.problem;
   const errorMessage = error?.response?.data.message || "Internal server error";
 
-  const [language, setLanguage] = useState(LANGUAGES[0] || "javascript");
+  const [language, setLanguage] = useState(
+    Object.keys(problem?.codeSnippets || {})[0] || "javascript"
+  );
+
   const [source_code, setSource_code] = useState("");
 
   const mutation = useCreateSubmissionMutation(problemId);
@@ -106,6 +109,12 @@ const ProblemPage = () => {
       setActiveTestcasesOrResultTab("result");
     }
   }, [runCodeMutation.isPending]);
+
+  useEffect(() => {
+    if (!isPending) {
+      setLanguage(Object.keys(problem?.codeSnippets || {})[0]);
+    }
+  }, [isPending, setLanguage, problem?.codeSnippets]);
 
   // Memoized panel to prevent re-renders
 
@@ -285,7 +294,7 @@ const ProblemPage = () => {
                           <div className="h-10 flex items-center bg-base-300 justify-between border border-base-content/30 px-">
                             <div>
                               <select
-                                defaultValue="JavaScript"
+                                defaultValue={language.toUpperCase()}
                                 onChange={(e) => {
                                   setLanguage(e.target.value.toLowerCase());
                                   setSource_code(
@@ -296,9 +305,11 @@ const ProblemPage = () => {
                                 }}
                                 className="select select-sm bg-base-300 border-none outline-none focus:outline-0 text-base-content cursor-pointer"
                               >
-                                {LANGUAGES.map((lang, idx) => (
-                                  <option key={idx}>{lang}</option>
-                                ))}
+                                {Object.keys(problem?.codeSnippets || {}).map(
+                                  (lang, idx) => (
+                                    <option key={idx}>{lang}</option>
+                                  )
+                                )}
                               </select>
                             </div>
                             <div className="flex items-center gap-2 mr-4">
@@ -341,6 +352,21 @@ const ProblemPage = () => {
                             }
                             onMount={handleEditorDidMount}
                             onChange={(value) => setSource_code(value)}
+                            options={{
+                              smoothScrolling: true,
+                              scrollBeyondLastLine: false,
+                              fontSize: 16,
+                              minimap: { enabled: false },
+                              wordWrap: "on",
+                              cursorSmoothCaretAnimation: "on",
+                              scrollbar: {
+                                vertical: "visible",
+                                horizontal: "visible",
+                                useShadows: false,
+                                verticalScrollbarSize: 8,
+                                horizontalScrollbarSize: 8,
+                              },
+                            }}
                           />
                         )}
                       </div>

@@ -160,45 +160,16 @@ const createProblemSchema = z.object({
     )
     .min(1, { message: "At least one testcase is required" }),
 
-  codeSnippets: z.object({
-    JAVASCRIPT: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    PYTHON: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    JAVA: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    C: z.string({ message: "Code must be string" }).nonempty({ message: "" }),
-    "C++": z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-  }),
+  codeSnippets: z.object({}),
 
-  referenceSolutions: z.object({
-    JAVASCRIPT: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    PYTHON: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    JAVA: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    C: z.string({ message: "Code must be string" }).nonempty({ message: "" }),
-    "C++": z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-  }),
+  referenceSolutions: z.object({}),
 
   company: z
     .array(z.string({ message: "Each Company must be a string" }))
     .min(1, { message: "At least one tag is required" })
-    .refine(
-      (arr) => Array.isArray(arr) && new Set(arr).size === arr.length,
-      { message: "Each company must be unique" }
-    ),
+    .refine((arr) => Array.isArray(arr) && new Set(arr).size === arr.length, {
+      message: "Each company must be unique",
+    }),
 
   isDemo: z.boolean().default(false),
 });
