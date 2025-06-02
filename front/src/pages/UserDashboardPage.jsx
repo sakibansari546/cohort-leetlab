@@ -3,6 +3,7 @@ import UserSolvedProblems from "../components/UserSolvedProblems";
 import UserSubmissions from "../components/UserSubmissions";
 import UserDashBoardHead from "../components/UserDashBoardHead";
 import {
+  BadgeCheck,
   CheckSquare,
   FileText,
   Github,
@@ -76,21 +77,23 @@ const UserDashboardPage = () => {
               {userIsPending ? (
                 <></>
               ) : (
-                <div className="hero-content flex-col lg:flex-row gap-8 max-w-4xl">
+                <div className="hero-content flex-col lg:flex-row gap-16 max-w-4xl">
                   {/* Profile Image */}
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 relative flex items-center justify-center">
                     <div className="avatar">
-                      <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4">
+                      <div className="relative w-32 h-32 lg:w-40 lg:h-40 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4 overflow-hidden">
                         <img
                           src={user?.profileImage || "/default-avatar.png"}
                           alt={user?.fullname || "User"}
-                          className="object-cover"
+                          className="object-cover w-full h-full"
                         />
                       </div>
+                      {/* Rank Badge */}
+                      <p className="absolute top-4 leading-tight -right-3 btn btn-circle btn-lg border border-primary rounded-full px-3 py-1 flex items-center shadow text-base z-10">
+                        <BadgeCheck size="40" />
+                      </p>
                     </div>
                   </div>
-
-                  {/* Profile Info */}
                   <div className="text-center lg:text-left space-y-4 flex-1">
                     <div>
                       <h1 className="text-3xl lg:text-4xl font-bold text-base-content">
@@ -99,6 +102,12 @@ const UserDashboardPage = () => {
                       <p className="text-xl text-primary font-semibold">
                         @{user?.username || "username"}
                       </p>
+                      <button className="py-3 pb-0 shadow text-base z-10 font-semibold">
+                        Rank
+                        <span className="text-primary text-lg font-bold ml-1">
+                          #12
+                        </span>
+                      </button>
                     </div>
 
                     <p className="text-base-content/80 max-w-md">
