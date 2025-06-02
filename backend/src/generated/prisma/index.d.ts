@@ -5350,6 +5350,7 @@ export namespace Prisma {
     constraints: string | null
     editorial: string | null
     isDemo: boolean | null
+    isPremium: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5363,6 +5364,7 @@ export namespace Prisma {
     constraints: string | null
     editorial: string | null
     isDemo: boolean | null
+    isPremium: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5379,6 +5381,7 @@ export namespace Prisma {
     hints: number
     editorial: number
     isDemo: number
+    isPremium: number
     company: number
     testcases: number
     codeSnippets: number
@@ -5398,6 +5401,7 @@ export namespace Prisma {
     constraints?: true
     editorial?: true
     isDemo?: true
+    isPremium?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5411,6 +5415,7 @@ export namespace Prisma {
     constraints?: true
     editorial?: true
     isDemo?: true
+    isPremium?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5427,6 +5432,7 @@ export namespace Prisma {
     hints?: true
     editorial?: true
     isDemo?: true
+    isPremium?: true
     company?: true
     testcases?: true
     codeSnippets?: true
@@ -5520,6 +5526,7 @@ export namespace Prisma {
     hints: JsonValue | null
     editorial: string | null
     isDemo: boolean
+    isPremium: boolean
     company: string[]
     testcases: JsonValue
     codeSnippets: JsonValue
@@ -5557,6 +5564,7 @@ export namespace Prisma {
     hints?: boolean
     editorial?: boolean
     isDemo?: boolean
+    isPremium?: boolean
     company?: boolean
     testcases?: boolean
     codeSnippets?: boolean
@@ -5582,6 +5590,7 @@ export namespace Prisma {
     hints?: boolean
     editorial?: boolean
     isDemo?: boolean
+    isPremium?: boolean
     company?: boolean
     testcases?: boolean
     codeSnippets?: boolean
@@ -5603,6 +5612,7 @@ export namespace Prisma {
     hints?: boolean
     editorial?: boolean
     isDemo?: boolean
+    isPremium?: boolean
     company?: boolean
     testcases?: boolean
     codeSnippets?: boolean
@@ -5624,6 +5634,7 @@ export namespace Prisma {
     hints?: boolean
     editorial?: boolean
     isDemo?: boolean
+    isPremium?: boolean
     company?: boolean
     testcases?: boolean
     codeSnippets?: boolean
@@ -5632,7 +5643,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ProblemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "difficulty" | "tags" | "userId" | "examples" | "constraints" | "hints" | "editorial" | "isDemo" | "company" | "testcases" | "codeSnippets" | "referenceSolutions" | "createdAt" | "updatedAt", ExtArgs["result"]["problem"]>
+  export type ProblemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "difficulty" | "tags" | "userId" | "examples" | "constraints" | "hints" | "editorial" | "isDemo" | "isPremium" | "company" | "testcases" | "codeSnippets" | "referenceSolutions" | "createdAt" | "updatedAt", ExtArgs["result"]["problem"]>
   export type ProblemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     submissions?: boolean | Problem$submissionsArgs<ExtArgs>
@@ -5667,6 +5678,7 @@ export namespace Prisma {
       hints: Prisma.JsonValue | null
       editorial: string | null
       isDemo: boolean
+      isPremium: boolean
       company: string[]
       testcases: Prisma.JsonValue
       codeSnippets: Prisma.JsonValue
@@ -6111,6 +6123,7 @@ export namespace Prisma {
     readonly hints: FieldRef<"Problem", 'Json'>
     readonly editorial: FieldRef<"Problem", 'String'>
     readonly isDemo: FieldRef<"Problem", 'Boolean'>
+    readonly isPremium: FieldRef<"Problem", 'Boolean'>
     readonly company: FieldRef<"Problem", 'String[]'>
     readonly testcases: FieldRef<"Problem", 'Json'>
     readonly codeSnippets: FieldRef<"Problem", 'Json'>
@@ -12415,6 +12428,7 @@ export namespace Prisma {
     hints: 'hints',
     editorial: 'editorial',
     isDemo: 'isDemo',
+    isPremium: 'isPremium',
     company: 'company',
     testcases: 'testcases',
     codeSnippets: 'codeSnippets',
@@ -13050,6 +13064,7 @@ export namespace Prisma {
     hints?: JsonNullableFilter<"Problem">
     editorial?: StringNullableFilter<"Problem"> | string | null
     isDemo?: BoolFilter<"Problem"> | boolean
+    isPremium?: BoolFilter<"Problem"> | boolean
     company?: StringNullableListFilter<"Problem">
     testcases?: JsonFilter<"Problem">
     codeSnippets?: JsonFilter<"Problem">
@@ -13074,6 +13089,7 @@ export namespace Prisma {
     hints?: SortOrderInput | SortOrder
     editorial?: SortOrderInput | SortOrder
     isDemo?: SortOrder
+    isPremium?: SortOrder
     company?: SortOrder
     testcases?: SortOrder
     codeSnippets?: SortOrder
@@ -13102,6 +13118,7 @@ export namespace Prisma {
     hints?: JsonNullableFilter<"Problem">
     editorial?: StringNullableFilter<"Problem"> | string | null
     isDemo?: BoolFilter<"Problem"> | boolean
+    isPremium?: BoolFilter<"Problem"> | boolean
     company?: StringNullableListFilter<"Problem">
     testcases?: JsonFilter<"Problem">
     codeSnippets?: JsonFilter<"Problem">
@@ -13126,6 +13143,7 @@ export namespace Prisma {
     hints?: SortOrderInput | SortOrder
     editorial?: SortOrderInput | SortOrder
     isDemo?: SortOrder
+    isPremium?: SortOrder
     company?: SortOrder
     testcases?: SortOrder
     codeSnippets?: SortOrder
@@ -13152,6 +13170,7 @@ export namespace Prisma {
     hints?: JsonNullableWithAggregatesFilter<"Problem">
     editorial?: StringNullableWithAggregatesFilter<"Problem"> | string | null
     isDemo?: BoolWithAggregatesFilter<"Problem"> | boolean
+    isPremium?: BoolWithAggregatesFilter<"Problem"> | boolean
     company?: StringNullableListFilter<"Problem">
     testcases?: JsonWithAggregatesFilter<"Problem">
     codeSnippets?: JsonWithAggregatesFilter<"Problem">
@@ -13852,6 +13871,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -13876,6 +13896,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -13898,6 +13919,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -13922,6 +13944,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -13945,6 +13968,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -13964,6 +13988,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -13984,6 +14009,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -14862,6 +14888,7 @@ export namespace Prisma {
     hints?: SortOrder
     editorial?: SortOrder
     isDemo?: SortOrder
+    isPremium?: SortOrder
     company?: SortOrder
     testcases?: SortOrder
     codeSnippets?: SortOrder
@@ -14879,6 +14906,7 @@ export namespace Prisma {
     constraints?: SortOrder
     editorial?: SortOrder
     isDemo?: SortOrder
+    isPremium?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14892,6 +14920,7 @@ export namespace Prisma {
     constraints?: SortOrder
     editorial?: SortOrder
     isDemo?: SortOrder
+    isPremium?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16406,6 +16435,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -16428,6 +16458,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -16601,6 +16632,7 @@ export namespace Prisma {
     hints?: JsonNullableFilter<"Problem">
     editorial?: StringNullableFilter<"Problem"> | string | null
     isDemo?: BoolFilter<"Problem"> | boolean
+    isPremium?: BoolFilter<"Problem"> | boolean
     company?: StringNullableListFilter<"Problem">
     testcases?: JsonFilter<"Problem">
     codeSnippets?: JsonFilter<"Problem">
@@ -17058,6 +17090,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -17081,6 +17114,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -17217,6 +17251,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -17240,6 +17275,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -17437,6 +17473,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -17460,6 +17497,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -17556,6 +17594,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -17579,6 +17618,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -17777,6 +17817,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -17800,6 +17841,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -17868,6 +17910,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -17891,6 +17934,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -17912,6 +17956,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: string | null
     isDemo?: boolean
+    isPremium?: boolean
     company?: ProblemCreatecompanyInput | string[]
     testcases: JsonNullValueInput | InputJsonValue
     codeSnippets: JsonNullValueInput | InputJsonValue
@@ -17964,6 +18009,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -17986,6 +18032,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue
@@ -18008,6 +18055,7 @@ export namespace Prisma {
     hints?: NullableJsonNullValueInput | InputJsonValue
     editorial?: NullableStringFieldUpdateOperationsInput | string | null
     isDemo?: BoolFieldUpdateOperationsInput | boolean
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
     company?: ProblemUpdatecompanyInput | string[]
     testcases?: JsonNullValueInput | InputJsonValue
     codeSnippets?: JsonNullValueInput | InputJsonValue

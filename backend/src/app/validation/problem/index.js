@@ -61,37 +61,8 @@ const createProblemSchema = z.object({
     )
     .min(1, { message: "At least one testcase is required" }),
 
-  codeSnippets: z.object({
-    JAVASCRIPT: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    PYTHON: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    JAVA: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    C: z.string({ message: "Code must be string" }).nonempty({ message: "" }),
-    "C++": z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-  }),
-
-  referenceSolutions: z.object({
-    JAVASCRIPT: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    PYTHON: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    JAVA: z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-    C: z.string({ message: "Code must be string" }).nonempty({ message: "" }),
-    "C++": z
-      .string({ message: "Code must be string" })
-      .nonempty({ message: "" }),
-  }),
+  codeSnippets: z.record(z.string()).optional(),
+  referenceSolutions: z.record(z.string()).optional(),
 
   company: z
     .array(z.string({ message: "Each Company must be a string" }))
@@ -100,6 +71,7 @@ const createProblemSchema = z.object({
       message: "Each company must be unique",
     }),
   isDemo: z.boolean().default(false),
+  isPremium: z.boolean().default(false),
 });
 
 const updateProblemSchema = z

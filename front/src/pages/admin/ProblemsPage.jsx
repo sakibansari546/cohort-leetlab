@@ -164,7 +164,7 @@ export default function ProblemsPage() {
                         to={`/problems/${problem.id}`}
                         className="hover:underline text-primary"
                       >
-                        <span className="line-clamp-2 break-words max-w-xs text-primary-content">
+                        <span className="line-clamp-2 break-words max-w-xs text-primary">
                           {problem.title}
                         </span>
                       </Link>

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LANGUAGES } from "../constants";
 
 const signupSchema = z.object({
   fullname: z
@@ -160,9 +161,12 @@ const createProblemSchema = z.object({
     )
     .min(1, { message: "At least one testcase is required" }),
 
-  codeSnippets: z.object({}),
+  // **Naya Part**:
+  selectedLanguages: z.array(z.enum(LANGUAGES)).optional(), // agar koi na bhi select kare, to empty array valid ho
 
-  referenceSolutions: z.object({}),
+  // codeSnippets aur referenceSolutions ko “record” type me rakhte hain:
+  codeSnippets: z.record(z.string()).optional(),
+  referenceSolutions: z.record(z.string()).optional(),
 
   company: z
     .array(z.string({ message: "Each Company must be a string" }))
@@ -172,6 +176,7 @@ const createProblemSchema = z.object({
     }),
 
   isDemo: z.boolean().default(false),
+  isPremium: z.boolean().default(false),
 });
 
 export {

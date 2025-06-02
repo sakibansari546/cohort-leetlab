@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import useTagInput from "../../hooks/useTagInput";
 import { TagField } from "../TagFeild";
@@ -13,94 +13,97 @@ import Editor from "@monaco-editor/react";
 import { useCreateProblemMutation } from "../../querys/useAdminQuery";
 import { LANGUAGES } from "../../constants";
 
+import EditorJS from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import List from "@editorjs/list";
+
+// const formDefaultValues = {
+//   title: "Merge Two Sorted Lists",
+//   description:
+//     "You are given the heads of two sorted linked lists `list1` and `list2`. Merge the two lists into one sorted list.",
+//   difficulty: "EASY",
+//   tags: ["Linked List", "Recursion"],
+//   constraints:
+//     "The number of nodes in both lists is in the range [0, 50].\n-100 ≤ Node.val ≤ 100\nBoth list1 and list2 are sorted in non-decreasing order.",
+//   hints: [
+//     "Use a dummy node to simplify the merging process.",
+//     "Compare the values of the current nodes from both lists.",
+//     "Always choose the smaller value and advance that list's pointer.",
+//   ],
+//   examples: [
+//     {
+//       input: "list1 = [1,2,4], list2 = [1,3,4]",
+//       output: "[1,1,2,3,4,4]",
+//       explanation: "Merged in ascending order.",
+//     },
+//   ],
+//   testcases: [
+//     { input: "[1,2,4],[1,3,4]", output: "[1,1,2,3,4,4]" },
+//     { input: "[], []", output: "[]" },
+//   ],
+//   // **Naya:** selectedLanguages, codeSnippets, referenceSolutions
+//   selectedLanguages: [], // by default koi language select nahi ki
+//   codeSnippets: {}, // initially empty object
+//   referenceSolutions: {}, // initially empty object
+//   company: ["Amazon", "Google"],
+//   isDemo: false,
+// };
+
 const formDefaultValues = {
-  title: "Merge Two Sorted Lists",
+  title: "Remove Element",
   description:
-    "You are given the heads of two sorted linked lists `list1` and `list2`. Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists. Return the head of the merged linked list.",
+    "Given an integer array `nums` and an integer `val`, remove all occurrences of `val` in `nums` in-place. The order of the elements may be changed. Then return the number of elements in `nums` which are not equal to `val`.\n\nConsider the number of elements in `nums` which are not equal to `val` be `k`, to get accepted, you need to do the following things:\n\n1. Change the array `nums` such that the first `k` elements of `nums` contain the elements which are not equal to `val`.\n2. The remaining elements of `nums` are not important as well as the size of `nums`.\n3. Return `k`.",
   difficulty: "EASY",
-  tags: ["Linked List", "Recursion"],
-  constraints:
-    "The number of nodes in both lists is in the range [0, 50].\n-100 ≤ Node.val ≤ 100\nBoth list1 and list2 are sorted in non-decreasing order.",
+  tags: ["Array", "Two Pointers"],
+  constraints: "0 ≤ nums.length ≤ 100, 0 ≤ nums[i] ≤ 50, 0 ≤ val ≤ 100",
   hints: [
-    "Use a dummy node to simplify the merging process.",
-    "Compare the values of the current nodes from both lists.",
-    "Always choose the smaller value and advance that list's pointer.",
+    "Use two pointers approach - one for iterating and one for placing valid elements.",
+    "Whenever you find an element not equal to val, place it at the correct position.",
   ],
   testcases: [
-    { input: "[1,2,4],[1,3,4]", output: "[1,1,2,3,4,4]" },
-    { input: "[], []", output: "[]" },
-    { input: "[], [0]", output: "[0]" },
-    { input: "[1,2,3], [4,5,6]", output: "[1,2,3,4,5,6]" },
-    { input: "[2], [1]", output: "[1,2]" },
+    { input: "[3,2,2,3] 3", output: "2" },
+    { input: "[0,1,2,2,3,0,4,2] 2", output: "5" },
+    { input: "[1] 1", output: "0" },
+    { input: "[4,5] 4", output: "1" },
+    { input: "[] 0", output: "0" },
   ],
   examples: [
     {
-      input: "list1 = [1,2,4], list2 = [1,3,4]",
-      output: "[1,1,2,3,4,4]",
+      input: "nums = [3,2,2,3], val = 3",
+      output: "2",
       explanation:
-        "The merged list combines both sorted lists in ascending order.",
+        "Your function should return k = 2, with the first two elements of nums being 2. It does not matter what you leave beyond the returned k.",
     },
     {
-      input: "list1 = [], list2 = []",
-      output: "[]",
-      explanation: "Both lists are empty, so the merged list is also empty.",
-    },
-    {
-      input: "list1 = [], list2 = [0]",
-      output: "[0]",
-      explanation: "One list is empty, so return the other list.",
+      input: "nums = [0,1,2,2,3,0,4,2], val = 2",
+      output: "5",
+      explanation:
+        "Your function should return k = 5, with the first five elements of nums containing 0, 0, 1, 3, and 4.",
     },
   ],
   codeSnippets: {
     JAVASCRIPT:
-      "/**\n * Definition for singly-linked list.\n */\nfunction ListNode(val, next) {\n    this.val = (val===undefined ? 0 : val)\n    this.next = (next===undefined ? null : next)\n}\n\n/**\n * @param {ListNode} list1\n * @param {ListNode} list2\n * @return {ListNode}\n */\nfunction mergeTwoLists(list1, list2) {\n    // Write your code here\n}\n\n// I/O Helper\nfunction buildList(arr) {\n    if (!arr.length) return null;\n    const head = new ListNode(arr[0]);\n    let current = head;\n    for (let i = 1; i < arr.length; i++) {\n        current.next = new ListNode(arr[i]);\n        current = current.next;\n    }\n    return head;\n}\n\nfunction listToArray(head) {\n    const result = [];\n    while (head) {\n        result.push(head.val);\n        head = head.next;\n    }\n    return result;\n}\n\nconst fs = require('fs');\nconst input = JSON.parse(fs.readFileSync(0, 'utf-8').trim());\nconst list1 = buildList(input[0]);\nconst list2 = buildList(input[1]);\nconst merged = mergeTwoLists(list1, list2);\nconsole.log(JSON.stringify(listToArray(merged)));",
+      "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nfunction removeElement(nums, val) {\n    let k = 0;\n    for (let i = 0; i < nums.length; i++) {\n        if (nums[i] !== val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}\n\n// I/O\nconst fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst parts = input.split(' ');\nconst arrayPart = parts.slice(0, -1).join(' ');\nconst val = parseInt(parts[parts.length - 1]);\nconst nums = JSON.parse(arrayPart);\nconsole.log(removeElement(nums, val));",
     PYTHON:
-      "from typing import Optional\n\n# Definition for singly-linked list.\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:\n        # Write your code here\n        pass\n\nif __name__ == '__main__':\n    import sys\n    import json\n    \n    def build_list(arr):\n        if not arr:\n            return None\n        head = ListNode(arr[0])\n        current = head\n        for i in range(1, len(arr)):\n            current.next = ListNode(arr[i])\n            current = current.next\n        return head\n    \n    def list_to_array(head):\n        result = []\n        while head:\n            result.append(head.val)\n            head = head.next\n        return result\n    \n    input_data = json.loads(sys.stdin.readline().strip())\n    list1 = build_list(input_data[0])\n    list2 = build_list(input_data[1])\n    merged = Solution().mergeTwoLists(list1, list2)\n    print(json.dumps(list_to_array(merged)))",
-    JAVA: "import java.util.*;\n\nclass ListNode {\n    int val;\n    ListNode next;\n    ListNode() {}\n    ListNode(int val) { this.val = val; }\n    ListNode(int val, ListNode next) { this.val = val; this.next = next; }\n}\n\npublic class Main {\n    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {\n        // Write your code here\n        return null;\n    }\n    \n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String input = sc.nextLine().trim();\n        // Parse input and build lists\n        ListNode list1 = null, list2 = null;\n        ListNode merged = new Main().mergeTwoLists(list1, list2);\n        printList(merged);\n        sc.close();\n    }\n    \n    static void printList(ListNode head) {\n        List<Integer> result = new ArrayList<>();\n        while (head != null) {\n            result.add(head.val);\n            head = head.next;\n        }\n        System.out.println(result);\n    }\n}",
-    C: "#include <stdio.h>\n#include <stdlib.h>\n\nstruct ListNode {\n    int val;\n    struct ListNode *next;\n};\n\nstruct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {\n    // Write your code here\n    return NULL;\n}\n\nint main() {\n    struct ListNode* list1 = NULL;\n    struct ListNode* list2 = NULL;\n    struct ListNode* merged = mergeTwoLists(list1, list2);\n    return 0;\n}",
+      "from typing import List\n\nclass Solution:\n    def removeElement(self, nums: List[int], val: int) -> int:\n        k = 0\n        for i in range(len(nums)):\n            if nums[i] != val:\n                nums[k] = nums[i]\n                k += 1\n        return k\n\nif __name__ == '__main__':\n    import sys\n    import json\n    input_line = sys.stdin.read().strip()\n    parts = input_line.split()\n    array_part = ' '.join(parts[:-1])\n    val = int(parts[-1])\n    nums = json.loads(array_part)\n    print(Solution().removeElement(nums, val))",
+    JAVA: 'import java.util.*;\npublic class Main {\n    public int removeElement(int[] nums, int val) {\n        int k = 0;\n        for (int i = 0; i < nums.length; i++) {\n            if (nums[i] != val) {\n                nums[k] = nums[i];\n                k++;\n            }\n        }\n        return k;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String input = sc.nextLine().trim();\n        String[] parts = input.split(" ");\n        int val = Integer.parseInt(parts[parts.length - 1]);\n        String arrayStr = String.join(" ", Arrays.copyOf(parts, parts.length - 1));\n        arrayStr = arrayStr.substring(1, arrayStr.length() - 1);\n        String[] elements = arrayStr.split(",");\n        int[] nums = new int[elements.length];\n        for (int i = 0; i < elements.length; i++) {\n            nums[i] = Integer.parseInt(elements[i].trim());\n        }\n        System.out.println(new Main().removeElement(nums, val));\n        sc.close();\n    }\n}',
+    C: '#include <stdio.h>\n\nint removeElement(int* nums, int numsSize, int val) {\n    // Write your code here\n    return 0;\n}\n\nint main() {\n    int nums[100], numsSize = 0, val;\n    char c;\n    scanf("%c", &c); // \'[\'\n    while(scanf("%d%c", &nums[numsSize], &c)) {\n        numsSize++;\n        if(c == \']\') break;\n    }\n    scanf("%d", &val);\n    printf("%d", removeElement(nums, numsSize, val));\n    return 0;\n}',
     "C++":
-      "#include <bits/stdc++.h>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode *next;\n    ListNode() : val(0), next(nullptr) {}\n    ListNode(int x) : val(x), next(nullptr) {}\n    ListNode(int x, ListNode *next) : val(x), next(next) {}\n};\n\nListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {\n    // Write your code here\n    return nullptr;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    ListNode* list1 = nullptr;\n    ListNode* list2 = nullptr;\n    ListNode* merged = mergeTwoLists(list1, list2);\n    return 0;\n}",
+      "#include <bits/stdc++.h>\nusing namespace std;\n\nint removeElement(vector<int>& nums, int val) {\n    // Write your code here\n    return 0;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    string line;\n    getline(cin, line);\n    vector<int> nums;\n    stringstream ss(line.substr(1, line.length()-2));\n    string num;\n    while(getline(ss, num, ',')) {\n        nums.push_back(stoi(num));\n    }\n    int val;\n    cin >> val;\n    cout << removeElement(nums, val);\n    return 0;\n}",
   },
   referenceSolutions: {
     JAVASCRIPT:
-      "function mergeTwoLists(list1, list2) {\n    const dummy = new ListNode(0);\n    let current = dummy;\n    \n    while (list1 && list2) {\n        if (list1.val <= list2.val) {\n            current.next = list1;\n            list1 = list1.next;\n        } else {\n            current.next = list2;\n            list2 = list2.next;\n        }\n        current = current.next;\n    }\n    \n    current.next = list1 || list2;\n    return dummy.next;\n}",
+      "function removeElement(nums, val) {\n    let k = 0;\n    for (let i = 0; i < nums.length; i++) {\n        if (nums[i] !== val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}",
     PYTHON:
-      "class Solution:\n    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:\n        dummy = ListNode(0)\n        current = dummy\n        \n        while list1 and list2:\n            if list1.val <= list2.val:\n                current.next = list1\n                list1 = list1.next\n            else:\n                current.next = list2\n                list2 = list2.next\n            current = current.next\n        \n        current.next = list1 or list2\n        return dummy.next",
-    JAVA: "public ListNode mergeTwoLists(ListNode list1, ListNode list2) {\n    ListNode dummy = new ListNode(0);\n    ListNode current = dummy;\n    \n    while (list1 != null && list2 != null) {\n        if (list1.val <= list2.val) {\n            current.next = list1;\n            list1 = list1.next;\n        } else {\n            current.next = list2;\n            list2 = list2.next;\n        }\n        current = current.next;\n    }\n    \n    current.next = (list1 != null) ? list1 : list2;\n    return dummy.next;\n}",
-    C: "struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {\n    struct ListNode dummy;\n    struct ListNode* current = &dummy;\n    \n    while (list1 && list2) {\n        if (list1->val <= list2->val) {\n            current->next = list1;\n            list1 = list1->next;\n        } else {\n            current->next = list2;\n            list2 = list2->next;\n        }\n        current = current->next;\n    }\n    \n    current->next = list1 ? list1 : list2;\n    return dummy.next;\n}",
+      "class Solution:\n    def removeElement(self, nums: List[int], val: int) -> int:\n        k = 0\n        for i in range(len(nums)):\n            if nums[i] != val:\n                nums[k] = nums[i]\n                k += 1\n        return k",
+    JAVA: "public int removeElement(int[] nums, int val) {\n    int k = 0;\n    for (int i = 0; i < nums.length; i++) {\n        if (nums[i] != val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}",
+    C: "int removeElement(int* nums, int numsSize, int val) {\n    int k = 0;\n    for (int i = 0; i < numsSize; i++) {\n        if (nums[i] != val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}",
     "C++":
-      "ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {\n    ListNode dummy(0);\n    ListNode* current = &dummy;\n    \n    while (list1 && list2) {\n        if (list1->val <= list2->val) {\n            current->next = list1;\n            list1 = list1->next;\n        } else {\n            current->next = list2;\n            list2 = list2->next;\n        }\n        current = current->next;\n    }\n    \n    current->next = list1 ? list1 : list2;\n    return dummy.next;\n}",
+      "int removeElement(vector<int>& nums, int val) {\n    int k = 0;\n    for (int i = 0; i < nums.size(); i++) {\n        if (nums[i] != val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}",
   },
-  company: ["Amazon", "Google", "Microsoft", "Apple"],
-  isDemo: false,
+  company: "Generic",
+  isDemo: true,
 };
-
-// const formDefaultValues = {
-//   title: "",
-//   description: "",
-//   tags: [""],
-//   constraints: "",
-//   hints: [""],
-//   examples: [{ input: "", output: "", explanation: "" }],
-//   testcases: [{ input: "", output: "" }],
-//   codeSnippets: {
-//     JAVASCRIPT: "// Enter starter code here...",
-//     PYTHON: "# Enter starter code here...",
-//     JAVA: "// Enter starter code here...",
-//     C: "// Enter starter code here...",
-//     "C++": "// Enter starter code here...",
-//   },
-//   referenceSolutions: {
-//     JAVASCRIPT: "// Enter reference solution here...",
-//     PYTHON: "# Enter reference solution here...",
-//     JAVA: "// Enter reference solution here...",
-//     C: "// Enter reference solution here...",
-//     "C++": "// Enter reference solution here...",
-//   },
-//   company: [""],
-//   isDemo: false,
-// };
-
 const CreateProblemForm = () => {
   const {
     register,
@@ -108,6 +111,7 @@ const CreateProblemForm = () => {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createProblemSchema),
@@ -115,6 +119,9 @@ const CreateProblemForm = () => {
   });
 
   const { mutateAsync, isPending, isError, error } = useCreateProblemMutation();
+
+  // watch se jo selectedLanguages array hai, woh le lo
+  const selectedLanguages = watch("selectedLanguages") || [];
 
   const {
     fields: exampleFields,
@@ -143,6 +150,7 @@ const CreateProblemForm = () => {
   //Retrieve all the returned items from the hook
   const { tags, handleAddTag, handleRemoveTag } = useTagInput(MAX_TAGS); // pass the maximum tags
 
+  console.log("Errors", errors);
   // Handle form submission
   const handleOnSubmit = async (data) => {
     console.log(data);
@@ -515,92 +523,102 @@ const CreateProblemForm = () => {
           </div>
 
           {/* CodeSnippets */}
-          <div className="space-y-8 my-4">
-            {LANGUAGES.map((language) => (
-              <div
-                key={language}
-                className="card bg-base-2 p-4 md:p-6 shadow-md"
-              >
-                <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
-                  <Code2 className="w-5 h-5" />
-                  {language}
-                </h3>
+          {/* --- Naya Section: Languages Select karne ke liye --- */}
+          <div className="my-6">
+            <label className="block font-medium mb-1">Select Languages</label>
+            <div className="grid grid-cols-2 gap-2">
+              {LANGUAGES.map((lang) => (
+                <label key={lang} className="inline-flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    value={lang}
+                    {...register("selectedLanguages")}
+                    className="checkbox"
+                  />
+                  <span>{lang}</span>
+                </label>
+              ))}
+            </div>
+            {errors.selectedLanguages && (
+              <p className="text-error text-sm">
+                {errors.selectedLanguages.message}
+              </p>
+            )}
+          </div>
 
-                <div className="space-y-6">
-                  {/* Starter Code */}
-                  <div className="card bg-base-100 shadow-md">
-                    <div className="card-body p-4 md:p-6">
-                      <h4 className="font-semibold text-base md:text-lg mb-4">
-                        Starter Code Template
-                      </h4>
-                      <div className="border rounded-md overflow-hidden">
-                        <Controller
-                          name={`codeSnippets.${language}`}
-                          control={control}
-                          render={({ field }) => (
-                            <Editor
-                              height="300px"
-                              language={
-                                language === "C++"
-                                  ? "cpp"
-                                  : language.toLowerCase()
-                              }
-                              theme="vs-dark"
-                              value={field.value}
-                              onChange={field.onChange}
-                            />
-                          )}
+          {/* --- Ab watch("selectedLanguages") se selectedLanguages mil raha hai --- */}
+          {/* Har ek selected language ke liye do editors dikhao */}
+          {selectedLanguages.length > 0 && (
+            <div className="space-y-8">
+              {selectedLanguages.map((lang) => (
+                <div key={lang} className="border border-gray-200 rounded p-4">
+                  <h3 className="font-semibold mb-4">{lang} Editors</h3>
+
+                  {/* --- Starter Code / Code Snippet for this language --- */}
+                  <div className="mb-6">
+                    <label className="block font-medium mb-2">
+                      Starter Code Template ({lang})
+                    </label>
+                    <Controller
+                      name={`codeSnippets.${lang}`}
+                      control={control}
+                      defaultValue={formDefaultValues.codeSnippets[lang] || ""}
+                      render={({ field }) => (
+                        <Editor
+                          height="300px"
+                          language={
+                            lang.toLowerCase() === "c++"
+                              ? "cpp"
+                              : lang.toLowerCase()
+                          }
+                          theme="vs-dark"
+                          value={field.value}
+                          onChange={field.onChange}
                         />
-                      </div>
-                      {errors.codeSnippets?.[language] && (
-                        <div className="mt-2">
-                          <span className="text-error text-sm">
-                            {errors.codeSnippets[language].message}
-                          </span>
-                        </div>
                       )}
-                    </div>
+                    />
+                    {errors.codeSnippets?.[lang] && (
+                      <p className="text-error text-sm mt-1">
+                        {errors.codeSnippets[lang].message}
+                      </p>
+                    )}
                   </div>
 
-                  {/* Reference Solution */}
-                  <div className="card bg-base-100 shadow-md">
-                    <div className="card-body p-4 md:p-6">
-                      <h4 className="font-semibold text-base md:text-lg mb-4 flex items-center gap-2">
-                        <CheckCircle2 className="w-5 h-5 text-success" />
-                        Reference Solution
-                      </h4>
-                      <div className="border rounded-md overflow-hidden">
-                        <Controller
-                          name={`referenceSolutions.${language}`}
-                          control={control}
-                          render={({ field }) => (
-                            <Editor
-                              height="300px"
-                              language={
-                                language === "C++"
-                                  ? "cpp"
-                                  : language.toLowerCase()
-                              }
-                              theme="vs-dark"
-                              value={field.value}
-                              onChange={field.onChange}
-                            />
-                          )}
+                  {/* --- Reference Solution for this language --- */}
+                  <div>
+                    <label className="block font-medium mb-2">
+                      Reference Solution ({lang})
+                    </label>
+                    <Controller
+                      name={`referenceSolutions.${lang}`}
+                      control={control}
+                      defaultValue={
+                        formDefaultValues.referenceSolutions[lang] || ""
+                      }
+                      render={({ field }) => (
+                        <Editor
+                          height="300px"
+                          language={
+                            lang.toLowerCase() === "c++"
+                              ? "cpp"
+                              : lang.toLowerCase()
+                          }
+                          theme="vs-dark"
+                          value={field.value}
+                          onChange={field.onChange}
                         />
-                      </div>
-                      {errors.referenceSolutions?.[language] && (
-                        <div className="mt-2">
-                          <span className="text-error text-sm">
-                            {errors.referenceSolutions[language].message}
-                          </span>
-                        </div>
                       )}
-                    </div>
+                    />
+                    {errors.referenceSolutions?.[lang] && (
+                      <p className="text-error text-sm mt-1">
+                        {errors.referenceSolutions[lang].message}
+                      </p>
+                    )}
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* /Company */}
           <div className="form-control mb-4">
@@ -655,6 +673,8 @@ const CreateProblemForm = () => {
             </div>
           </div>
 
+          <div className="mb-4" id="editorjs"></div>
+
           {/* IsDemo */}
           <div className="form-control mb-4">
             <label htmlFor="isDemo" className="label">
@@ -673,6 +693,28 @@ const CreateProblemForm = () => {
               <label className="label">
                 <span className="label-text-alt text-error">
                   {errors.isDemo.message}
+                </span>
+              </label>
+            )}
+          </div>
+          {/* IsDemo */}
+          <div className="form-control mb-4">
+            <label htmlFor="isPremium" className="label">
+              <span className="label-text mb-2">Is this Premium Problem?</span>
+            </label>
+            <div className="w-full">
+              <input
+                {...register("isPremium")}
+                id="isPremium"
+                type="checkbox"
+                name="isDemo"
+                className="toggle"
+              />
+            </div>
+            {errors.isPremium && (
+              <label className="label">
+                <span className="label-text-alt text-error">
+                  {errors.isPremium.message}
                 </span>
               </label>
             )}

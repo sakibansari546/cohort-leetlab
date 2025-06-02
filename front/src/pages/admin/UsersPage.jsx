@@ -118,6 +118,7 @@ export default function UsersPage() {
                   <th>Username</th>
                   <th>Role</th>
                   <th>Solved Problems</th>
+                  <th>Is Verified</th>
                   <th>Status</th>
                   <th>joined</th>
                   <th>Actions</th>
@@ -152,6 +153,7 @@ export default function UsersPage() {
                         <span className="badge badge-ghost">{user.role}</span>
                       </td>
                       <td>{user.solvedProblems.length}</td>
+                      <td>{user.isEmailVerified ? "True" : "False"}</td>
                       <td>
                         {user.isActive ? (
                           <span className="badge badge-success">Active</span>
