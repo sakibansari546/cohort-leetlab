@@ -51,8 +51,6 @@ const BuySheetButton = ({ sheet }) => {
       };
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
-
-      window.location.reload();
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.messages || "Something went wrong");
