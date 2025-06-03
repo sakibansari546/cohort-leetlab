@@ -11,6 +11,8 @@ import { register as registerSubmissionRoutes } from "./routes/submission/route.
 import { register as registerPlaylistRoutes } from "./routes/playlist/route.js";
 import { register as registerSheetRoutes } from "./routes/sheet/route.js";
 
+import { register as registerPurchaseRoutes } from "./routes/purchase/route.js";
+
 import { register as registerAdminRoutes } from "./routes/admin/route.js";
 
 import { prisma } from "../libs/db.js";
@@ -63,6 +65,8 @@ export function createExpressApp() {
   app.use("/api/v1/playlist", registerPlaylistRoutes());
   app.use("/api/v1/sheet", registerSheetRoutes());
 
+  app.use("/api/v1/purchase", registerPurchaseRoutes());
+
   app.use("/api/v1/admin", registerAdminRoutes());
 
   app.use((err, req, res, next) => {
@@ -81,7 +85,7 @@ export function createExpressApp() {
         message: "Record to delete does not exist.",
       });
     }
-    
+
     // Other known errors
     if (err instanceof ApiError) {
       return res.status(err.statusCode).json({

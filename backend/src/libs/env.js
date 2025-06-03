@@ -14,6 +14,9 @@ const envSchema = z.object({
 
   GEMINI_API_KEY: z.string(),
 
+  RAZORPAY_API_SECRET: z.string(),
+  RAZORPAY_API_KEY: z.string(),
+
   ACCESS_TOKEN_SECRET: z.string(),
   ACCESS_TOKEN_EXPIRY: z.string(),
   REFRESH_TOKEN_SECRET: z.string(),

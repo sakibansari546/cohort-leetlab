@@ -264,6 +264,21 @@ exports.Prisma.PurchaseScalarFieldEnum = {
   boughtAt: 'boughtAt'
 };
 
+exports.Prisma.PaymentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purchaseId: 'purchaseId',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  orderId: 'orderId',
+  paymentId: 'paymentId',
+  paymentMethod: 'paymentMethod',
+  transactionId: 'transactionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -398,6 +413,18 @@ exports.Prisma.PurchaseOrderByRelevanceFieldEnum = {
   userId: 'userId',
   sheetId: 'sheetId'
 };
+
+exports.Prisma.PaymentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purchaseId: 'purchaseId',
+  currency: 'currency',
+  status: 'status',
+  orderId: 'orderId',
+  paymentId: 'paymentId',
+  paymentMethod: 'paymentMethod',
+  transactionId: 'transactionId'
+};
 exports.Gender = exports.$Enums.Gender = {
   MALE: 'MALE',
   FEMALE: 'FEMALE',
@@ -427,7 +454,8 @@ exports.Prisma.ModelName = {
   ProblemInPlaylist: 'ProblemInPlaylist',
   Sheet: 'Sheet',
   SheetProblem: 'SheetProblem',
-  Purchase: 'Purchase'
+  Purchase: 'Purchase',
+  Payment: 'Payment'
 };
 
 /**
