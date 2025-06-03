@@ -15,3 +15,14 @@ export const useGetSheetsQUery = () => {
     queryFn: getSheets,
   });
 };
+
+const getSheetById = async (sheetId) => {
+  const res = await axiosClient.get(`/sheet/${sheetId}`);
+  return res.data.data;
+};
+export const useGetSheetByIdQuery = (id) => {
+  return useQuery({
+    queryKey: ["sheets", id],
+    queryFn: () => getSheetById(id),
+  });
+};

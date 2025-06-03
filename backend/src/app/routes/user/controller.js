@@ -39,6 +39,7 @@ class UserController {
             socials: true,
           },
         },
+        purchases: true,
       },
     });
 

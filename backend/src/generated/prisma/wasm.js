@@ -240,6 +240,7 @@ exports.Prisma.SheetScalarFieldEnum = {
   title: 'title',
   description: 'description',
   languages: 'languages',
+  tags: 'tags',
   price: 'price',
   isPremium: 'isPremium',
   createdAt: 'createdAt',
@@ -381,7 +382,8 @@ exports.Prisma.SheetOrderByRelevanceFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
-  languages: 'languages'
+  languages: 'languages',
+  tags: 'tags'
 };
 
 exports.Prisma.SheetProblemOrderByRelevanceFieldEnum = {

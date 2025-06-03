@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import AddToPlaylistProblemModal from "../components/AddToPlaylistProblemModal";
 import { useFilterStore } from "../store/filterStore";
+import AlllSheets from "../components/sheet/AlllSheets";
 
 const ProblemsPage = () => {
   const [tags, setTags] = useState([]);
@@ -67,50 +68,7 @@ const ProblemsPage = () => {
       {/* Main content */}
       <div className="flex-1 p-4 lg:p-6 overflow-auto">
         {/* Course cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          <div className="card bg-emerald-700 text-white">
-            <div className="card-body">
-              <h2 className="card-title text-xl">
-                HYPE Code's Interview Crash Course:
-              </h2>
-              <p>System Design for Interviews and Beyond</p>
-              <div className="card-actions justify-start mt-2">
-                <button className="btn btn-sm bg-white text-emerald-800 border-none hover:bg-white/90">
-                  Start Learning
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="card bg-indigo-600 text-white">
-            <div className="card-body">
-              <h2 className="card-title text-xl">
-                HYPE Code's Interview Crash Course:
-              </h2>
-              <p>Data Structures and Algorithms</p>
-              <div className="card-actions justify-start mt-2">
-                <button className="btn btn-sm bg-white text-indigo-700 border-none hover:bg-white/90">
-                  Start Learning
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="card bg-amber-500 text-white">
-            <div className="card-body relative">
-              <div className="absolute top-2 right-2 badge badge-sm bg-orange-500 border-none">
-                New
-              </div>
-              <h2 className="card-title text-xl">New & Trending Company Qs</h2>
-              <p>Latest Qs From Big Tech</p>
-              <div className="card-actions justify-start mt-2">
-                <button className="btn btn-sm bg-white text-amber-600 border-none hover:bg-white/90">
-                  Claim Now
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <AlllSheets />
 
         {/* Search sbar */}
         <ProblemsHeader companies={companies} tags={tags} />

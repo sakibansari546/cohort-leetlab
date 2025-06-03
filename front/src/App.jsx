@@ -27,6 +27,7 @@ import SubmissionsPage from "./pages/admin/SubmissionsPage";
 import AdminPlaylistsPage from "./pages/admin/PlaylistsPage";
 import AdminProblemsPage from "./pages/admin/ProblemsPage";
 import AboutPage from "./pages/AboutPage";
+import SheetPage from "./pages/sheet/SheetPage";
 
 function App() {
   const { theme } = useThemeStore();
@@ -76,6 +77,12 @@ function App() {
           >
             <Route index element={<Home />} />
             <Route path="/about" element={<AboutPage />} />
+
+            {/* Sheet */}
+            <Route
+              path="/sheets/:sheetId"
+              element={user ? <SheetPage /> : <Navigate to="/login" />}
+            />
 
             {/* Admin */}
             <Route

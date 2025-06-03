@@ -200,17 +200,17 @@ class SheetController {
       throw new ApiError(400, "Sheet ID is required");
     }
 
-    const purchase = await prisma.purchase.findUnique({
-      where: {
-        userId_sheetId: {
-          userId,
-          sheetId,
-        },
-      },
-    });
-    if (!purchase) {
-      throw new ApiError(403, "You do not have access to this sheet");
-    }
+    // const purchase = await prisma.purchase.findUnique({
+    //   where: {
+    //     userId_sheetId: {
+    //       userId,
+    //       sheetId,
+    //     },
+    //   },
+    // });
+    // if (!purchase) {
+    //   throw new ApiError(403, "You do not have access to this sheet");
+    // }
 
     const sheet = await prisma.sheet.findUnique({
       where: { id: sheetId },

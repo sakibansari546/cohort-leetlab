@@ -215,6 +215,7 @@ model Sheet {
   title       String // Sheet ka nishchit title/title
   description String? // Optional description
   languages   String[] // Kaunsi language ke problems is Sheet me hone chahiye
+  tags        String[]
   price       Float // Kitne paise/rupees (ya dollars) me sell kar rahe
   isPremium   Boolean  @default(false) // agar free hona ho to false, warna true
   createdAt   DateTime @default(now())
