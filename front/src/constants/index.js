@@ -39,7 +39,7 @@ export const LANGUAGES = [
   "PYTHON",
   "C",
   "C++",
-  "TYPESCRIPT ",
+  "TYPESCRIPT",
 ];
 
 export const MENU_ITEMS = [

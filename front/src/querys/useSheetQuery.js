@@ -26,3 +26,14 @@ export const useGetSheetByIdQuery = (id) => {
     queryFn: () => getSheetById(id),
   });
 };
+
+const getSheetFreeDetailsById = async (sheetId) => {
+  const res = await axiosClient.get(`/sheet/${sheetId}/free/details`);
+  return res.data.data;
+};
+export const useGetSheetFreeDetailsByIdQuery = (id) => {
+  return useQuery({
+    queryKey: ["sheets-free", id],
+    queryFn: () => getSheetFreeDetailsById(id),
+  });
+};

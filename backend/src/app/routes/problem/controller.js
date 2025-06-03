@@ -39,6 +39,7 @@ class ProblemController {
       referenceSolutions,
       company,
       isDemo,
+      sheetId,
     } = handleZodError(this.validateParseData(createProblemSchema, req.body));
 
     console.log(req.body);
@@ -109,6 +110,7 @@ class ProblemController {
         userId: req.userId,
         company,
         isDemo,
+        isPremium,
       },
     });
     if (!newProblem)
@@ -116,6 +118,25 @@ class ProblemController {
         403,
         "New Problem creation failed: Unable to save problem to the database"
       );
+
+    if (sheetId) {
+      const sheetExists = await prisma.sheet.findUnique({
+        where: { id: sheetId },
+        select: { id: true },
+      });
+
+      if (!sheetExists) {
+        throw new ApiError(404, "Sheet not found");
+      }
+
+      await prisma.sheetProblem.createMany({
+        data: {
+          sheetId,
+          problemId: newProblem.id,
+        },
+        skipDuplicates: true,
+      });
+    }
 
     res
       .status(200)
@@ -241,7 +262,9 @@ class ProblemController {
   getAllProblemsHandler = AsyncHandler(async (req, res) => {
     const { search, tags, difficulty, company } = req.query;
 
-    const where = {};
+    const where = {
+      isPremium: false,
+    };
 
     if (search) {
       where.title = { contains: search, mode: "insensitive" };

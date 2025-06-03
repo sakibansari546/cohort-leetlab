@@ -200,17 +200,17 @@ class SheetController {
       throw new ApiError(400, "Sheet ID is required");
     }
 
-    // const purchase = await prisma.purchase.findUnique({
-    //   where: {
-    //     userId_sheetId: {
-    //       userId,
-    //       sheetId,
-    //     },
-    //   },
-    // });
-    // if (!purchase) {
-    //   throw new ApiError(403, "You do not have access to this sheet");
-    // }
+    const purchase = await prisma.purchase.findUnique({
+      where: {
+        userId_sheetId: {
+          userId,
+          sheetId,
+        },
+      },
+    });
+    if (!purchase) {
+      throw new ApiError(403, "You do not have access to this sheet");
+    }
 
     const sheet = await prisma.sheet.findUnique({
       where: { id: sheetId },
@@ -225,6 +225,22 @@ class SheetController {
       throw new ApiError(404, "Sheet not found");
     }
 
+    res
+      .status(200)
+      .json(new ApiResponse(200, "Sheet fetched successfully", { sheet }));
+  });
+
+  getSheetFreeDetails = AsyncHandler(async (req, res) => {
+    const { sheetId } = req.params;
+    if (!sheetId) {
+      throw new ApiError(400, "Sheet ID is required");
+    }
+    const sheet = await prisma.sheet.findUnique({
+      where: { id: sheetId },
+    });
+    if (!sheet) {
+      throw new ApiError(404, "Sheet not found");
+    }
     res
       .status(200)
       .json(new ApiResponse(200, "Sheet fetched successfully", { sheet }));

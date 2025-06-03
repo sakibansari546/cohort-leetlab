@@ -37,5 +37,10 @@ export function register() {
   router.get("/all", controller.getAllSheetsHandler.bind(controller));
   router.get("/:sheetId", controller.getSheetByIdHandler.bind(controller));
 
+  router.get(
+    "/:sheetId/free/details",
+    controller.getSheetFreeDetails.bind(controller)
+  );
+
   return router;
 }

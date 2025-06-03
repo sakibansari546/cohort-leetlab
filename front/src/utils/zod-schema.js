@@ -175,6 +175,7 @@ const createProblemSchema = z.object({
       message: "Each company must be unique",
     }),
 
+  sheetId: z.optional(z.string({ message: "Sheet Id must be a string" })),
   isDemo: z.boolean().default(false),
   isPremium: z.boolean().default(false),
 });

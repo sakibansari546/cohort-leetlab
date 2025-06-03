@@ -70,6 +70,8 @@ const createProblemSchema = z.object({
     .refine((arr) => Array.isArray(arr) && new Set(arr).size === arr.length, {
       message: "Each company must be unique",
     }),
+
+  sheetId: z.optional(z.string({ message: "Sheet Id must be a string" })),
   isDemo: z.boolean().default(false),
   isPremium: z.boolean().default(false),
 });

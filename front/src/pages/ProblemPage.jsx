@@ -38,7 +38,8 @@ const ProblemPage = () => {
 
   const { data, isPending, isError, error } = useGetProblemByIdQuery(problemId);
   const problem = data?.problem;
-  const errorMessage = error?.response?.data.message || "Internal server error";
+  const errorMessage =
+    error?.response?.data?.message || "Internal server error";
 
   const [language, setLanguage] = useState(
     Object.keys(problem?.codeSnippets || {})[0] || "javascript"

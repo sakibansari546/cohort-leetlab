@@ -16,6 +16,7 @@ import { LANGUAGES } from "../../constants";
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
+import { useGetSheetsQUery } from "../../querys/useSheetQuery";
 
 // const formDefaultValues = {
 //   title: "Merge Two Sorted Lists",
@@ -50,60 +51,48 @@ import List from "@editorjs/list";
 // };
 
 const formDefaultValues = {
-  title: "Remove Element",
+  title: "FizzBuzz",
   description:
-    "Given an integer array `nums` and an integer `val`, remove all occurrences of `val` in `nums` in-place. The order of the elements may be changed. Then return the number of elements in `nums` which are not equal to `val`.\n\nConsider the number of elements in `nums` which are not equal to `val` be `k`, to get accepted, you need to do the following things:\n\n1. Change the array `nums` such that the first `k` elements of `nums` contain the elements which are not equal to `val`.\n2. The remaining elements of `nums` are not important as well as the size of `nums`.\n3. Return `k`.",
-  difficulty: "EASY",
-  tags: ["Array", "Two Pointers"],
-  constraints: "0 ≤ nums.length ≤ 100, 0 ≤ nums[i] ≤ 50, 0 ≤ val ≤ 100",
+    "Write a function that returns an array of strings from 1 to n where: numbers divisible by 3 are replaced with 'Fizz', numbers divisible by 5 are replaced with 'Buzz', and numbers divisible by both 3 and 5 are replaced with 'FizzBuzz'.",
+  difficulty: "MEDIUM",
+  tags: ["Loop", "Conditional", "Array"],
+  constraints: "1 ≤ n ≤ 100",
   hints: [
-    "Use two pointers approach - one for iterating and one for placing valid elements.",
-    "Whenever you find an element not equal to val, place it at the correct position.",
+    "Check divisibility by both 3 and 5 first",
+    "Then check divisibility by 3 or 5 separately",
+    "Use modulo operator (%) to check divisibility",
   ],
   testcases: [
-    { input: "[3,2,2,3] 3", output: "2" },
-    { input: "[0,1,2,2,3,0,4,2] 2", output: "5" },
-    { input: "[1] 1", output: "0" },
-    { input: "[4,5] 4", output: "1" },
-    { input: "[] 0", output: "0" },
+    {
+      input: "15",
+      output:
+        '["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]',
+    },
+    { input: "5", output: '["1","2","Fizz","4","Buzz"]' },
+    { input: "3", output: '["1","2","Fizz"]' },
   ],
   examples: [
     {
-      input: "nums = [3,2,2,3], val = 3",
-      output: "2",
-      explanation:
-        "Your function should return k = 2, with the first two elements of nums being 2. It does not matter what you leave beyond the returned k.",
-    },
-    {
-      input: "nums = [0,1,2,2,3,0,4,2], val = 2",
-      output: "5",
-      explanation:
-        "Your function should return k = 5, with the first five elements of nums containing 0, 0, 1, 3, and 4.",
+      input: "n = 15",
+      output:
+        '["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]',
+      explanation: "Numbers 1-15 with FizzBuzz rules applied",
     },
   ],
   codeSnippets: {
     JAVASCRIPT:
-      "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nfunction removeElement(nums, val) {\n    let k = 0;\n    for (let i = 0; i < nums.length; i++) {\n        if (nums[i] !== val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}\n\n// I/O\nconst fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst parts = input.split(' ');\nconst arrayPart = parts.slice(0, -1).join(' ');\nconst val = parseInt(parts[parts.length - 1]);\nconst nums = JSON.parse(arrayPart);\nconsole.log(removeElement(nums, val));",
-    PYTHON:
-      "from typing import List\n\nclass Solution:\n    def removeElement(self, nums: List[int], val: int) -> int:\n        k = 0\n        for i in range(len(nums)):\n            if nums[i] != val:\n                nums[k] = nums[i]\n                k += 1\n        return k\n\nif __name__ == '__main__':\n    import sys\n    import json\n    input_line = sys.stdin.read().strip()\n    parts = input_line.split()\n    array_part = ' '.join(parts[:-1])\n    val = int(parts[-1])\n    nums = json.loads(array_part)\n    print(Solution().removeElement(nums, val))",
-    JAVA: 'import java.util.*;\npublic class Main {\n    public int removeElement(int[] nums, int val) {\n        int k = 0;\n        for (int i = 0; i < nums.length; i++) {\n            if (nums[i] != val) {\n                nums[k] = nums[i];\n                k++;\n            }\n        }\n        return k;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String input = sc.nextLine().trim();\n        String[] parts = input.split(" ");\n        int val = Integer.parseInt(parts[parts.length - 1]);\n        String arrayStr = String.join(" ", Arrays.copyOf(parts, parts.length - 1));\n        arrayStr = arrayStr.substring(1, arrayStr.length() - 1);\n        String[] elements = arrayStr.split(",");\n        int[] nums = new int[elements.length];\n        for (int i = 0; i < elements.length; i++) {\n            nums[i] = Integer.parseInt(elements[i].trim());\n        }\n        System.out.println(new Main().removeElement(nums, val));\n        sc.close();\n    }\n}',
-    C: '#include <stdio.h>\n\nint removeElement(int* nums, int numsSize, int val) {\n    // Write your code here\n    return 0;\n}\n\nint main() {\n    int nums[100], numsSize = 0, val;\n    char c;\n    scanf("%c", &c); // \'[\'\n    while(scanf("%d%c", &nums[numsSize], &c)) {\n        numsSize++;\n        if(c == \']\') break;\n    }\n    scanf("%d", &val);\n    printf("%d", removeElement(nums, numsSize, val));\n    return 0;\n}',
-    "C++":
-      "#include <bits/stdc++.h>\nusing namespace std;\n\nint removeElement(vector<int>& nums, int val) {\n    // Write your code here\n    return 0;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    string line;\n    getline(cin, line);\n    vector<int> nums;\n    stringstream ss(line.substr(1, line.length()-2));\n    string num;\n    while(getline(ss, num, ',')) {\n        nums.push_back(stoi(num));\n    }\n    int val;\n    cin >> val;\n    cout << removeElement(nums, val);\n    return 0;\n}",
+      "/**\n * @param {number} n\n * @return {string[]}\n */\nfunction fizzBuzz(n) {\n  // Write your code here\n}\n\n// I/O\nconst fs = require('fs');\nconst n = parseInt(fs.readFileSync(0, 'utf-8').trim());\nconsole.log(JSON.stringify(fizzBuzz(n)));",
+    TYPESCRIPT:
+      "// --- codeSnippets.TYPESCRIPT ---\n/**\n * @param {number} n\n * @return {string[]}\n */\nfunction fizzBuzz(n: number): string[] {\n  // Write your code here\n  return [];\n}\n\n// @ts-ignore: allow require without Node types\nconst fs = require('fs');\nconst n = parseInt(fs.readFileSync(0, 'utf-8').trim());\nconsole.log(JSON.stringify(fizzBuzz(n)));",
   },
   referenceSolutions: {
     JAVASCRIPT:
-      "function removeElement(nums, val) {\n    let k = 0;\n    for (let i = 0; i < nums.length; i++) {\n        if (nums[i] !== val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}",
-    PYTHON:
-      "class Solution:\n    def removeElement(self, nums: List[int], val: int) -> int:\n        k = 0\n        for i in range(len(nums)):\n            if nums[i] != val:\n                nums[k] = nums[i]\n                k += 1\n        return k",
-    JAVA: "public int removeElement(int[] nums, int val) {\n    int k = 0;\n    for (int i = 0; i < nums.length; i++) {\n        if (nums[i] != val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}",
-    C: "int removeElement(int* nums, int numsSize, int val) {\n    int k = 0;\n    for (int i = 0; i < numsSize; i++) {\n        if (nums[i] != val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}",
-    "C++":
-      "int removeElement(vector<int>& nums, int val) {\n    int k = 0;\n    for (int i = 0; i < nums.size(); i++) {\n        if (nums[i] != val) {\n            nums[k] = nums[i];\n            k++;\n        }\n    }\n    return k;\n}",
+      "function fizzBuzz(n) {\n  const result = [];\n  for (let i = 1; i <= n; i++) {\n    if (i % 15 === 0) result.push('FizzBuzz');\n    else if (i % 3 === 0) result.push('Fizz');\n    else if (i % 5 === 0) result.push('Buzz');\n    else result.push(i.toString());\n  }\n  return result;\n}\n\nconst fs = require('fs');\nconst n = parseInt(fs.readFileSync(0, 'utf-8').trim());\nconsole.log(JSON.stringify(fizzBuzz(n)));",
+    TYPESCRIPT:
+      '// --- referenceSolutions.TYPESCRIPT ---\nfunction fizzBuzz(n: number): string[] {\n  const result: string[] = [];\n  for (let i = 1; i <= n; i++) {\n    if (i % 15 === 0) result.push("FizzBuzz");\n    else if (i % 3 === 0) result.push("Fizz");\n    else if (i % 5 === 0) result.push("Buzz");\n    else result.push(i.toString());\n  }\n  return result;\n}\n\n// @ts-ignore: allow require without Node types\nconst fs = require(\'fs\');\nconst n = parseInt(fs.readFileSync(0, \'utf-8\').trim());\nconsole.log(JSON.stringify(fizzBuzz(n)));',
   },
-  company: "Generic",
-  isDemo: true,
 };
+
 const CreateProblemForm = () => {
   const {
     register,
@@ -119,7 +108,7 @@ const CreateProblemForm = () => {
   });
 
   const { mutateAsync, isPending, isError, error } = useCreateProblemMutation();
-
+  const { data: sheetsData } = useGetSheetsQUery();
   // watch se jo selectedLanguages array hai, woh le lo
   const selectedLanguages = watch("selectedLanguages") || [];
 
@@ -715,6 +704,42 @@ const CreateProblemForm = () => {
               <label className="label">
                 <span className="label-text-alt text-error">
                   {errors.isPremium.message}
+                </span>
+              </label>
+            )}
+          </div>
+
+          {/* Sheet */}
+          <div className="form-control mb-4">
+            <label htmlFor="sheet" className="label">
+              <span className="label-text mb-2">
+                Add this problem into sheet
+              </span>
+            </label>
+            <div className="w-full">
+              <select
+                {...register("sheetId")}
+                name="sheetId"
+                defaultValue=""
+                id="sheet"
+                className="select w-full"
+              >
+                <option value={""}>Select sheet</option>
+                {sheetsData?.sheets?.map((sheet) => (
+                  <option
+                    key={sheet.id}
+                    value={sheet.id}
+                    className="line-clamp-1"
+                  >
+                    {sheet.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {errors.sheetId && (
+              <label className="label">
+                <span className="label-text-alt text-error">
+                  {errors.sheetId.message}
                 </span>
               </label>
             )}
