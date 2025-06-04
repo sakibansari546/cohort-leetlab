@@ -65,7 +65,7 @@ const UserSolvedProblems = () => {
                     >
                       {problem.difficulty}
                     </td>
-                    <td>{problem.company}</td>
+                    <td>{problem.company[0]}+</td>
                   </tr>
                 ))
               )}
