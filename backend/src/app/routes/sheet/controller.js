@@ -21,7 +21,8 @@ class SheetController {
       this.validateParseData(createSheetSchema, req.body)
     );
 
-    const { title, description, languages, price, isPremium } = parsedData;
+    const { title, description, languages, price, isPremium, tags } =
+      parsedData;
 
     const newSheet = await prisma.sheet.create({
       data: {
@@ -29,6 +30,7 @@ class SheetController {
         description: description,
         languages: languages,
         price: price,
+        tags,
         isPremium: isPremium,
       },
     });

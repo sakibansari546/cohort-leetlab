@@ -21,6 +21,11 @@ const createSheetSchema = z.object({
     )
     .min(1, "At least one language is required")
     .max(10, "No more than 10 languages allowed"),
+
+  tags: z
+    .array(z.string({ message: "Each tag must be a string" }))
+    .min(1, { message: "At least one tag is required" }),
+    
   price: z
     .number({ invalid_type_error: "Price must be a number" })
     .nonnegative("Price must be non-negative")

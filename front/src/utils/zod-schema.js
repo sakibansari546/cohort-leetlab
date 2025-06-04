@@ -180,10 +180,38 @@ const createProblemSchema = z.object({
   isPremium: z.boolean().default(false),
 });
 
+const createSheetSchema = z.object({
+  title: z
+    .string({ message: "Title must be a string" })
+    .nonempty({ message: "Title is required" })
+    .min(3, { message: "Title must be at least 3 characters long" })
+    .max(100, { message: "Title must not exceed 100 characters" }),
+
+  description: z
+    .string({ message: "Description must be a string" })
+    .max(500, { message: "Description must not exceed 500 characters" })
+    .optional(),
+
+  languages: z
+    .array(z.enum(LANGUAGES, { message: "Invalid language" }))
+    .min(1, { message: "At least one language is required" }),
+
+  tags: z
+    .array(z.string({ message: "Each tag must be a string" }))
+    .min(1, { message: "At least one tag is required" }),
+
+  price: z
+    .number({ message: "Price must be a number" })
+    .min(0, { message: "Price must be at least 0" }),
+
+  isPremium: z.boolean().default(false),
+});
+
 export {
   signupSchema,
   loginSchema,
   createPlaylistSchema,
   updateUserBasicInfoSchema,
   createProblemSchema,
+  createSheetSchema,
 };

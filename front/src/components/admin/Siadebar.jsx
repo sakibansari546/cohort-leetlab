@@ -1,4 +1,10 @@
-import { Code2, FileText, ListCheck, PlusIcon } from "lucide-react";
+import {
+  Code2,
+  FileBarChart,
+  FileText,
+  ListCheck,
+  PlusIcon,
+} from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 
 export default function AdminSidebar() {
@@ -58,7 +64,34 @@ export default function AdminSidebar() {
                 className="flex items-center p-2 hover:bg-base-100"
               >
                 <PlusIcon />
-                <span className="ms-3">Creaye Problem</span>
+                <span className="ms-3">Create Problem</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/create-sheet"
+                className="flex items-center p-2 hover:bg-base-100"
+              >
+                <PlusIcon />
+                <span className="ms-3">Create Sheet</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/sheets"
+                className="flex items-center p-2 hover:bg-base-100"
+              >
+                <FileBarChart />
+                <span className="ms-3">Sheets</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/problems"
+                className="flex items-center p-2 hover:bg-base-100"
+              >
+                <Code2 />
+                <span className="flex-1 ms-3 whitespace-nowrap">Problems</span>
               </Link>
             </li>
 
@@ -79,15 +112,7 @@ export default function AdminSidebar() {
                 <span className="flex-1 ms-3 whitespace-nowrap">Users</span>
               </Link>
             </li>
-            <li>
-              <Link
-                to="/admin/problems"
-                className="flex items-center p-2 hover:bg-base-100"
-              >
-                <Code2 />
-                <span className="flex-1 ms-3 whitespace-nowrap">Problems</span>
-              </Link>
-            </li>
+
             <li>
               <Link
                 to="/admin/playlists"

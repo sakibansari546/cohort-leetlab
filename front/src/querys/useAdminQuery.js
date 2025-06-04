@@ -159,3 +159,48 @@ export const useCreateProblemMutation = () => {
     },
   });
 };
+
+const createSheet = async (data) => {
+  const res = await axiosClient.post(`/sheet/create`, data);
+  return res.data.data;
+};
+
+export const useCreateSheetMutation = () => {
+  return useMutation({
+    mutationFn: createSheet,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-sheets"] });
+      toast.success("Sheet Created Successfully!");
+    },
+  });
+};
+
+const getAllSheets = async () => {
+  const res = await axiosClient.get(`/sheet/all`);
+  return res.data.data;
+};
+
+export const useGetAllSheetsQuery = () => {
+  return useQuery({
+    queryKey: ["all-sheets"],
+    queryFn: getAllSheets,
+  });
+};
+
+const deteleSheet = async ({ sheetId }) => {
+  const res = await axiosClient.delete(`/sheet/${sheetId}/delete`);
+  return res.data.data;
+};
+
+export const useDeleteSheetMuatation = () => {
+  return useMutation({
+    mutationFn: deteleSheet,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-sheets"] });
+      toast.success("Sheet deleted successfully");
+    },
+    onError: (err) => {
+      toast.error(err.response.data.message || "Something went wrong");
+    },
+  });
+};

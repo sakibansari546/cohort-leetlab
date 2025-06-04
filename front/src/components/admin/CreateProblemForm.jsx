@@ -246,7 +246,6 @@ const CreateProblemForm = () => {
             </label>
           )}
 
-          {/* register a hidden input so RHF knows about it too */}
           <input type="hidden" {...register("tags")} />
 
           {/* Examples */}
@@ -512,7 +511,7 @@ const CreateProblemForm = () => {
           </div>
 
           {/* CodeSnippets */}
-          {/* --- Naya Section: Languages Select karne ke liye --- */}
+
           <div className="my-6">
             <label className="block font-medium mb-1">Select Languages</label>
             <div className="grid grid-cols-2 gap-2">
@@ -535,8 +534,6 @@ const CreateProblemForm = () => {
             )}
           </div>
 
-          {/* --- Ab watch("selectedLanguages") se selectedLanguages mil raha hai --- */}
-          {/* Har ek selected language ke liye do editors dikhao */}
           {selectedLanguages.length > 0 && (
             <div className="space-y-8">
               {selectedLanguages.map((lang) => (

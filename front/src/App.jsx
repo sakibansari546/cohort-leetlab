@@ -28,6 +28,8 @@ import AdminPlaylistsPage from "./pages/admin/PlaylistsPage";
 import AdminProblemsPage from "./pages/admin/ProblemsPage";
 import AboutPage from "./pages/AboutPage";
 import SheetPage from "./pages/sheet/SheetPage";
+import CreateSheetPage from "./pages/admin/CreateSheetPage";
+import SheetsPage from "./pages/admin/SheetsPages";
 
 function App() {
   const { theme } = useThemeStore();
@@ -117,10 +119,30 @@ function App() {
                 }
               />
               <Route
+                path="create-sheet"
+                element={
+                  user && user?.role === "ADMIN" ? (
+                    <CreateSheetPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
                 path="users"
                 element={
                   user && user?.role === "ADMIN" ? (
                     <UsersPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="sheets"
+                element={
+                  user && user?.role === "ADMIN" ? (
+                    <SheetsPage />
                   ) : (
                     <Navigate to="/" />
                   )
