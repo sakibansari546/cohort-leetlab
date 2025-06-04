@@ -11,7 +11,7 @@ const getSheets = async () => {
 
 export const useGetSheetsQUery = () => {
   return useQuery({
-    queryKey: ["sheets"],
+    queryKey: ["all-sheets"],
     queryFn: getSheets,
   });
 };
@@ -35,5 +35,17 @@ export const useGetSheetFreeDetailsByIdQuery = (id) => {
   return useQuery({
     queryKey: ["sheets-free", id],
     queryFn: () => getSheetFreeDetailsById(id),
+  });
+};
+
+const getUserSheets = async () => {
+  const res = await axiosClient.get("/sheet/sheets");
+  return res.data.data;
+};
+
+export const useGetUserSheetsQuery = () => {
+  return useQuery({
+    queryKey: ["sheets"],
+    queryFn: getUserSheets,
   });
 };

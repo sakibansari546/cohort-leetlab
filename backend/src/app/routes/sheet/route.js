@@ -9,6 +9,15 @@ export function register() {
 
   router.use(isAuth);
 
+  router.get("/all", controller.getAllSheetsHandler.bind(controller));
+  router.get("/sheets", controller.getUserSheets.bind(controller));
+  router.get("/:sheetId", controller.getSheetByIdHandler.bind(controller));
+
+  router.get(
+    "/:sheetId/free/details",
+    controller.getSheetFreeDetails.bind(controller)
+  );
+
   router.post(
     "/create",
     checkAdmin,
@@ -32,14 +41,6 @@ export function register() {
   router.delete(
     "/:sheetId/problem/remove",
     controller.removeProblemInSheetHandler.bind(controller)
-  );
-
-  router.get("/all", controller.getAllSheetsHandler.bind(controller));
-  router.get("/:sheetId", controller.getSheetByIdHandler.bind(controller));
-
-  router.get(
-    "/:sheetId/free/details",
-    controller.getSheetFreeDetails.bind(controller)
   );
 
   return router;

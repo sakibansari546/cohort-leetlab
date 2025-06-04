@@ -74,7 +74,7 @@ const SheetPage = () => {
             <div className="flex items-center flex-col gap-5 justify-between w-full mt-6">
               <p className=" font-semibold flex items-center text-3xl gap-1">
                 Price{" "}
-                <span className="text-green-600 font-bold flex items-center ml-2 text-3xl">
+                <span className="text-primary font-bold flex items-center ml-2 text-3xl">
                   <span className="">&#8377;</span>
                   <span className="ml-1">{freeSheetData?.sheet?.price}</span>
                 </span>

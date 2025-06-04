@@ -245,6 +245,35 @@ class SheetController {
       .status(200)
       .json(new ApiResponse(200, "Sheet fetched successfully", { sheet }));
   });
+
+  getUserSheets = AsyncHandler(async (req, res) => {
+    const userId = req.userId;
+    const sheets = await prisma.sheet.findMany({
+      where: {
+        purchases: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      include: {
+        purchases: {
+          select: {
+            boughtAt: true,
+          },
+        },
+        _count: {
+          select: {
+            sheetAssignments: true,
+          },
+        },
+      },
+    });
+
+    res
+      .status(200)
+      .json(new ApiResponse(200, "Sheets fetched successfully", { sheets }));
+  });
 }
 
 export default SheetController;

@@ -181,13 +181,13 @@ const ProblemPage = () => {
             <div className="flex items-center justify-between bg-base-100 py-5 px-6">
               <div className="flex items-center gap-2">
                 <Link
-                  to={"/problems"}
+                  to={-1}
                   className="btn btn-ghost btn-sm md:btn-md link"
                   title="Problems"
                 >
                   {/* Back arrow icon */}
                   <ChevronLeft size="18" />
-                  Problems
+                  Back
                 </Link>
               </div>
               <div className="space-x-2">

@@ -5,6 +5,7 @@ import UserDashBoardHead from "../components/UserDashBoardHead";
 import {
   BadgeCheck,
   CheckSquare,
+  FileBarChart2,
   FileText,
   Github,
   Globe,
@@ -20,6 +21,7 @@ import { formateDate } from "../utils/date-formate";
 import { useThemeStore } from "../store/themeStore";
 import Tippy from "@tippyjs/react";
 import { useGetUserQuery } from "../querys/useUserQuery";
+import UserSheets from "../components/UserSheets";
 
 const TabContentRender = ({ showTab }) => {
   switch (showTab) {
@@ -29,6 +31,8 @@ const TabContentRender = ({ showTab }) => {
       return <UserSubmissions />;
     case "lists":
       return <UserPlaylists />;
+    case "sheets":
+      return <UserSheets />;
     default:
       return null;
   }
@@ -231,6 +235,17 @@ const UserDashboardPage = () => {
                     />
                     <FileText size={18} />
                     Lists
+                  </label>
+
+                  <label className="tab flex gap-2">
+                    <input
+                      type="radio"
+                      name="user_detail_tab"
+                      checked={showTab === "sheets"}
+                      onChange={() => setShowTab("sheets")}
+                    />
+                    <FileBarChart2 size={18} />
+                    Sheets
                   </label>
                 </div>
 
