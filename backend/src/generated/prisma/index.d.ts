@@ -65,12 +65,12 @@ export type ProblemInPlaylist = $Result.DefaultSelection<Prisma.$ProblemInPlayli
 export type Sheet = $Result.DefaultSelection<Prisma.$SheetPayload>
 /**
  * Model SheetProblem
- * Ye model join table ki tarah kaam karega "Sheet ⇄ Problem" ke beech
+ * 
  */
 export type SheetProblem = $Result.DefaultSelection<Prisma.$SheetProblemPayload>
 /**
  * Model Purchase
- * Agar aap chahen to Purchase ko thoda aur extend kar sakte ho—yahaan ek basic version hai:
+ * 
  */
 export type Purchase = $Result.DefaultSelection<Prisma.$PurchasePayload>
 /**

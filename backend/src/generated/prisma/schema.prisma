@@ -213,35 +213,27 @@ model ProblemInPlaylist {
 
 model Sheet {
   id          String   @id @default(uuid())
-  title       String // Sheet ka nishchit title/title
-  description String? // Optional description
-  languages   String[] // Kaunsi language ke problems is Sheet me hone chahiye
+  title       String
+  description String?
+  languages   String[]
   tags        String[]
-  price       Float // Kitne paise/rupees (ya dollars) me sell kar rahe
-  isPremium   Boolean  @default(false) // agar free hona ho to false, warna true
+  price       Float
+  isPremium   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // Relation: kaunse users ne is sheet ko purchase kiya
-  purchases        Purchase[]
-  // Relation: kaunse problems is sheet ke andar hain
+  purchases Purchase[]
+
   sheetAssignments SheetProblem[]
 }
 
-/// Ye model join table ki tarah kaam karega "Sheet ⇄ Problem" ke beech
 model SheetProblem {
-  id         String @id @default(uuid())
-  sheetId    String
-  problemId  String
-  // Agar tumhe sheet ke andhar problem ka ordering/order number chahiye:
-  orderIndex Int? // optional: sheet me har problem ka sequence number (0,1,2…)
+  id        String @id @default(uuid())
+  sheetId   String
+  problemId String
 
-  // Agar user ne is sheet ka koi specific problem solve kiya, to track karne ke liye:
-  // userId ho sakta hai, par zaruri nahi. Aap agar sheet-based tracking chahte ho:
-  // userId String?  
-  // user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderIndex Int?
 
-  // Timestamps:
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -250,10 +242,9 @@ model SheetProblem {
   User    User?   @relation(fields: [userId], references: [id])
   userId  String?
 
-  @@unique([sheetId, problemId]) // ek problem ek sheet me sirf ek baar hi ja sakta
+  @@unique([sheetId, problemId])
 }
 
-/// Agar aap chahen to Purchase ko thoda aur extend kar sakte ho—yahaan ek basic version hai:
 model Purchase {
   id       String   @id @default(uuid())
   userId   String
@@ -264,7 +255,7 @@ model Purchase {
   sheet   Sheet     @relation(fields: [sheetId], references: [id], onDelete: Cascade)
   payment Payment[]
 
-  @@unique([userId, sheetId]) // ek user ek sheet sirf ek baar kharid sake
+  @@unique([userId, sheetId])
 }
 
 model Payment {
@@ -272,12 +263,12 @@ model Payment {
   userId        String
   purchaseId    String
   amount        Float
-  currency      String // e.g., "INR", "USD"
-  status        String // e.g., "PENDING", "SUCCESS", "FAILED"
+  currency      String
+  status        String
   orderId       String
   paymentId     String
-  paymentMethod String? // e.g., "CARD", "UPI", "PAYPAL"
-  transactionId String? // Payment gateway transaction reference
+  paymentMethod String?
+  transactionId String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
