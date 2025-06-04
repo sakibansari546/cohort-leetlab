@@ -46,7 +46,7 @@ export default function SheetsPage() {
   }
 
   return (
-    <div class="p-4 sm:ml-64">
+    <div class="p-4 sm:ml-64 min-h-screen">
       <div class="p-4 rounded-lg">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Problem Management</h1>
