@@ -51,7 +51,7 @@ export default function SheetsPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Problem Management</h1>
           <p className="text-base-content opacity-70">
-            View, add, edit and manage coding problems on HypeCoding.
+            View, add, edit and manage sheets on HypeCoding.
           </p>
         </div>
 

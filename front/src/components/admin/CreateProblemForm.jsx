@@ -51,46 +51,51 @@ import { useGetSheetsQUery } from "../../querys/useSheetQuery";
 // };
 
 const formDefaultValues = {
-  title: "FizzBuzz",
+  title: "Word Search",
   description:
-    "Write a function that returns an array of strings from 1 to n where: numbers divisible by 3 are replaced with 'Fizz', numbers divisible by 5 are replaced with 'Buzz', and numbers divisible by both 3 and 5 are replaced with 'FizzBuzz'.",
+    "Given an `m x n` grid of characters `board` and a string `word`, return `true` if `word` exists in the grid.\n\nThe word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.\n\nNote: You need to explore all possible paths using backtracking.",
   difficulty: "MEDIUM",
-  tags: ["Loop", "Conditional", "Array"],
-  constraints: "1 ≤ n ≤ 100",
+  tags: ["Array", "String", "Backtracking", "Matrix"],
+  constraints:
+    "m == board.length\nn = board[i].length\n1 ≤ m, n ≤ 6\n1 ≤ word.length ≤ 15\nboard and word consists of only lowercase and uppercase English letters.",
   hints: [
-    "Check divisibility by both 3 and 5 first",
-    "Then check divisibility by 3 or 5 separately",
-    "Use modulo operator (%) to check divisibility",
+    "Try starting the search from each cell in the grid",
+    "Use DFS with backtracking to explore all directions (up, down, left, right)",
+    "Mark visited cells to avoid reusing them in current path",
+    "Unmark cells when backtracking to allow other paths to use them",
   ],
   testcases: [
-    {
-      input: "15",
-      output:
-        '["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]',
-    },
-    { input: "5", output: '["1","2","Fizz","4","Buzz"]' },
-    { input: "3", output: '["1","2","Fizz"]' },
+    { input: "3 4\nABCE\nSFCS\nADEE\nABCCED", output: "true" },
+    { input: "3 4\nABCE\nSFCS\nADEE\nSEE", output: "true" },
+    { input: "3 4\nABCE\nSFCS\nADEE\nABCB", output: "false" },
+    { input: "1 1\na\na", output: "true" },
+    { input: "2 2\nab\ncd\nabcd", output: "false" },
   ],
   examples: [
     {
-      input: "n = 15",
-      output:
-        '["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]',
-      explanation: "Numbers 1-15 with FizzBuzz rules applied",
+      input:
+        'board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"',
+      output: "true",
+      explanation: "The word can be found by following the path A→B→C→C→E→D",
+    },
+    {
+      input:
+        'board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"',
+      output: "false",
+      explanation:
+        "The word cannot be formed as it would require reusing the same cell",
     },
   ],
   codeSnippets: {
-    JAVASCRIPT:
-      "/**\n * @param {number} n\n * @return {string[]}\n */\nfunction fizzBuzz(n) {\n  // Write your code here\n}\n\n// I/O\nconst fs = require('fs');\nconst n = parseInt(fs.readFileSync(0, 'utf-8').trim());\nconsole.log(JSON.stringify(fizzBuzz(n)));",
-    TYPESCRIPT:
-      "// --- codeSnippets.TYPESCRIPT ---\n/**\n * @param {number} n\n * @return {string[]}\n */\nfunction fizzBuzz(n: number): string[] {\n  // Write your code here\n  return [];\n}\n\n// @ts-ignore: allow require without Node types\nconst fs = require('fs');\nconst n = parseInt(fs.readFileSync(0, 'utf-8').trim());\nconsole.log(JSON.stringify(fizzBuzz(n)));",
+    "C++":
+      '#include <bits/stdc++.h>\nusing namespace std;\n\nbool exist(vector<vector<char>>& board, string word) {\n    int m = board.size(), n = board[0].size();\n    // Write your code here using backtracking\n    return false;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int m, n;\n    cin >> m >> n;\n    vector<vector<char>> board(m, vector<char>(n));\n    string row;\n    for (int i = 0; i < m; i++) {\n        cin >> row;\n        for (int j = 0; j < n; j++) {\n            board[i][j] = row[j];\n        }\n    }\n    string word;\n    cin >> word;\n    cout << (exist(board, word) ? "true" : "false");\n    return 0;\n}',
   },
   referenceSolutions: {
-    JAVASCRIPT:
-      "function fizzBuzz(n) {\n  const result = [];\n  for (let i = 1; i <= n; i++) {\n    if (i % 15 === 0) result.push('FizzBuzz');\n    else if (i % 3 === 0) result.push('Fizz');\n    else if (i % 5 === 0) result.push('Buzz');\n    else result.push(i.toString());\n  }\n  return result;\n}\n\nconst fs = require('fs');\nconst n = parseInt(fs.readFileSync(0, 'utf-8').trim());\nconsole.log(JSON.stringify(fizzBuzz(n)));",
-    TYPESCRIPT:
-      '// --- referenceSolutions.TYPESCRIPT ---\nfunction fizzBuzz(n: number): string[] {\n  const result: string[] = [];\n  for (let i = 1; i <= n; i++) {\n    if (i % 15 === 0) result.push("FizzBuzz");\n    else if (i % 3 === 0) result.push("Fizz");\n    else if (i % 5 === 0) result.push("Buzz");\n    else result.push(i.toString());\n  }\n  return result;\n}\n\n// @ts-ignore: allow require without Node types\nconst fs = require(\'fs\');\nconst n = parseInt(fs.readFileSync(0, \'utf-8\').trim());\nconsole.log(JSON.stringify(fizzBuzz(n)));',
+    "C++":
+      "bool exist(vector<vector<char>>& board, string word) {\n    int m = board.size(), n = board[0].size();\n    \n    function<bool(int, int, int)> dfs = [&](int i, int j, int k) -> bool {\n        if (k == word.size()) return true;\n        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[k]) return false;\n        \n        char temp = board[i][j];\n        board[i][j] = '#'; // mark as visited\n        \n        bool found = dfs(i+1, j, k+1) || dfs(i-1, j, k+1) || \n                    dfs(i, j+1, k+1) || dfs(i, j-1, k+1);\n        \n        board[i][j] = temp; // backtrack\n        return found;\n    };\n    \n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if (dfs(i, j, 0)) return true;\n        }\n    }\n    return false;\n}",
   },
+  company: "Generic",
+  isDemo: true,
 };
 
 const CreateProblemForm = () => {
@@ -770,7 +775,6 @@ const CreateProblemForm = () => {
                   Submit
                 </>
               )}
-              x
             </button>
           </div>
         </form>

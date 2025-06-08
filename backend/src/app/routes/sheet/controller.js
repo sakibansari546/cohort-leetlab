@@ -219,7 +219,13 @@ class SheetController {
       include: {
         sheetAssignments: {
           orderBy: { orderIndex: "asc" },
-          include: { problem: true },
+          include: {
+            problem: {
+              include: {
+                solvedBy: true
+              }
+            }
+          },
         },
       },
     });

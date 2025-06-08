@@ -1,8 +1,11 @@
-import { Circle } from "lucide-react";
+import { CheckCircle, CheckCircle2, Circle } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useGetUserQuery } from "../../querys/useUserQuery";
 
-const SheetProblems = ({ problems }) => {
+const SheetProblems = ({ user, problems }) => {
+  console.log(problems);
+
   return (
     <div>
       <div className="flex flex-col gap-5 min-h-[80vh]">
@@ -25,16 +28,20 @@ const SheetProblems = ({ problems }) => {
               <tbody>
                 {/* row 1 */}
                 {problems?.map(({ problem }, idx) => {
-                  //   const isSolved = problem.solvedBy?.some(
-                  //     (userP) => userP.userId == user?.user?.id
-                  //   );
+                  const isSolved = problem.solvedBy?.some(
+                    (userP) => userP.userId == user?.id
+                  );
                   return (
                     <tr
                       key={problem.id}
                       className={` ${idx % 2 == 0 && "bg-base-200"} rounded-xl`}
                     >
                       <td className="w-8">
-                        <Circle size="18" />
+                        {isSolved ? (
+                          <CheckCircle size={18} className="text-success" />
+                        ) : (
+                          <Circle size={18} className="text-muted" />
+                        )}
                       </td>
                       <td className="font-medium ">
                         <Link

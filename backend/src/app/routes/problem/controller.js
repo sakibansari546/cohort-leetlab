@@ -40,6 +40,7 @@ class ProblemController {
       company,
       isDemo,
       sheetId,
+      isPremium,
     } = handleZodError(this.validateParseData(createProblemSchema, req.body));
 
     console.log(req.body);

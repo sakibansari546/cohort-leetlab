@@ -18,6 +18,18 @@ const SheetPage = () => {
     useGetSheetFreeDetailsByIdQuery(sheetId);
   // Dummy data for demonstration; replace with real data fetching logic as needed
 
+  // Calculate how many the user has solved
+  const assignments = data?.sheet?.sheetAssignments || [];
+  const total = assignments.length;
+  const solvedCount = assignments.reduce(
+    (acc, { problem }) =>
+      acc +
+      (problem.solvedBy.some((s) => s.userId === userData?.user?.id) ? 1 : 0),
+    0
+  );
+  const progressPercent =
+    total > 0 ? Math.round((solvedCount / total) * 100) : 0;
+
   if (isPending) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-base-100 text-base-content">
@@ -141,21 +153,12 @@ const SheetPage = () => {
                 <div className="flex items-center gap-4 w-full md:w-auto">
                   <progress
                     className="progress progress-primary w-56"
-                    value={
-                      data?.sheet?.sheetAssignments &&
-                      data?.sheet?.sheetAssignments.length > 0
-                        ? Math.round(
-                            ((data?.sheet?.completedAssignmentsCount || 0) /
-                              data?.sheet?.sheetAssignments.length) *
-                              100
-                          )
-                        : 0
-                    }
+                    value={progressPercent}
                     max="100"
                   ></progress>
                   <span className="font-semibold text-base-content">
-                    {data?.sheet?.completedAssignmentsCount || 0}/
-                    {data?.sheet?.sheetAssignments.length} Problems
+                    {solvedCount || 0}/{data?.sheet?.sheetAssignments.length}{" "}
+                    Problems
                   </span>
                 </div>
               </div>
@@ -163,7 +166,10 @@ const SheetPage = () => {
           </div>
           {/* You can add more content here */}
           <div className="my-16">
-            <SheetProblems problems={data?.sheet?.sheetAssignments} />
+            <SheetProblems
+              user={userData?.user}
+              problems={data?.sheet?.sheetAssignments}
+            />
           </div>
         </div>
       </div>
